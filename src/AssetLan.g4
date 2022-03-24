@@ -1,11 +1,6 @@
 grammar AssetLan;
 
 // THIS IS THE PARSER INPUT
-@lexer::members {
-   //there is a much better way to do this, check the ANTLR guide
-   public int lexicalErrors=0;
-}
-
 program	    : field* asset* function* initcall ;
 
 field       : type ID ('=' exp)? ';' ;
@@ -76,7 +71,7 @@ NUMBER      : DIGIT+;
 WS              : (' '|'\t'|'\n'|'\r')-> skip;
 LINECOMMENTS 	: '//' (~('\n'|'\r'))* -> skip;
 BLOCKCOMMENTS   : '/*'( ~('/'|'*')|'/'~'*'|'*'~'/'|BLOCKCOMMENTS)* '*/' -> skip;
-ERR     : . { System.out.println("Invalid char: "+ getText()); lexicalErrors++; } -> channel(HIDDEN);
+ERR     : . -> channel(HIDDEN);
 /*
 SEMANTICA DI ASSETLAN
 
