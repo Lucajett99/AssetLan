@@ -71,7 +71,6 @@ NUMBER      : DIGIT+;
 WS              : (' '|'\t'|'\n'|'\r')-> skip;
 LINECOMMENTS 	: '//' (~('\n'|'\r'))* -> skip;
 BLOCKCOMMENTS   : '/*'( ~('/'|'*')|'/'~'*'|'*'~'/'|BLOCKCOMMENTS)* '*/' -> skip;
-ERR     : . -> channel(HIDDEN);
 /*
 SEMANTICA DI ASSETLAN
 

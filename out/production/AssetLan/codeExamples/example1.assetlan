@@ -1,3 +1,11 @@
-casa(x&y)?2,3?
-main
-stream$
+asset x&, y ;
+void f()[u,v]{
+    u -o y ;
+	v -o x ;
+}
+void main()[u,v]{
+    u -o& x ;
+	u -o y ;
+	f()[x&,y] ;
+}
+main()[2,3]
