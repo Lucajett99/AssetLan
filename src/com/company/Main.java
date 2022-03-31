@@ -1,9 +1,10 @@
 package com.company;
 
+import gen.AssetLanBaseVisitor;
 import gen.AssetLanLexer;
 import gen.AssetLanParser;
+import gen.AssetLanVisitor;
 import org.antlr.v4.runtime.*;
-import org.antlr.v4.runtime.tree.ParseTree;
 
 public class Main {
 
@@ -12,12 +13,15 @@ public class Main {
         CharStream charStreams = CharStreams.fromFileName(fileName);
         AssetLanLexer lexer = new AssetLanLexer(charStreams);
         CommonTokenStream tokens = new CommonTokenStream(lexer);
+        AssetLanParser parser = new AssetLanParser(tokens);
 
+        //create the listener and adding it to the lexer
         lexer.removeErrorListeners();
         SyntaxErrorListener errorListener = new SyntaxErrorListener();
         lexer.addErrorListener(errorListener);
 
-        AssetLanParser parser = new AssetLanParser(tokens);
-        ParseTree tree = parser.program();
+        //creation the visitor and get context
+        AssetLanVisitor visitor = new AssetLanBaseVisitor();
+        visitor.visitProgram(parser.program());
     }
 }
