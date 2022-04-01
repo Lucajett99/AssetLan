@@ -24,11 +24,21 @@ public class SyntaxErrorListener extends BaseErrorListener {
             PrintWriter out = new PrintWriter("LexicalErrors.txt");
             Iterator errors = this.getSyntaxErrors().iterator();
 
+            String lexicalErrors = "--------LEXICAL ERRORS----------\n";
+            String syntaxErrors = "--------SYNTAX ERRORS----------\n";
+
             while(errors.hasNext()) {
                 SyntaxError i = (SyntaxError)errors.next();
-                out.println("Error: " + i.getMsg() + " at line " + i.getLine());
+
+                if(i.getRecognizer().getClass().getSimpleName().equals("AssetLanLexer"))
+                    lexicalErrors += "Error: " + i.getMsg() + " at line " + i.getLine() + "\n";
+                else
+                    syntaxErrors += "Error: " + i.getMsg() + " at line " + i.getLine() + "\n";
             }
+
+            out.println(lexicalErrors + syntaxErrors);
             out.close();
+
         } catch (FileNotFoundException var10) {
             e.printStackTrace();
         }

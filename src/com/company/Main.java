@@ -19,6 +19,8 @@ public class Main {
         lexer.removeErrorListeners();
         SyntaxErrorListener errorListener = new SyntaxErrorListener();
         lexer.addErrorListener(errorListener);
+        parser.removeErrorListeners();
+        parser.addErrorListener(errorListener);
 
         //creation the visitor and get context
         AssetLanVisitor visitor = new AssetLanBaseVisitor();

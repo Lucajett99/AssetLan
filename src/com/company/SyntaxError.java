@@ -19,7 +19,7 @@ public class SyntaxError {
         this.msg = msg;
         this.e = e;
     }
-
+    public Recognizer getRecognizer() { return this.recognizer; }
     public String getMsg() {
         return this.msg;
     }
