@@ -1,7 +1,5 @@
 package utils;
 
-import com.company.EnvError;
-
 import java.util.ArrayList;
 import java.util.HashMap;
 
