@@ -57,6 +57,16 @@ public interface AssetLanListener extends ParseTreeListener {
 	 */
 	void exitDec(AssetLanParser.DecContext ctx);
 	/**
+	 * Enter a parse tree produced by {@link AssetLanParser#adec}.
+	 * @param ctx the parse tree
+	 */
+	void enterAdec(AssetLanParser.AdecContext ctx);
+	/**
+	 * Exit a parse tree produced by {@link AssetLanParser#adec}.
+	 * @param ctx the parse tree
+	 */
+	void exitAdec(AssetLanParser.AdecContext ctx);
+	/**
 	 * Enter a parse tree produced by {@link AssetLanParser#statement}.
 	 * @param ctx the parse tree
 	 */

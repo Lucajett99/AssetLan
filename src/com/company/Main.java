@@ -1,9 +1,9 @@
 package com.company;
 
-import gen.AssetLanBaseVisitor;
+import ast.AssetLanVisitorImpl;
+import ast.Node;
 import gen.AssetLanLexer;
 import gen.AssetLanParser;
-import gen.AssetLanVisitor;
 import org.antlr.v4.runtime.*;
 
 public class Main {
@@ -15,15 +15,11 @@ public class Main {
         CommonTokenStream tokens = new CommonTokenStream(lexer);
         AssetLanParser parser = new AssetLanParser(tokens);
 
-        //create the listener and adding it to the lexer
-        lexer.removeErrorListeners();
         SyntaxErrorListener errorListener = new SyntaxErrorListener();
         lexer.addErrorListener(errorListener);
-        parser.removeErrorListeners();
         parser.addErrorListener(errorListener);
 
-        //creation the visitor and get context
-        AssetLanVisitor visitor = new AssetLanBaseVisitor();
-        visitor.visitProgram(parser.program());
+        AssetLanVisitorImpl visitor = new AssetLanVisitorImpl();
+        Node ast = visitor.visit(parser.program());
     }
 }

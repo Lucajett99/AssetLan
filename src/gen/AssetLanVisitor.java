@@ -40,6 +40,12 @@ public interface AssetLanVisitor<T> extends ParseTreeVisitor<T> {
 	 */
 	T visitDec(AssetLanParser.DecContext ctx);
 	/**
+	 * Visit a parse tree produced by {@link AssetLanParser#adec}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitAdec(AssetLanParser.AdecContext ctx);
+	/**
 	 * Visit a parse tree produced by {@link AssetLanParser#statement}.
 	 * @param ctx the parse tree
 	 * @return the visitor result

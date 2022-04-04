@@ -1,6 +1,8 @@
 package com.company;
 
 import org.antlr.v4.runtime.*;
+import utils.SyntaxError;
+
 import java.io.FileNotFoundException;
 import java.io.PrintWriter;
 import java.util.ArrayList;
@@ -23,20 +25,17 @@ public class SyntaxErrorListener extends BaseErrorListener {
         try {
             PrintWriter out = new PrintWriter("LexicalErrors.txt");
             Iterator errors = this.getSyntaxErrors().iterator();
-
             String lexicalErrors = "--------LEXICAL ERRORS----------\n";
             String syntaxErrors = "--------SYNTAX ERRORS----------\n";
 
             while(errors.hasNext()) {
                 SyntaxError i = (SyntaxError)errors.next();
-
                 if(i.getRecognizer().getClass().getSimpleName().equals("AssetLanLexer"))
                     lexicalErrors += "Error: " + i.getMsg() + " at line " + i.getLine() + "\n";
                 else
                     syntaxErrors += "Error: " + i.getMsg() + " at line " + i.getLine() + "\n";
             }
-
-            out.println(lexicalErrors + syntaxErrors);
+            out.println(lexicalErrors + "\n" + syntaxErrors);
             out.close();
 
         } catch (FileNotFoundException var10) {

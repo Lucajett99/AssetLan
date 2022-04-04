@@ -1,16 +1,20 @@
 grammar AssetLan;
 
 // THIS IS THE PARSER INPUT
+
 program	    : field* asset* function* initcall ;
+			// la portata di field e asset e` soltanto function
 
 field       : type ID ('=' exp)? ';' ;
 
 asset       : 'asset' ID ';' ;
 
-function    : (type | 'void') ID '(' (dec (',' dec)* )? ')' '[' (asset (',' asset)* )? ']'
+function    : (type | 'void') ID '(' (dec)? ')' '[' (adec)? ']'
 	      '{' dec* statement* '}' ;
 
-dec         : type ID ';' ;
+dec         : type ID (',' type ID)* ;
+
+adec 	    : 'asset' ID (',' 'asset' ID)*;
 
 statement   : assignment ';'
 	    | move ';'     // sposta un asset da una parte all'altra
@@ -71,6 +75,7 @@ NUMBER      : DIGIT+;
 WS              : (' '|'\t'|'\n'|'\r')-> skip;
 LINECOMMENTS 	: '//' (~('\n'|'\r'))* -> skip;
 BLOCKCOMMENTS   : '/*'( ~('/'|'*')|'/'~'*'|'*'~'/'|BLOCKCOMMENTS)* '*/' -> skip;
+
 /*
 SEMANTICA DI ASSETLAN
 

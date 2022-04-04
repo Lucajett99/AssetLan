@@ -75,6 +75,18 @@ public class AssetLanBaseListener implements AssetLanListener {
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
+	@Override public void enterAdec(AssetLanParser.AdecContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void exitAdec(AssetLanParser.AdecContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
 	@Override public void enterStatement(AssetLanParser.StatementContext ctx) { }
 	/**
 	 * {@inheritDoc}
