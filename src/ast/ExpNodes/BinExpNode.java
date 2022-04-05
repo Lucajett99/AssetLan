@@ -1,27 +1,29 @@
-package ast;
+package ast.ExpNodes;
 
+import ast.Node;
 import utils.Environment;
 import utils.SemanticError;
+
 import java.util.ArrayList;
 
-public class FieldNode implements Node {
-    private Node type;
-    private String id;
-    private Node exp;
+public class BinExpNode implements Node {
+    private String op;
+    private Node left;
+    private Node right;
 
-    public FieldNode(Node type, String id, Node exp) {
-        this.type = type;
-        this.id = id;
-        this.exp = exp;
+    public BinExpNode(String op, Node left, Node right) {
+        this.op = op;
+        this.left = left;
+        this.right = right;
     }
 
     @Override
     public String toPrint(String indent) {
         String str="";
-        str += type.toPrint(indent+"  ");
-        str += id;
-        str += exp.toPrint(indent+"  ");
-        return indent+"Field\n" + str;
+        str += left.toPrint(indent+"  ");
+        str += op;
+        str += left.toPrint(indent+"  ");
+        return indent+"BinExp\n" + str;
     }
 
     @Override

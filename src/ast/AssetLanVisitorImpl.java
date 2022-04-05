@@ -1,10 +1,10 @@
 package ast;
 
+import ast.ExpNodes.*;
 import gen.AssetLanBaseVisitor;
 import gen.AssetLanParser.*;
 
 import org.antlr.v4.runtime.tree.ErrorNode;
-import org.antlr.v4.runtime.tree.ParseTree;
 import org.antlr.v4.runtime.tree.RuleNode;
 import org.antlr.v4.runtime.tree.TerminalNode;
 
@@ -17,7 +17,6 @@ public class AssetLanVisitorImpl extends AssetLanBaseVisitor<Node> {
         ArrayList<Node> fields = new ArrayList<Node>();
         ArrayList<Node> assets = new ArrayList<Node>();
         ArrayList<Node> functions = new ArrayList<Node>();
-
         for (FieldContext fc : ctx.field()) {
             fields.add(visit(fc));
         }
@@ -119,12 +118,16 @@ public class AssetLanVisitorImpl extends AssetLanBaseVisitor<Node> {
 
     @Override
     public Node visitBaseExp(BaseExpContext ctx) {
-        return super.visitBaseExp(ctx);
+        Node exp = visit(ctx.exp());
+        return new BaseExpNode(exp);
     }
 
     @Override
     public Node visitBinExp(BinExpContext ctx) {
-        return super.visitBinExp(ctx);
+        String op = ctx.op.getText();
+        Node left = visit(ctx.left);
+        Node right = visit(ctx.right);
+        return new BinExpNode(op, left, right);
     }
 
     @Override
@@ -134,17 +137,20 @@ public class AssetLanVisitorImpl extends AssetLanBaseVisitor<Node> {
 
     @Override
     public Node visitValExp(ValExpContext ctx) {
-        return super.visitValExp(ctx);
+        int number = Integer.parseInt(ctx.NUMBER().toString());
+        return new ValExpNode(number);
     }
 
     @Override
     public Node visitNegExp(NegExpContext ctx) {
-        return super.visitNegExp(ctx);
+        Node exp = visit(ctx.exp());
+        return new NegExpNode(exp);
     }
 
     @Override
     public Node visitBoolExp(BoolExpContext ctx) {
-        return super.visitBoolExp(ctx);
+        boolean bool = Boolean.parseBoolean(ctx.BOOL().getText());
+        return new BoolExpNode(bool);
     }
 
     @Override
@@ -154,7 +160,8 @@ public class AssetLanVisitorImpl extends AssetLanBaseVisitor<Node> {
 
     @Override
     public Node visitNotExp(NotExpContext ctx) {
-        return super.visitNotExp(ctx);
+        Node exp = visit(ctx.exp());
+        return new NotExpNode(exp);
     }
 
     /*------------------------------------------------------------------------*/

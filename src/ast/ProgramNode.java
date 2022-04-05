@@ -11,11 +11,11 @@ public class ProgramNode implements Node {
     private ArrayList<Node> functions;
     private Node initcall;
 
-    public ProgramNode(ArrayList<Node> f, ArrayList<Node> a, ArrayList<Node> fun, Node i) {
-        fields = f;
-        assets = a;
-        functions = fun;
-        initcall = i;
+    public ProgramNode(ArrayList<Node> fields, ArrayList<Node> assets, ArrayList<Node> functions, Node initcall) {
+        this.fields = fields;
+        this.assets = assets;
+        this.functions = functions;
+        this.initcall = initcall;
     }
 
     @Override
