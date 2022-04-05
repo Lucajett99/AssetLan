@@ -42,6 +42,7 @@ public class AssetLanVisitorImpl extends AssetLanBaseVisitor<Node> {
         return new FieldNode(type, id, exp);
     }
 
+    /*---------------Marco-------------*/
     @Override
     public Node visitAsset(AssetContext ctx) {
         return super.visitAsset(ctx);
@@ -77,6 +78,8 @@ public class AssetLanVisitorImpl extends AssetLanBaseVisitor<Node> {
         return super.visitAssignment(ctx);
     }
 
+    /*---------------Simone-------------*/
+
     @Override
     public Node visitMove(MoveContext ctx) {
         return super.visitMove(ctx);
@@ -111,6 +114,8 @@ public class AssetLanVisitorImpl extends AssetLanBaseVisitor<Node> {
     public Node visitInitcall(InitcallContext ctx) {
         return super.visitInitcall(ctx);
     }
+
+    /*---------------Luca-------------*/
 
     @Override
     public Node visitBaseExp(BaseExpContext ctx) {
@@ -152,10 +157,7 @@ public class AssetLanVisitorImpl extends AssetLanBaseVisitor<Node> {
         return super.visitNotExp(ctx);
     }
 
-    @Override
-    public Node visit(ParseTree tree) {
-        return super.visit(tree);
-    }
+    /*------------------------------------------------------------------------*/
 
     @Override
     public Node visitChildren(RuleNode node) {
@@ -205,10 +207,5 @@ public class AssetLanVisitorImpl extends AssetLanBaseVisitor<Node> {
     @Override
     public String toString() {
         return super.toString();
-    }
-
-    @Override
-    protected void finalize() throws Throwable {
-        super.finalize();
     }
 }
