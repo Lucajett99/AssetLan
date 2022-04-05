@@ -132,7 +132,8 @@ public class AssetLanVisitorImpl extends AssetLanBaseVisitor<Node> {
 
     @Override
     public Node visitDerExp(DerExpContext ctx) {
-        return super.visitDerExp(ctx);
+        String id = ctx.ID().toString();
+        return new DerExpNode(id);
     }
 
     @Override
@@ -155,7 +156,8 @@ public class AssetLanVisitorImpl extends AssetLanBaseVisitor<Node> {
 
     @Override
     public Node visitCallExp(CallExpContext ctx) {
-        return super.visitCallExp(ctx);
+        Node call = visit(ctx.call());
+        return new CallExpNode(call);
     }
 
     @Override
