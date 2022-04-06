@@ -5,11 +5,12 @@ import gen.AssetLanBaseVisitor;
 import gen.AssetLanParser.*;
 
 import org.antlr.v4.runtime.tree.ErrorNode;
+import org.antlr.v4.runtime.tree.ParseTree;
 import org.antlr.v4.runtime.tree.RuleNode;
 import org.antlr.v4.runtime.tree.TerminalNode;
 
 import java.util.ArrayList;
-import java.util.concurrent.atomic.AtomicReferenceArray;
+import java.util.List;
 
 public class AssetLanVisitorImpl extends AssetLanBaseVisitor<Node> {
     @Override
@@ -69,7 +70,7 @@ public class AssetLanVisitorImpl extends AssetLanBaseVisitor<Node> {
         return new FunctionNode(type, id, dec, adec, statement);
 
     }
-
+/*
     @Override
     public Node visitDec(DecContext ctx) {
         ArrayList<Node> type = new ArrayList<Node>();
@@ -86,12 +87,12 @@ public class AssetLanVisitorImpl extends AssetLanBaseVisitor<Node> {
     @Override
     public Node visitAdec(AdecContext ctx) {
        ArrayList<String> id = new ArrayList<String>();
-        for (String str : ctx.getText()) {  //TODO:  Handle ID*
-            id.add(visit(str));
+      //  for (String str : ctx.getText()) {  //TODO:  Handle ID*
+      //      id.add(visit(str));
         }
         return new AdecNode(id);
     }
-
+*/
     @Override
     public Node visitStatement(StatementContext ctx) {
         Node res;
@@ -142,36 +143,67 @@ public class AssetLanVisitorImpl extends AssetLanBaseVisitor<Node> {
 
     @Override
     public Node visitMove(MoveContext ctx) {
-        return super.visitMove(ctx);
+        System.out.println(ctx.ID().toString());
+        if(ctx.ID().size() < 1){ return null;}
+        else{
+            IdNode id1 = new IdNode(ctx.ID(0).getText());
+            IdNode id2 = new IdNode(ctx.ID(1).getText());
+            return new MoveNode(id1,id2);
+        }
     }
 
     @Override
     public Node visitPrint(PrintContext ctx) {
-        return super.visitPrint(ctx);
+        return new PrintNode(visit(ctx.exp()));
     }
 
     @Override
     public Node visitTransfer(TransferContext ctx) {
-        return super.visitTransfer(ctx);
+        return new TransferNode(new IdNode(ctx.ID().getText()));
     }
 
     @Override
     public Node visitRet(RetContext ctx) {
-        return super.visitRet(ctx);
+        if(!ctx.exp().isEmpty()){
+            return new ReturnNode(visit(ctx.exp()));
+        }else{
+            return null;
+        }
     }
 
     @Override
     public Node visitIte(IteContext ctx) {
-        return super.visitIte(ctx);
+        if(ctx.statement().size()==1){ //there's one only statement IF(cond)THEN{statement} ELSE null
+            return new IteNode(visit(ctx.exp()),visit(ctx.statement().get(0)),null);
+        }else if(ctx.statement().size()==2){ //there are two statement IF(cond)THEN{statement} ELSE {statement}
+            return new IteNode(visit(ctx.exp()),visit(ctx.statement().get(0)),visit(ctx.statement().get(1)));
+        }else{
+            return null;
+        }
     }
 
     @Override
     public Node visitCall(CallContext ctx) {
-        return super.visitCall(ctx);
+        IdNode id = new IdNode(ctx.getText());
+        ArrayList<Node> params = new ArrayList<>();
+        for(ExpContext node: ctx.exp()) {
+            params.add(visit(node));
+        }
+        ArrayList<IdNode> listId = new ArrayList<>();
+        for (TerminalNode node: ctx.ID()) {
+            listId.add(new IdNode(node.getText()));
+        }
+        return new CallNode(id,params,listId);
     }
 
     @Override
     public Node visitInitcall(InitcallContext ctx) {
+
+        IdNode id = new IdNode(ctx.getText());
+        ArrayList<Node> params = new ArrayList<>();
+        for(ExpContext node: ctx.exp()) {
+            params.add(visit(node));
+        }
         return super.visitInitcall(ctx);
     }
 

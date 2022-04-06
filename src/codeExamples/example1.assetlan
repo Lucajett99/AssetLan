@@ -1,6 +1,6 @@
-int a = true;
-asset x ;
-void f(int n)[asset u, asset v, asset w]{
-    u -o x ;
-}
-f(5)[1,2,3] ;
+ asset x;
+ void f()[]{
+	u -o y ;
+	v -o x ;
+ }
+ main()[]
