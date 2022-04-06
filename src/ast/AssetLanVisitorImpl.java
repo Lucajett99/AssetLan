@@ -9,6 +9,7 @@ import org.antlr.v4.runtime.tree.RuleNode;
 import org.antlr.v4.runtime.tree.TerminalNode;
 
 import java.util.ArrayList;
+import java.util.concurrent.atomic.AtomicReferenceArray;
 
 public class AssetLanVisitorImpl extends AssetLanBaseVisitor<Node> {
     @Override
@@ -44,37 +45,97 @@ public class AssetLanVisitorImpl extends AssetLanBaseVisitor<Node> {
     /*---------------Marco-------------*/
     @Override
     public Node visitAsset(AssetContext ctx) {
-        return super.visitAsset(ctx);
+        String id = ctx.ID().getText();
+        return new AssetNode(id);
     }
 
     @Override
     public Node visitFunction(FunctionContext ctx) {
-        return super.visitFunction(ctx);
+        Node type = visit(ctx.type());
+        String id = ctx.ID().getText();
+        Node adec = null;
+        ArrayList<Node> dec = new ArrayList<Node>();
+        ArrayList<Node> statement = new ArrayList<Node>();
+
+        for (DecContext dc : ctx.dec()) {
+            dec.add(visit(dc));
+        }
+        if(ctx.adec() != null) {
+            adec  = visit(ctx.adec());
+        }
+        for (StatementContext sc : ctx.statement()) {
+            statement.add(visit(sc));
+        }
+        return new FunctionNode(type, id, dec, adec, statement);
+
     }
 
     @Override
     public Node visitDec(DecContext ctx) {
-        return super.visitDec(ctx);
+        ArrayList<Node> type = new ArrayList<Node>();
+        ArrayList<String> id = new ArrayList<String>();
+        for (TypeContext tc : ctx.type()) {
+            type.add(visit(tc));
+        }
+        for (String str : ctx.getText()) {  //TODO:  Handle ID*
+            id.add(visit(str));
+        }
+        return new DecNode(type, id);
     }
 
     @Override
     public Node visitAdec(AdecContext ctx) {
-        return super.visitAdec(ctx);
+       ArrayList<String> id = new ArrayList<String>();
+        for (String str : ctx.getText()) {  //TODO:  Handle ID*
+            id.add(visit(str));
+        }
+        return new AdecNode(id);
     }
 
     @Override
     public Node visitStatement(StatementContext ctx) {
-        return super.visitStatement(ctx);
+        Node res;
+        if(ctx.assignment()!=null){
+            res = visit(ctx.assignment());
+        }
+        else if(ctx.move()!=null){
+            res = visit(ctx.move());
+        }
+        else if(ctx.print()!=null){
+            res = visit(ctx.print());
+        }
+        else if(ctx.transfer()!=null){
+            res = visit(ctx.transfer());
+        }
+        else if(ctx.ret()!=null){
+            res = visit(ctx.ret());
+        }
+        else if(ctx.ite()!=null){
+            res = visit(ctx.ite());
+        }
+        else if(ctx.call()!=null){
+            res = visit(ctx.call());
+        }
+        else{
+            return null;
+        }
+        return new StatementNode(res);
     }
 
     @Override
     public Node visitType(TypeContext ctx) {
-        return super.visitType(ctx);
+        if(ctx.getText().equals("int"))
+            return new IntTypeNode();
+        else if(ctx.getText().equals("bool"))
+            return new BoolTypeNode();
+        return null;
     }
 
     @Override
     public Node visitAssignment(AssignmentContext ctx) {
-        return super.visitAssignment(ctx);
+        String id = ctx.ID().getText();
+        Node exp = visit(ctx.exp());
+        return new AssignmentNode(id,exp);
     }
 
     /*---------------Simone-------------*/
