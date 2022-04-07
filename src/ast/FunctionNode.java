@@ -8,12 +8,14 @@ import java.util.ArrayList;
 public class FunctionNode implements Node {
     private Node type;
     private String id;
+    private Node decp;
     private ArrayList<Node> dec;
     private Node adec;
     private ArrayList<Node> statement;
 
-    public FunctionNode(Node type, String id, ArrayList<Node> dec, Node adec, ArrayList<Node> statement) {
+    public FunctionNode(Node type, String id,Node decp, ArrayList<Node> dec, Node adec, ArrayList<Node> statement) {
         this.type = type;
+        this.decp = (decp);
         this.id = id;
         this.dec = dec;
         this.adec = adec;
@@ -24,8 +26,8 @@ public class FunctionNode implements Node {
     public String toPrint(String indent) {
         String str="";
         str += type.toPrint(indent + " ") + id + " ";
-        if(!dec.isEmpty())
-            str += dec.get(0).toPrint(indent + " ");
+        if(!(decp ==null))
+            str += decp.toPrint(indent + " ");
         if(adec != null)
             str += adec.toPrint(indent + " ");
         if(dec.get(1) != null)

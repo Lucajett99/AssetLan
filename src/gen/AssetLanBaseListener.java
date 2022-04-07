@@ -1,4 +1,4 @@
-package gen;// Generated from C:/Users/dino9/Desktop/UNI/MAGISTRALE/COMPILATORI E INTERPRETI/Progetto/AssetLan/src\AssetLan.g4 by ANTLR 4.9.2
+package gen;// Generated from C:/Users/simon/Desktop/AssetLan/AssetLan/src\AssetLan.g4 by ANTLR 4.9.2
 
 import org.antlr.v4.runtime.ParserRuleContext;
 import org.antlr.v4.runtime.tree.ErrorNode;
@@ -58,6 +58,18 @@ public class AssetLanBaseListener implements AssetLanListener {
 	 * <p>The default implementation does nothing.</p>
 	 */
 	@Override public void exitFunction(AssetLanParser.FunctionContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void enterDecp(AssetLanParser.DecpContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void exitDecp(AssetLanParser.DecpContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *
@@ -202,6 +214,18 @@ public class AssetLanBaseListener implements AssetLanListener {
 	 * <p>The default implementation does nothing.</p>
 	 */
 	@Override public void exitInitcall(AssetLanParser.InitcallContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void enterBexp(AssetLanParser.BexpContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void exitBexp(AssetLanParser.BexpContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *

@@ -4,25 +4,18 @@ import utils.Environment;
 import utils.SemanticError;
 
 import java.util.ArrayList;
-import java.util.Iterator;
 
-public class DecNode implements Node {
-    private ArrayList<Node> type;
-    private ArrayList<IdNode> id;
+public class DecpNode implements Node{
 
-    public DecNode(ArrayList<Node> type, ArrayList<IdNode> id) {
-        if(type.size() == id.size()) {
-            this.type = type;
-            this.id = id;
-        }else{
-            this.type = null;
-            this.id = null;
-        }
+    private Node decp;
+
+    public DecpNode(Node decp) {
+        this.decp = decp;
     }
 
     @Override
     public String toPrint(String indent) {
-        return null;
+        return "\n"+indent + "print"+ decp.toPrint(indent);
     }
 
     @Override

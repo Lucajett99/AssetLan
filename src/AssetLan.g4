@@ -9,9 +9,10 @@ field       : type ID ('=' exp)? ';' ;
 
 asset       : 'asset' ID ';' ;
 
-function    : (type | 'void') ID '(' (dec)? ')' '[' (adec)? ']'
+function    : (type | 'void') ID '(' (decp)? ')' '[' (adec)? ']'
 	      '{' dec* statement* '}' ;
 
+decp        : dec;
 dec         : type ID (',' type ID)* ;
 
 adec 	    : 'asset' ID (',' 'asset' ID)*;
@@ -41,7 +42,9 @@ ite         : 'if' '(' exp ')' statement ('else' statement)?;
 
 call        : ID '(' (exp (',' exp)* )? ')' '[' (ID (',' ID)* )? ']' ;
 
-initcall    : ID '(' (exp (',' exp)* )? ')' '[' (exp (',' exp)* )? ']' ;
+initcall    : ID '(' (exp (',' exp)* )? ')' '[' (bexp (',' bexp)* )? ']' ;
+
+bexp    : exp  ;
 
 exp	    : '(' exp ')'				        #baseExp
 	    | '-' exp					        #negExp

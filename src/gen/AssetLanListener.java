@@ -1,4 +1,4 @@
-package gen;// Generated from C:/Users/dino9/Desktop/UNI/MAGISTRALE/COMPILATORI E INTERPRETI/Progetto/AssetLan/src\AssetLan.g4 by ANTLR 4.9.2
+package gen;// Generated from C:/Users/simon/Desktop/AssetLan/AssetLan/src\AssetLan.g4 by ANTLR 4.9.2
 import org.antlr.v4.runtime.tree.ParseTreeListener;
 
 /**
@@ -46,6 +46,16 @@ public interface AssetLanListener extends ParseTreeListener {
 	 * @param ctx the parse tree
 	 */
 	void exitFunction(AssetLanParser.FunctionContext ctx);
+	/**
+	 * Enter a parse tree produced by {@link AssetLanParser#decp}.
+	 * @param ctx the parse tree
+	 */
+	void enterDecp(AssetLanParser.DecpContext ctx);
+	/**
+	 * Exit a parse tree produced by {@link AssetLanParser#decp}.
+	 * @param ctx the parse tree
+	 */
+	void exitDecp(AssetLanParser.DecpContext ctx);
 	/**
 	 * Enter a parse tree produced by {@link AssetLanParser#dec}.
 	 * @param ctx the parse tree
@@ -166,6 +176,16 @@ public interface AssetLanListener extends ParseTreeListener {
 	 * @param ctx the parse tree
 	 */
 	void exitInitcall(AssetLanParser.InitcallContext ctx);
+	/**
+	 * Enter a parse tree produced by {@link AssetLanParser#bexp}.
+	 * @param ctx the parse tree
+	 */
+	void enterBexp(AssetLanParser.BexpContext ctx);
+	/**
+	 * Exit a parse tree produced by {@link AssetLanParser#bexp}.
+	 * @param ctx the parse tree
+	 */
+	void exitBexp(AssetLanParser.BexpContext ctx);
 	/**
 	 * Enter a parse tree produced by the {@code baseExp}
 	 * labeled alternative in {@link AssetLanParser#exp}.

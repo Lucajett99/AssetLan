@@ -5,28 +5,27 @@ import utils.SemanticError;
 
 import java.util.ArrayList;
 
-public class CallNode implements Node{
+public class InitCallNode implements Node{
+
     private IdNode id;
-    private ArrayList<Node> exp;
-    private ArrayList<IdNode> listId;
+    private ArrayList<Node> params;
+    private ArrayList<Node> bexp;
 
-    public CallNode(IdNode id, ArrayList<Node> exp, ArrayList<IdNode> listId) {
+    public InitCallNode(IdNode id, ArrayList<Node> params, ArrayList<Node> bexp) {
         this.id = id;
-        this.exp = exp;
-        this.listId = (listId.size()>0?listId:null);;
+        this.params = (params.size()>0?params:null);
+        this.bexp = (bexp.size()>0?bexp:null);
     }
-
 
     @Override
     public String toPrint(String indent) {
-        String str ="\n" + indent + "call :" + id.toPrint(indent);
-        for (Node expnode : this.exp) {
+        String str =  "\n"+indent+"InitCall";
+        for (Node expnode : this.params) {
             str+=expnode.toPrint(indent);
         }
-        for (Node idnode : this.listId) {
+        for (Node idnode : this.bexp) {
             str+=idnode.toPrint(indent);
-        }
-
+        };
         return str;
     }
 
@@ -45,3 +44,4 @@ public class CallNode implements Node{
         return null;
     }
 }
+

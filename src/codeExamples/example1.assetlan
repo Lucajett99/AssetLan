@@ -1,6 +1,2 @@
- asset x;
- void f()[]{
-	u -o y ;
-	v -o x ;
- }
- main()[]
+int f(int a,int b,int c,int d)[]{}
+f(a,b,c)[d,e]

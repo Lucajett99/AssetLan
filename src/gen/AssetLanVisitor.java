@@ -1,4 +1,4 @@
-package gen;// Generated from C:/Users/dino9/Desktop/UNI/MAGISTRALE/COMPILATORI E INTERPRETI/Progetto/AssetLan/src\AssetLan.g4 by ANTLR 4.9.2
+package gen;// Generated from C:/Users/simon/Desktop/AssetLan/AssetLan/src\AssetLan.g4 by ANTLR 4.9.2
 import org.antlr.v4.runtime.tree.ParseTreeVisitor;
 
 /**
@@ -33,6 +33,12 @@ public interface AssetLanVisitor<T> extends ParseTreeVisitor<T> {
 	 * @return the visitor result
 	 */
 	T visitFunction(AssetLanParser.FunctionContext ctx);
+	/**
+	 * Visit a parse tree produced by {@link AssetLanParser#decp}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitDecp(AssetLanParser.DecpContext ctx);
 	/**
 	 * Visit a parse tree produced by {@link AssetLanParser#dec}.
 	 * @param ctx the parse tree
@@ -105,6 +111,12 @@ public interface AssetLanVisitor<T> extends ParseTreeVisitor<T> {
 	 * @return the visitor result
 	 */
 	T visitInitcall(AssetLanParser.InitcallContext ctx);
+	/**
+	 * Visit a parse tree produced by {@link AssetLanParser#bexp}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitBexp(AssetLanParser.BexpContext ctx);
 	/**
 	 * Visit a parse tree produced by the {@code baseExp}
 	 * labeled alternative in {@link AssetLanParser#exp}.
