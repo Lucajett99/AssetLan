@@ -6,17 +6,17 @@ import utils.SemanticError;
 import java.util.ArrayList;
 
 public class AdecNode implements Node {
-    private ArrayList<String> id;
+    private ArrayList<IdNode> id;
 
-    public AdecNode(ArrayList<String> id) {
+    public AdecNode(ArrayList<IdNode> id) {
         this.id = id;
     }
 
     @Override
     public String toPrint(String indent) {
         String str = "";
-        for (String id : id) {
-            str += id + indent + " ";
+        for (IdNode id : id) {
+            str += id.toPrint(indent) + " ";
         }
         return  indent +"\nAdec " + str;
     }

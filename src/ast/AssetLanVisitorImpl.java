@@ -79,21 +79,21 @@ public class AssetLanVisitorImpl extends AssetLanBaseVisitor<Node> {
         for (TypeContext tc : ctx.type()) {
             type.add(visit(tc));
         }
-        for (TerminalNode inode : ctx.ID()) {  //TODO:  Handle ID*
+        for (TerminalNode inode : ctx.ID()) {
             id.add(new IdNode(inode.getText()));
         }
         return new DecNode(type, id);
     }
 
-    /*    @Override
+    @Override
     public Node visitAdec(AdecContext ctx) {
-       ArrayList<String> id = new ArrayList<String>();
-      //  for (String str : ctx.getText()) {  //TODO:  Handle ID*
-      //      id.add(visit(str));
+       ArrayList<IdNode> id = new ArrayList<IdNode>();
+        for (TerminalNode node : ctx.ID()) {
+            id.add(new IdNode(node.getText()));
         }
         return new AdecNode(id);
     }
-*/
+
     @Override
     public Node visitStatement(StatementContext ctx) {
         Node res;
