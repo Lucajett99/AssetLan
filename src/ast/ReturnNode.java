@@ -14,7 +14,7 @@ public class ReturnNode implements Node{
 
     @Override
     public String toPrint(String indent) {
-        return "\n"+indent+" Return : "+(exp==null?"null":exp.toPrint(indent));
+        return indent+" Return\n"+(exp==null?"null":exp.toPrint(indent));
     }
 
     @Override

@@ -21,5 +21,7 @@ public class Main {
 
         AssetLanVisitorImpl visitor = new AssetLanVisitorImpl();
         Node ast = visitor.visit(parser.program());
+        System.out.println("Visualizing AST...");
+        System.out.println(ast.toPrint(""));
     }
 }

@@ -15,7 +15,7 @@ public class DecpNode implements Node{
 
     @Override
     public String toPrint(String indent) {
-        return "\n"+indent + "print"+ decp.toPrint(indent);
+        return indent + "Decp\n"+ decp.toPrint(indent);
     }
 
     @Override

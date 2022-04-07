@@ -14,7 +14,7 @@ public class PrintNode implements Node{
     }
 
     public String toPrint(String indent) {
-        return "\n"+indent + "print"+ exp.toPrint(indent);
+        return indent + "print\n"+ exp.toPrint(indent);
     }
 
     public Node typeCheck() {

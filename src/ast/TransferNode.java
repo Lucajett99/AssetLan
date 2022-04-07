@@ -14,7 +14,7 @@ public class TransferNode implements Node{
 
     @Override
     public String toPrint(String indent) {
-        return "\n"+"transfer: "+id.toPrint(indent);
+        return indent + "transfer\n"+id.toPrint(indent);
     }
 
     @Override

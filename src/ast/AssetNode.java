@@ -7,15 +7,15 @@ import utils.SemanticError;
 import java.util.ArrayList;
 
 public class AssetNode implements Node {
-    private String id;
+    private IdNode id;
 
-    public AssetNode(String id) {
+    public AssetNode(IdNode id) {
         this.id = id;
     }
 
     @Override
     public String toPrint(String indent) {
-        return indent+"Asset\n" + id;
+        return indent+"Asset\n" + id.toPrint(indent + " ");
     }
 
     @Override

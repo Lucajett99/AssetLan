@@ -22,7 +22,12 @@ public class DecNode implements Node {
 
     @Override
     public String toPrint(String indent) {
-        return null;
+        String str = "";
+            for (int i = 0; i < type.size(); i++) {
+                str += type.get(i).toPrint(indent + "  ");
+                str += id.get(i).toPrint(indent + " ");
+            }
+        return indent + "Dec\n" + str;
     }
 
     @Override

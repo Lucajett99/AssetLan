@@ -30,9 +30,8 @@ public class FunctionNode implements Node {
             str += decp.toPrint(indent + " ");
         if(adec != null)
             str += adec.toPrint(indent + " ");
-        if(dec.get(1) != null)
-            for (int i = 1; i < dec.size(); i++)  //starting from 1 because I have already printed it
-                str += dec.get(i).toPrint(indent + "  ");
+        for (Node dec : dec)
+                str += dec.toPrint(indent + "  ");
         for (Node statement : statement)
             str += statement.toPrint(indent+"  ");
 

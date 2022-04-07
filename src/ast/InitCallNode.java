@@ -19,7 +19,7 @@ public class InitCallNode implements Node{
 
     @Override
     public String toPrint(String indent) {
-        String str =  "\n"+indent+"InitCall";
+        String str =  indent+"InitCall\n";
         for (Node expnode : this.params) {
             str+=expnode.toPrint(indent);
         }

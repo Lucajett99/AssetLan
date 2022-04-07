@@ -18,7 +18,7 @@ public class AdecNode implements Node {
         for (IdNode id : id) {
             str += id.toPrint(indent) + " ";
         }
-        return  indent +"\nAdec " + str;
+        return  indent +"Adec\n" + str;
     }
 
     @Override

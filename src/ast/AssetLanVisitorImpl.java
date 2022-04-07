@@ -46,7 +46,7 @@ public class AssetLanVisitorImpl extends AssetLanBaseVisitor<Node> {
     /*---------------Marco-------------*/
     @Override
     public Node visitAsset(AssetContext ctx) {
-        String id = ctx.ID().getText();
+        IdNode id = new IdNode(ctx.ID().getText());
         return new AssetNode(id);
     }
 
@@ -58,7 +58,7 @@ public class AssetLanVisitorImpl extends AssetLanBaseVisitor<Node> {
         ArrayList<Node> dec = new ArrayList<Node>();
         ArrayList<Node> statement = new ArrayList<Node>();
         Node decp = null;
-        if(!ctx.decp().isEmpty())decp= new DecpNode(visit(ctx.decp()));
+        if(!ctx.decp().isEmpty())decp = new DecpNode(visit(ctx.decp()));
         for (DecContext dc : ctx.dec()) {
             dec.add(visit(dc));
         }
@@ -97,19 +97,19 @@ public class AssetLanVisitorImpl extends AssetLanBaseVisitor<Node> {
     @Override
     public Node visitStatement(StatementContext ctx) {
         Node res;
-        if(ctx.assignment()!=null){
+        if(ctx.assignment() != null){
             res = visit(ctx.assignment());
         }
-        else if(ctx.move()!=null){
+        else if(ctx.move() != null){
             res = visit(ctx.move());
         }
-        else if(ctx.print()!=null){
+        else if(ctx.print() != null){
             res = visit(ctx.print());
         }
-        else if(ctx.transfer()!=null){
+        else if(ctx.transfer() != null){
             res = visit(ctx.transfer());
         }
-        else if(ctx.ret()!=null){
+        else if(ctx.ret() != null){
             res = visit(ctx.ret());
         }
         else if(ctx.ite()!=null){
@@ -135,7 +135,7 @@ public class AssetLanVisitorImpl extends AssetLanBaseVisitor<Node> {
 
     @Override
     public Node visitAssignment(AssignmentContext ctx) {
-        String id = ctx.ID().getText();
+        IdNode id = new IdNode(ctx.ID().getText());
         Node exp = visit(ctx.exp());
         return new AssignmentNode(id,exp);
     }

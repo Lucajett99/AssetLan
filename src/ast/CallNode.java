@@ -19,7 +19,7 @@ public class CallNode implements Node{
 
     @Override
     public String toPrint(String indent) {
-        String str ="\n" + indent + "call :" + id.toPrint(indent);
+        String str = indent + "Call\n" + id.toPrint(indent);
         for (Node expnode : this.exp) {
             str+=expnode.toPrint(indent);
         }
