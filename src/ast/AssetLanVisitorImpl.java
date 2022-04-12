@@ -36,7 +36,7 @@ public class AssetLanVisitorImpl extends AssetLanBaseVisitor<Node> {
     @Override
     public Node visitField(FieldContext ctx) {
         Node type = visit(ctx.type());
-        String id = ctx.ID().getText();
+        IdNode id = new IdNode(ctx.ID().getText());
         Node exp = null;
         if(ctx.exp() != null)
            exp  = visit(ctx.exp());
@@ -52,8 +52,10 @@ public class AssetLanVisitorImpl extends AssetLanBaseVisitor<Node> {
 
     @Override
     public Node visitFunction(FunctionContext ctx) {
-        Node type = visit(ctx.type());
-        String id = ctx.ID().getText();
+        Node type = null;
+        if (ctx.type() != null)
+             type = visit(ctx.type());
+        IdNode id = new IdNode(ctx.ID().getText());
         Node adec = null;
         ArrayList<Node> dec = new ArrayList<Node>();
         ArrayList<Node> statement = new ArrayList<Node>();
@@ -74,10 +76,10 @@ public class AssetLanVisitorImpl extends AssetLanBaseVisitor<Node> {
 
     @Override
     public Node visitDec(DecContext ctx) {
-        ArrayList<Node> type = new ArrayList<Node>();
+        ArrayList<TypeNode> type = new ArrayList<TypeNode>();
         ArrayList<IdNode> id = new ArrayList<IdNode>();
         for (TypeContext tc : ctx.type()) {
-            type.add(visit(tc));
+            type.add( (TypeNode) visit(tc));
         }
         for (TerminalNode inode : ctx.ID()) {
             id.add(new IdNode(inode.getText()));
@@ -126,11 +128,7 @@ public class AssetLanVisitorImpl extends AssetLanBaseVisitor<Node> {
 
     @Override
     public Node visitType(TypeContext ctx) {
-        if(ctx.getText().equals("int"))
-            return new IntTypeNode();
-        else if(ctx.getText().equals("bool"))
-            return new BoolTypeNode();
-        return null;
+        return new TypeNode(ctx.getText());
     }
 
     @Override

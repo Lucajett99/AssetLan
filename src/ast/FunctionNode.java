@@ -6,15 +6,19 @@ import utils.SemanticError;
 import java.util.ArrayList;
 
 public class FunctionNode implements Node {
-    private Node type;
-    private String id;
+    private TypeNode type;
+    private IdNode id;
     private Node decp;
     private ArrayList<Node> dec;
     private Node adec;
     private ArrayList<Node> statement;
 
-    public FunctionNode(Node type, String id,Node decp, ArrayList<Node> dec, Node adec, ArrayList<Node> statement) {
-        this.type = type;
+    public FunctionNode(Node type, IdNode id, Node decp, ArrayList<Node> dec, Node adec, ArrayList<Node> statement) {
+        if (type != null) {
+            this.type = (TypeNode) type;
+        }
+        else
+            this.type = new TypeNode("void");
         this.decp = (decp);
         this.id = id;
         this.dec = dec;
@@ -25,7 +29,7 @@ public class FunctionNode implements Node {
     @Override
     public String toPrint(String indent) {
         String str="";
-        str += type.toPrint(indent + " ") + id + " ";
+        str += type.toPrint(indent + " ") + id.toPrint(indent + " ");
         if(!(decp ==null))
             str += decp.toPrint(indent + " ");
         if(adec != null)

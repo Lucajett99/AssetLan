@@ -5,13 +5,13 @@ import utils.SemanticError;
 import java.util.ArrayList;
 
 public class FieldNode implements Node {
-    private Node type;
-    private String id;
+    private TypeNode type;
+    private IdNode id;
     private Node exp;
 
-    public FieldNode(Node type, String id, Node exp) {
-        this.type = type;
-        this.id = id;
+    public FieldNode(Node type, IdNode id, Node exp) {
+        this.type = (TypeNode) type;
+        this.id =  id;
         this.exp = exp;
     }
 

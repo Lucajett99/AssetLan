@@ -1,21 +1,23 @@
 package ast;
 
-
 import utils.Environment;
 import utils.SemanticError;
 
 import java.util.ArrayList;
 
-public class BoolTypeNode implements Node {
+public class TypeNode implements Node{
+    private String type;
 
-    public BoolTypeNode () {
+    public TypeNode(String type) {
+        this.type = type;
     }
 
-    public String toPrint(String s) {
-        return s+"BoolType\n";
+    @Override
+    public String toPrint(String indent) {
+       return indent + this.type + " ";
     }
 
-    //non utilizzato
+    @Override
     public Node typeCheck() {
         return null;
     }
