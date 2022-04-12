@@ -41,6 +41,7 @@ public class InitCallNode implements Node{
 
     @Override
     public ArrayList<SemanticError> checkSemantics(Environment e) {
+        e = Environment.newScope(e);
         return null;
     }
 }

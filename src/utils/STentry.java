@@ -1,20 +1,33 @@
 package utils;
 
 import ast.Node;
+import ast.TypeNode;
 
 public class STentry {
     private String key;
     private int nestingLevel;
-    private Node type;
+    private TypeNode type;
+    private int nArguments;
 
+    public String getKey() {
+        return key;
+    }
 
-    public STentry(String key, int nestingLevel, Node type ) {
+    public int getNestingLevel() {
+        return nestingLevel;
+    }
+
+    public Node getType() {
+        return type;
+    }
+
+    public STentry(String key, int nestingLevel, TypeNode type) {
         this.key = key;
         this.nestingLevel = nestingLevel;
         this.type = type;
     }
 
-    public void addType(Node node){
+    public void addType(TypeNode node){
         this.type = node;
     }
 }

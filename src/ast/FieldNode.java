@@ -1,7 +1,10 @@
 package ast;
 
+import utils.EnvError;
 import utils.Environment;
 import utils.SemanticError;
+
+import java.lang.reflect.Array;
 import java.util.ArrayList;
 
 public class FieldNode implements Node {
@@ -36,6 +39,18 @@ public class FieldNode implements Node {
 
     @Override
     public ArrayList<SemanticError> checkSemantics(Environment e) {
-        return null;
+        ArrayList<SemanticError> res = new ArrayList<SemanticError>();
+
+        if(e.isMultipleDeclared(id.getId())!= EnvError.MULT_DECL){
+            e = Environment.addDeclaration(e,id.getId(),type);
+        }else{
+            res.add(new SemanticError(id+"already declared"));
+        }
+
+        if(exp != null){
+            res.addAll(this.exp.checkSemantics(e));
+        }
+
+        return res;
     }
 }

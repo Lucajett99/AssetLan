@@ -12,6 +12,14 @@ public class AdecNode implements Node {
         this.id = id;
     }
 
+    public ArrayList<IdNode> getId() {
+        return id;
+    }
+
+    public void setId(ArrayList<IdNode> id) {
+        this.id = id;
+    }
+
     @Override
     public String toPrint(String indent) {
         String str = "";

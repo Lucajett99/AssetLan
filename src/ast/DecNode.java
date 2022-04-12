@@ -4,7 +4,6 @@ import utils.Environment;
 import utils.SemanticError;
 
 import java.util.ArrayList;
-import java.util.Iterator;
 
 public class DecNode implements Node {
     private ArrayList<TypeNode> type;
@@ -18,6 +17,22 @@ public class DecNode implements Node {
             this.type = null;
             this.id = null;
         }
+    }
+
+    public void setType(ArrayList<TypeNode> type) {
+        this.type = type;
+    }
+
+    public void setId(ArrayList<IdNode> id) {
+        this.id = id;
+    }
+
+    public ArrayList<TypeNode> getListType() {
+        return type;
+    }
+
+    public ArrayList<IdNode> getListId() {
+        return id;
     }
 
     @Override

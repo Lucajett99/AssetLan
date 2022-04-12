@@ -1,6 +1,7 @@
 package ast;
 
 import ast.Node;
+import utils.EnvError;
 import utils.Environment;
 import utils.SemanticError;
 
@@ -30,6 +31,11 @@ public class AssetNode implements Node {
 
     @Override
     public ArrayList<SemanticError> checkSemantics(Environment e) {
-        return null;
+        ArrayList<SemanticError> res = new ArrayList<SemanticError>();
+        if(e.isMultipleDeclared(id.getId()) == EnvError.NONE)
+            Environment.addDeclaration(e,id.getId(),new TypeNode("asset"));
+        else
+            res.add(new SemanticError(id.getId()+"already declared [assetNode]"));
+        return res;
     }
 }

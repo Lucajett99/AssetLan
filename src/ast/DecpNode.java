@@ -7,9 +7,17 @@ import java.util.ArrayList;
 
 public class DecpNode implements Node{
 
-    private Node decp;
+    private DecNode decp;
 
-    public DecpNode(Node decp) {
+    public DecNode getDecp() {
+        return decp;
+    }
+
+    public void setDecp(DecNode decp) {
+        this.decp = decp;
+    }
+
+    public DecpNode(DecNode decp) {
         this.decp = decp;
     }
 

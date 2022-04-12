@@ -5,12 +5,10 @@ import gen.AssetLanBaseVisitor;
 import gen.AssetLanParser.*;
 
 import org.antlr.v4.runtime.tree.ErrorNode;
-import org.antlr.v4.runtime.tree.ParseTree;
 import org.antlr.v4.runtime.tree.RuleNode;
 import org.antlr.v4.runtime.tree.TerminalNode;
 
 import java.util.ArrayList;
-import java.util.List;
 
 public class AssetLanVisitorImpl extends AssetLanBaseVisitor<Node> {
     @Override
@@ -56,21 +54,26 @@ public class AssetLanVisitorImpl extends AssetLanBaseVisitor<Node> {
         if (ctx.type() != null)
              type = visit(ctx.type());
         IdNode id = new IdNode(ctx.ID().getText());
-        Node adec = null;
-        ArrayList<Node> dec = new ArrayList<Node>();
+        AdecNode adec = null;
+        ArrayList<DecNode> dec = new ArrayList<DecNode>();
+        ArrayList<IdNode> idp = new ArrayList<IdNode>();
+        ArrayList<TypeNode> typep = new ArrayList<TypeNode>();
         ArrayList<Node> statement = new ArrayList<Node>();
-        Node decp = null;
-        if(!ctx.decp().isEmpty())decp = new DecpNode(visit(ctx.decp()));
+        DecpNode decp = null;
+        if(!ctx.decp().isEmpty())decp = new DecpNode((DecNode) visit(ctx.decp()));
+        int i = 0;
         for (DecContext dc : ctx.dec()) {
-            dec.add(visit(dc));
+            idp.add((IdNode) visit(dc.ID(i)));
+            typep.add((TypeNode) visit(dc.type(i)));
+            i++;
         }
         if(ctx.adec() != null) {
-            adec  = visit(ctx.adec());
+            adec  = (AdecNode) visit(ctx.adec());
         }
         for (StatementContext sc : ctx.statement()) {
             statement.add(visit(sc));
         }
-        return new FunctionNode(type, id, decp,dec, adec, statement);
+        return new FunctionNode(type, id, decp,new DecNode(typep, idp), adec, statement);
 
     }
 
