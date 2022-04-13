@@ -42,7 +42,7 @@ public class DecNode implements Node {
                 str += type.get(i).toPrint(indent + "  ");
                 str += id.get(i).toPrint(indent + " ");
             }
-        return indent + "Dec " + str + "\n";
+        return indent + "Dec\n" + str + "\n";
     }
 
     @Override

@@ -1,3 +1,4 @@
-int a = 5;
-int f(int a,int b,int c,int d)[]{}
+int a;
+int a = 3;
+int f(int a,int a,int c,int d)[]{int c, int d, int b}
 f(a,b,c)[d,e]

@@ -69,7 +69,7 @@ public class Environment {
     public static Environment addDeclaration(Environment env, String key, TypeNode type){
         STentry entry = new STentry(key,env.getNestingLevel(),type);
         HashMap<String,STentry> recentST = env.getHead();
-        if(env.isMultipleDeclared(key)==EnvError.ALREADY_DECLARED){ return null;}    //MULTIPLE_DECLARATION
+        if(env.isMultipleDeclared(key) == EnvError.ALREADY_DECLARED){ return null;}    //MULTIPLE_DECLARATION
         else {
             recentST.put(key, entry);
             env.symTable.remove(env.nestingLevel);

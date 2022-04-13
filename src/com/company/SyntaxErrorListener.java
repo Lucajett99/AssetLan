@@ -23,7 +23,7 @@ public class SyntaxErrorListener extends BaseErrorListener {
         super.syntaxError(recognizer, offendingSymbol, line, charPositionInLine, msg, e);
         this.SyntaxErrors.add(new SyntaxError(recognizer, offendingSymbol, line, charPositionInLine, msg, e));
         try {
-            PrintWriter out = new PrintWriter("LexicalErrors.txt");
+            PrintWriter out = new PrintWriter("Errors.txt");
             Iterator errors = this.getSyntaxErrors().iterator();
             String lexicalErrors = "--------LEXICAL ERRORS----------\n";
             String syntaxErrors = "--------SYNTAX ERRORS----------\n";

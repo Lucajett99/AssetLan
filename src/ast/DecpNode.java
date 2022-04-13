@@ -6,7 +6,6 @@ import utils.SemanticError;
 import java.util.ArrayList;
 
 public class DecpNode implements Node{
-
     private DecNode decp;
 
     public DecNode getDecp() {

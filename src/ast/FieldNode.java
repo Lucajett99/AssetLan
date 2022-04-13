@@ -22,8 +22,8 @@ public class FieldNode implements Node {
     public String toPrint(String indent) {
         String str="";
         str += type.toPrint(indent+"  ");
-        str += id;
-        str += exp.toPrint(indent+"  ");
+        str += id.toPrint(indent+"  ");;
+        str += exp != null ? exp.toPrint(indent+"  ") : "";
         return indent+"Field\n" + str;
     }
 
@@ -44,7 +44,7 @@ public class FieldNode implements Node {
         if(e.isMultipleDeclared(id.getId())!= EnvError.ALREADY_DECLARED){
             e = Environment.addDeclaration(e,id.getId(),type);
         }else{
-            res.add(new SemanticError(id+": already declared [field]"));
+            res.add(new SemanticError(id.getId()+": already declared [field]"));
         }
 
         if(exp != null){

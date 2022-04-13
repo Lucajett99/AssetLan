@@ -22,7 +22,7 @@ public class InitCallNode implements Node{
     public String toPrint(String indent) {
         String str =  indent+"InitCall\n";
         for (Node expnode : this.params) {
-            str+=expnode.toPrint(indent);
+            str+= expnode.toPrint(indent);
         }
         for (Node idnode : this.bexp) {
             str+=idnode.toPrint(indent);

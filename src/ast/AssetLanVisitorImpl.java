@@ -50,31 +50,31 @@ public class AssetLanVisitorImpl extends AssetLanBaseVisitor<Node> {
 
     @Override
     public Node visitFunction(FunctionContext ctx) {
-        Node type = null;
-        if (ctx.type() != null)
-             type = visit(ctx.type());
-        IdNode id = new IdNode(ctx.ID().getText());
-        AdecNode adec = null;
-        ArrayList<DecNode> dec = new ArrayList<DecNode>();
-        ArrayList<IdNode> idp = new ArrayList<IdNode>();
-        ArrayList<TypeNode> typep = new ArrayList<TypeNode>();
-        ArrayList<Node> statement = new ArrayList<Node>();
+        TypeNode type = ctx.type() != null ? (TypeNode) (visit(ctx.type())) : new TypeNode("void");
+        IdNode id = new IdNode(ctx.ID().toString());
+        ArrayList<TypeNode> decpType = new ArrayList<TypeNode>();
+        ArrayList<IdNode> decpId = new ArrayList<IdNode>();
         DecpNode decp = null;
-        if(!ctx.decp().isEmpty())decp = new DecpNode((DecNode) visit(ctx.decp()));
-        int i = 0;
-        for (DecContext dc : ctx.dec()) {
-            idp.add((IdNode) visit(dc.ID(i)));
-            typep.add((TypeNode) visit(dc.type(i)));
-            i++;
-        }
-        if(ctx.adec() != null) {
-            adec  = (AdecNode) visit(ctx.adec());
-        }
-        for (StatementContext sc : ctx.statement()) {
-            statement.add(visit(sc));
-        }
-        return new FunctionNode(type, id, decp,new DecNode(typep, idp), adec, statement);
 
+        if(ctx.decp() != null) {
+            DecNode decNode = (DecNode) visit(ctx.decp());
+            decp = new DecpNode(decNode);
+        }
+
+        AdecNode adec = ctx.adec() != null ? (AdecNode) visit(ctx.adec()) : null;
+
+        ArrayList<DecNode> dec = new ArrayList<DecNode>();
+        for(int i = 0; i < ctx.dec().size(); i++) {
+            DecNode dec_i = (DecNode) visit(ctx.dec(i)); //ith declaration
+            dec.add(dec_i);
+        }
+
+        ArrayList<StatementNode> statement = new ArrayList<StatementNode>();
+        for(StatementContext st: ctx.statement()) {
+            statement.add((StatementNode) visit(st));
+        }
+
+        return new FunctionNode(type, id, decp, dec, adec, statement);
     }
 
     @Override
