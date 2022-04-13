@@ -1,8 +1,10 @@
 package ast;
 
+import utils.EnvError;
 import utils.Environment;
 import utils.SemanticError;
 
+import java.lang.reflect.Array;
 import java.util.ArrayList;
 
 public class TransferNode implements Node{
@@ -29,6 +31,10 @@ public class TransferNode implements Node{
 
     @Override
     public ArrayList<SemanticError> checkSemantics(Environment e) {
-        return null;
+        ArrayList<SemanticError> res = new ArrayList<SemanticError>();
+        if(e.isDeclared(id.getId())== EnvError.NO_DECLARE){
+                res.add(new SemanticError((id.getId())+": is not declared"));
+        }
+        return res;
     }
 }

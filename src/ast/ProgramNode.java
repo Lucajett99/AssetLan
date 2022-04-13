@@ -41,6 +41,26 @@ public class ProgramNode implements Node {
     }
 
     @Override
-    public ArrayList<SemanticError> checkSemantics(Environment e) { return null; }
+    public ArrayList<SemanticError> checkSemantics(Environment e) {
+        ArrayList<SemanticError> res = new ArrayList<SemanticError>();
+        e = Environment.newScope(e);
+        if(fields!= null){
+            for (Node node: fields) {
+                res.addAll(node.checkSemantics(e));
+            }
+        }
+        if(assets!= null){
+            for (Node node: assets) {
+                res.addAll(node.checkSemantics(e));
+            }
+        }
+        if(functions!= null){
+            for (Node node: functions) {
+                res.addAll(node.checkSemantics(e));
+            }
+        }
+        res.addAll(initcall.checkSemantics(e));
+        return res;
+    }
 }
 

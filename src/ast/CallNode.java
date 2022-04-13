@@ -1,5 +1,6 @@
 package ast;
 
+import utils.EnvError;
 import utils.Environment;
 import utils.SemanticError;
 
@@ -42,6 +43,20 @@ public class CallNode implements Node{
 
     @Override
     public ArrayList<SemanticError> checkSemantics(Environment e) {
-        return null;
+        ArrayList<SemanticError> res = new ArrayList<SemanticError>();
+
+        if(e.isDeclared(id.getId())== EnvError.NO_DECLARE){
+            res.add(new SemanticError(id.getId()+": function is not declared"));
+        }
+        for(IdNode id : listId){
+            if(e.isDeclared(id.getId())==EnvError.NO_DECLARE)
+                res.add(new SemanticError(id+" : assetID no declared [Call]"));
+        }
+
+        for (Node exp:exp) {
+            res.addAll(exp.checkSemantics(e));
+        }
+
+        return res;
     }
 }

@@ -4,6 +4,7 @@ import ast.ExpNodes.BaseExpNode;
 import utils.Environment;
 import utils.SemanticError;
 
+import java.sql.Array;
 import java.util.ArrayList;
 
 public class IteNode implements Node{
@@ -36,6 +37,10 @@ public class IteNode implements Node{
 
     @Override
     public ArrayList<SemanticError> checkSemantics(Environment e) {
-        return null;
+        ArrayList<SemanticError> res = new ArrayList<SemanticError>();
+        res.addAll(exp.checkSemantics(e));
+        res.addAll(thenStatement.checkSemantics(e));
+        if(elseStatement!= null){ res.addAll(elseStatement.checkSemantics(e));}
+        return res;
     }
 }

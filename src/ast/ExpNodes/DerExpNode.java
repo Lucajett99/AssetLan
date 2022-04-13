@@ -1,6 +1,7 @@
 package ast.ExpNodes;
 
 import ast.Node;
+import utils.EnvError;
 import utils.Environment;
 import utils.SemanticError;
 
@@ -30,6 +31,10 @@ public class DerExpNode implements Node {
 
     @Override
     public ArrayList<SemanticError> checkSemantics(Environment e) {
-        return null;
+        ArrayList<SemanticError> res = new ArrayList<SemanticError>();
+        if(e.isDeclared(id)== EnvError.NO_DECLARE){
+            res.add(new SemanticError(id+": variable is not declared [DerExp]"));
+        }
+        return res;
     }
 }

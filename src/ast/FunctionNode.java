@@ -81,23 +81,27 @@ public class FunctionNode implements Node {
                 }
 
                 /*Aggiungo parametri formali Asset*/
-                ArrayList<IdNode> assetid= this.adec.getId();
-                for (IdNode idAss:assetid) {
-                    if(env.isMultipleDeclared(idAss.getId())==EnvError.ALREADY_DECLARED){
-                        res.add(new SemanticError(idAss.getId()+": already declared"));
+                if(adec != null) {
+                    ArrayList<IdNode> assetid = adec.getId();
+
+                    for (IdNode idAss : assetid) {
+                        if (env.isMultipleDeclared(idAss.getId()) == EnvError.ALREADY_DECLARED) {
+                            res.add(new SemanticError(idAss.getId() + ": already declared"));
+                        }
+                        env = Environment.addDeclaration(env, idAss.getId(), new TypeNode("asset"));
                     }
-                    env = Environment.addDeclaration(env, idAss.getId(), new TypeNode("asset"));
                 }
 
-
                 /*Aggiungo dichiarazioni in Dec*/
-                for(int i = 0; i< dec.getListId().size(); i++){
-                    if(env.isMultipleDeclared(dec.getListId().get(i).getId())== EnvError.ALREADY_DECLARED)//verifica se l'identificatore id.get(i) é gia presente
-                        //in caso é presente un errore dichiarazione multipla
-                        res.add(new SemanticError(id.get(i).getId()+" already declared"));
+                if(dec != null) {
+                    for (int i = 0; i < dec.getListId().size(); i++) {
+                        if (env.isMultipleDeclared(dec.getListId().get(i).getId()) == EnvError.ALREADY_DECLARED)//verifica se l'identificatore id.get(i) é gia presente
+                            //in caso é presente un errore dichiarazione multipla
+                            res.add(new SemanticError(id.get(i).getId() + " already declared"));
 
-                    else
-                        env = Environment.addDeclaration(env,id.get(i).getId(),type.get(i));
+                        else
+                            env = Environment.addDeclaration(env, id.get(i).getId(), type.get(i));
+                    }
                 }
                 if(statement != null){
                     for (Node st: statement ) {

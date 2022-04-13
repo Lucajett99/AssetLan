@@ -1,5 +1,6 @@
 package ast;
 
+import utils.EnvError;
 import utils.Environment;
 import utils.SemanticError;
 
@@ -33,6 +34,13 @@ public class MoveNode implements Node{
 
     @Override
     public ArrayList<SemanticError> checkSemantics(Environment e) {
-        return null;
+        ArrayList<SemanticError> res = new ArrayList<SemanticError>();
+        if(e.isDeclared(id1.getId())== EnvError.NO_DECLARE){
+            res.add(new SemanticError((id1.getId())+": is not declared"));
+        }
+        if(e.isDeclared(id2.getId())== EnvError.NO_DECLARE){
+            res.add(new SemanticError((id2.getId())+": is not declared"));
+        }
+        return res;
     }
 }

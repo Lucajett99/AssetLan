@@ -1,5 +1,6 @@
 package ast;
 
+import utils.EnvError;
 import utils.Environment;
 import utils.SemanticError;
 
@@ -41,8 +42,18 @@ public class InitCallNode implements Node{
 
     @Override
     public ArrayList<SemanticError> checkSemantics(Environment e) {
-        e = Environment.newScope(e);
-        return null;
+        ArrayList<SemanticError> res = new ArrayList<SemanticError>();
+        if(e.isDeclared(id.getId())== EnvError.NO_DECLARE){
+            res.add(new SemanticError(id.getId()+": init func is not declared"));
+        }
+        for (Node node:bexp) {
+            res.addAll(node.checkSemantics(e));
+        }
+
+        for (Node node:params) {
+            res.addAll(node.checkSemantics(e));
+        }
+        return res;
     }
 }
 

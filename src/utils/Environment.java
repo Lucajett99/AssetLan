@@ -47,7 +47,7 @@ public class Environment {
 * check only to head env contains the symbol */
     public EnvError isMultipleDeclared(String key){
         if(getHead().get(key) == null){
-            return EnvError.NONE;
+            return EnvError.NO_DECLARE;
         }else{
             return EnvError.ALREADY_DECLARED;
         }
@@ -58,7 +58,7 @@ public class Environment {
         if (lookup(this,key) == null){
             return EnvError.NO_DECLARE;
         }else{
-            return EnvError.NONE;
+            return EnvError.DECLARED;
         }
     }
     /*Add a Symbol in a ST
