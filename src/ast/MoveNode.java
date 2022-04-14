@@ -36,10 +36,10 @@ public class MoveNode implements Node{
     public ArrayList<SemanticError> checkSemantics(Environment e) {
         ArrayList<SemanticError> res = new ArrayList<SemanticError>();
         if(e.isDeclared(id1.getId())== EnvError.NO_DECLARE){
-            res.add(new SemanticError((id1.getId())+": is not declared"));
+            res.add(new SemanticError((id1.getId())+": is not declared [Move]"));
         }
         if(e.isDeclared(id2.getId())== EnvError.NO_DECLARE){
-            res.add(new SemanticError((id2.getId())+": is not declared"));
+            res.add(new SemanticError((id2.getId())+": is not declared [Move]"));
         }
         return res;
     }

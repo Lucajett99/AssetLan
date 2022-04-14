@@ -50,64 +50,43 @@ public class FunctionNode implements Node {
     }
 
     @Override
-    public ArrayList<SemanticError> checkSemantics(Environment e) {
+    public ArrayList<SemanticError> checkSemantics(Environment env) {
         ArrayList<SemanticError> res = new ArrayList<SemanticError>();
-        if(e.isInsideFunct()){
-           res.add(new SemanticError("isn't possibile declared a function"));
+        if(env.isInsideFunct()){
+           res.add(new SemanticError("isn't possibile declared a function [function]"));
            return res;
         }else{
-            Environment env = Environment.addDeclaration(e, id.getId(), type);
-            if(env == null){ //if function is already declared
-                res.add(new SemanticError(this.id.getId()+": function already declared"));
+            Environment e = Environment.addDeclaration(env, id.getId(), type);
+            if(e == null){ //if function is already declared
+                res.add(new SemanticError(this.id.getId()+": function already declared [function]"));
                 return res;
             }else{
                 env = Environment.newScope(env);
                 env.setInsideFunct(true);
 
                 /*Aggiungo parametri formali contenuti in Decp*/
-                ArrayList<IdNode> id = this.decp.getDecp().getListId();
-                ArrayList<TypeNode> type = this.decp.getDecp().getListType();
-                for(int i = 0; i< id.size();i++){
-                    if(env.isMultipleDeclared(id.get(i).getId()) == EnvError.ALREADY_DECLARED)//verifica se l'identificatore id.get(i) é gia presente
-                        //in caso é presente un errore dichiarazione multipla
-                        res.add(new SemanticError(id.get(i).getId()+" already declared [params]"));
-
-                    else
-                        env = Environment.addDeclaration(env,id.get(i).getId(),type.get(i));
+                if(decp!= null){
+                    res.addAll(decp.checkSemantics(env));
                 }
 
                 /*Aggiungo parametri formali Asset*/
                 if(adec != null) {
-                    ArrayList<IdNode> assetid = adec.getId();
-
-                    for (IdNode idAss : assetid) {
-                        if (env.isMultipleDeclared(idAss.getId()) == EnvError.ALREADY_DECLARED) {
-                            res.add(new SemanticError(idAss.getId() + ": already declared [asset]"));
-                        }
-                        env = Environment.addDeclaration(env, idAss.getId(), new TypeNode("asset"));
-                    }
+                    res.addAll(adec.checkSemantics(env));
                 }
 
                 /*Aggiungo dichiarazioni in Dec*/
                 if(dec != null) {
-                    for (int i = 0; i < dec.size(); i++) {
-                        for (int j = 0; j < dec.get(i).getListId().size(); j++) {
-                            String id_tmp = dec.get(i).getListId().get(j).getId();
-                            if (env.isMultipleDeclared(id_tmp) == EnvError.ALREADY_DECLARED)//verifica se l'identificatore id.get(i) é gia presente
-                                //in caso é presente un errore dichiarazione multipla
-                                res.add(new SemanticError(id_tmp + " already declared [declaration]"));
-
-                            else
-                                env = Environment.addDeclaration(env, id_tmp, type.get(i));
-
-                        }
+                    for (DecNode decNode : dec) {
+                        res.addAll(decNode.checkSemantics(env));
                     }
                 }
+
                 if(statement != null){
                     for (Node st: statement ) {
-                        st.checkSemantics(env);
+                        res.addAll(st.checkSemantics(env));
                     }
                 }
+
                 Environment.exitScope(env);
                 env.setInsideFunct(false);
                 return res;

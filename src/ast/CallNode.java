@@ -21,13 +21,16 @@ public class CallNode implements Node{
     @Override
     public String toPrint(String indent) {
         String str = indent + "Call\n" + id.toPrint(indent);
-        for (Node expnode : this.exp) {
-            str+=expnode.toPrint(indent);
+        if(exp != null){
+            for (Node expnode : this.exp) {
+                str+=expnode.toPrint(indent);
+            }
         }
-        for (Node idnode : this.listId) {
-            str+=idnode.toPrint(indent);
+        if(listId!= null) {
+            for (Node idnode : this.listId) {
+                str += idnode.toPrint(indent);
+            }
         }
-
         return str;
     }
 
@@ -46,15 +49,18 @@ public class CallNode implements Node{
         ArrayList<SemanticError> res = new ArrayList<SemanticError>();
 
         if(e.isDeclared(id.getId())== EnvError.NO_DECLARE){
-            res.add(new SemanticError(id.getId()+": function is not declared"));
+            res.add(new SemanticError(id.getId()+": function is not declared [Call]"));
         }
-        for(IdNode id : listId){
-            if(e.isDeclared(id.getId())==EnvError.NO_DECLARE)
-                res.add(new SemanticError(id+" : assetID no declared [Call]"));
+        if(listId!= null) {
+            for (IdNode id : listId) {
+                if (e.isDeclared(id.getId()) == EnvError.NO_DECLARE)
+                    res.add(new SemanticError(id.getId() + " : assetID no declared [Call]"));
+            }
         }
-
-        for (Node exp:exp) {
-            res.addAll(exp.checkSemantics(e));
+        if(exp != null){
+            for (Node exp:exp) {
+                res.addAll(exp.checkSemantics(e));
+            }
         }
 
         return res;

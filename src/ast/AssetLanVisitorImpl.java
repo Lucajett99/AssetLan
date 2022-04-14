@@ -9,6 +9,7 @@ import org.antlr.v4.runtime.tree.RuleNode;
 import org.antlr.v4.runtime.tree.TerminalNode;
 
 import java.util.ArrayList;
+import java.util.List;
 
 public class AssetLanVisitorImpl extends AssetLanBaseVisitor<Node> {
     @Override
@@ -185,13 +186,15 @@ public class AssetLanVisitorImpl extends AssetLanBaseVisitor<Node> {
 
     @Override
     public Node visitCall(CallContext ctx) {
-        IdNode id = new IdNode(ctx.getText());
+        IdNode id = new IdNode(ctx.ID().get(0).getText());
         ArrayList<Node> params = new ArrayList<>();
         for(ExpContext node: ctx.exp()) {
             params.add(visit(node));
         }
         ArrayList<IdNode> listId = new ArrayList<>();
-        for (TerminalNode node: ctx.ID()) {
+        List<TerminalNode> tn = ctx.ID();
+        tn.remove(0);
+        for (TerminalNode node:tn) {
             listId.add(new IdNode(node.getText()));
         }
         return new CallNode(id,params,listId);

@@ -1,5 +1,6 @@
 package ast;
 
+import utils.EnvError;
 import utils.Environment;
 import utils.SemanticError;
 
@@ -37,6 +38,6 @@ public class DecpNode implements Node{
 
     @Override
     public ArrayList<SemanticError> checkSemantics(Environment e) {
-        return null;
+        return decp.checkSemantics(e);
     }
 }

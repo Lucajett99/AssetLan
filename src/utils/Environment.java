@@ -96,7 +96,7 @@ public class Environment {
         env.nestingLevel++;
         HashMap<String, STentry> newHM = new HashMap<String, STentry>();
         if(env.getSymTable().add(newHM)) return env;
-        else return null;
+        else return env;
     }
 
     /*Close the last environment, remove the last ST*/

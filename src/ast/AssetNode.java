@@ -35,7 +35,7 @@ public class AssetNode implements Node {
         if(e.isMultipleDeclared(id.getId()) == EnvError.NO_DECLARE)
             Environment.addDeclaration(e,id.getId(),new TypeNode("asset"));
         else
-            res.add(new SemanticError(id.getId()+"already declared [assetNode]"));
+            res.add(new SemanticError(id.getId()+" already declared [assetNode]"));
         return res;
     }
 }

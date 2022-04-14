@@ -33,7 +33,7 @@ public class TransferNode implements Node{
     public ArrayList<SemanticError> checkSemantics(Environment e) {
         ArrayList<SemanticError> res = new ArrayList<SemanticError>();
         if(e.isDeclared(id.getId())== EnvError.NO_DECLARE){
-                res.add(new SemanticError((id.getId())+": is not declared"));
+                res.add(new SemanticError((id.getId())+": is not declared [transfer]"));
         }
         return res;
     }

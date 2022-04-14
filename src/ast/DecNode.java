@@ -1,5 +1,6 @@
 package ast;
 
+import utils.EnvError;
 import utils.Environment;
 import utils.SemanticError;
 
@@ -57,6 +58,15 @@ public class DecNode implements Node {
 
     @Override
     public ArrayList<SemanticError> checkSemantics(Environment e) {
-        return null;
+        ArrayList<SemanticError> res = new ArrayList<SemanticError>();
+        for (int j = 0; j < id.size(); j++) {
+            String id_tmp = id.get(j).getId();
+            if (e.isMultipleDeclared(id_tmp) == EnvError.ALREADY_DECLARED)//verifica se l'identificatore id.get(i) é gia presente
+                //in caso é presente un errore dichiarazione multipla
+                res.add(new SemanticError(id_tmp + " already declared [DecNode]"));
+            else
+                e = Environment.addDeclaration(e, id_tmp, type.get(j));
+        }
+        return res;
     }
 }

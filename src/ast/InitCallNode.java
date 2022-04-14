@@ -21,12 +21,17 @@ public class InitCallNode implements Node{
     @Override
     public String toPrint(String indent) {
         String str =  indent+"InitCall\n";
-        for (Node expnode : this.params) {
-            str+= expnode.toPrint(indent);
+        if(params!= null) {
+            for (Node expnode : this.params) {
+                str += expnode.toPrint(indent);
+            }
         }
-        for (Node idnode : this.bexp) {
-            str+=idnode.toPrint(indent);
-        };
+        if(bexp!= null) {
+            for (Node idnode : this.bexp) {
+                str += idnode.toPrint(indent);
+            }
+            ;
+        }
         return str;
     }
 
@@ -46,12 +51,16 @@ public class InitCallNode implements Node{
         if(e.isDeclared(id.getId())== EnvError.NO_DECLARE){
             res.add(new SemanticError(id.getId()+": init func is not declared"));
         }
-        for (Node node:bexp) {
-            res.addAll(node.checkSemantics(e));
+        if(bexp!= null){
+            for (Node node:bexp) {
+                res.addAll(node.checkSemantics(e));
+            }
         }
 
-        for (Node node:params) {
-            res.addAll(node.checkSemantics(e));
+        if(params!= null) {
+            for (Node node : params) {
+                res.addAll(node.checkSemantics(e));
+            }
         }
         return res;
     }
