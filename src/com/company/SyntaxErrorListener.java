@@ -14,7 +14,7 @@ public class SyntaxErrorListener extends BaseErrorListener {
 
     public SyntaxErrorListener() {}
 
-    private List<SyntaxError> getSyntaxErrors() {
+    public List<SyntaxError> getSyntaxErrors() {
         return this.SyntaxErrors;
     }
 

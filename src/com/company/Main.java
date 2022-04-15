@@ -25,14 +25,17 @@ public class Main {
 
         AssetLanVisitorImpl visitor = new AssetLanVisitorImpl();
         Node ast = visitor.visit(parser.program());
-        System.out.println("Visualizing AST...");
-        System.out.println(ast.toPrint(""));
+        if(errorListener.getSyntaxErrors().size() == 0 ){
 
-        Environment env = new Environment();
-        ArrayList<SemanticError> err = ast.checkSemantics(env);
-        if(err != null) {
-            for (SemanticError e : err) {
-                System.out.println(e.msg);
+            System.out.println("Visualizing AST...");
+            System.out.println(ast.toPrint(""));
+
+            Environment env = new Environment();
+            ArrayList<SemanticError> err = ast.checkSemantics(env);
+            if(err != null) {
+                for (SemanticError e : err) {
+                    System.out.println(e.msg);
+                }
             }
         }
     }
