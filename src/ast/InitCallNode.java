@@ -49,7 +49,7 @@ public class InitCallNode implements Node{
     public ArrayList<SemanticError> checkSemantics(Environment e) {
         ArrayList<SemanticError> res = new ArrayList<SemanticError>();
         if(e.isDeclared(id.getId())== EnvError.NO_DECLARE){
-            res.add(new SemanticError(id.getId()+": init func is not declared"));
+            res.add(new SemanticError(id.getId()+": init function is not declared"));
         }
         if(bexp!= null){
             for (Node node:bexp) {

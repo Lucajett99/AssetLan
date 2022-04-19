@@ -5,6 +5,7 @@ else  u -o x ; v -o x ;
 }
 void main()[asset a]{
 f(0)[a,a] ;	// semantica di f()[a,a] ?
+return ;
 transfer x ;
 }
- main()[1] ;
+main()[1] ;

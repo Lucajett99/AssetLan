@@ -170,9 +170,10 @@ public class AssetLanVisitorImpl extends AssetLanBaseVisitor<Node> {
     @Override
     public Node visitRet(RetContext ctx) {
         ReturnNode ret = null;
-        if(!ctx.exp().isEmpty()){
+        if(ctx.children.size() > 1)
             ret = new ReturnNode(visit(ctx.exp()));
-        }
+        else
+            ret = new ReturnNode(null);
         return ret;
     }
 

@@ -1,6 +1,5 @@
 package ast;
 
-import utils.EnvError;
 import utils.Environment;
 import utils.SemanticError;
 
@@ -52,17 +51,17 @@ public class FunctionNode implements Node {
     @Override
     public ArrayList<SemanticError> checkSemantics(Environment env) {
         ArrayList<SemanticError> res = new ArrayList<SemanticError>();
-        if(env.isInsideFunct()){
-           res.add(new SemanticError("isn't possibile declared a function [function]"));
+        if(env.isInsideFunction()){
+           res.add(new SemanticError("isn't possibile declare a function [function]"));
            return res;
         }else{
-            Environment e = Environment.addDeclaration(env, id.getId(), type);
+            Environment e = Environment.addDeclaration(env, id.getId(), type.getType()); //Declaration of the function
             if(e == null){ //if function is already declared
                 res.add(new SemanticError(this.id.getId()+": function already declared [function]"));
                 return res;
             }else{
                 env = Environment.newScope(env);
-                env.setInsideFunct(true);
+                env.setInsideFunction(true);
 
                 /*Aggiungo parametri formali contenuti in Decp*/
                 if(decp!= null){
@@ -88,7 +87,7 @@ public class FunctionNode implements Node {
                 }
 
                 Environment.exitScope(env);
-                env.setInsideFunct(false);
+                env.setInsideFunction(false);
                 return res;
             }
 

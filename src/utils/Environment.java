@@ -1,7 +1,5 @@
 package utils;
 
-import ast.TypeNode;
-
 import java.util.ArrayList;
 import java.util.HashMap;
 
@@ -9,20 +7,20 @@ import java.util.HashMap;
 public class Environment {
     private final ArrayList<HashMap<String, STentry>> symTable = new ArrayList<HashMap<String,STentry>>();
     private int nestingLevel;
-    private boolean insideFunct ;
-
-    public boolean isInsideFunct() {
-        return insideFunct;
-    }
-
-    public void setInsideFunct(boolean insideFunct) {
-        this.insideFunct = insideFunct;
-    }
-
+    private boolean insideFunction;
     public Environment() {
         nestingLevel = -1;
-        insideFunct = false;
+        insideFunction = false;
     }
+
+    public boolean isInsideFunction() {
+        return insideFunction;
+    }
+
+    public void setInsideFunction(boolean insideFunct) {
+        this.insideFunction = insideFunct;
+    }
+
 
     public ArrayList<HashMap<String, STentry>> getSymTable() {
         return symTable;
@@ -66,14 +64,14 @@ public class Environment {
     * ---------------------------------------------
     * @return Environment with a new entry
     * */
-    public static Environment addDeclaration(Environment env, String key, TypeNode type){
-        STentry entry = new STentry(key,env.getNestingLevel(),type);
+    public static Environment addDeclaration(Environment env, String key, String type){
+        STentry entry = new STentry(key,env.getNestingLevel(), type);
         HashMap<String,STentry> recentST = env.getHead();
-        if(env.isMultipleDeclared(key) == EnvError.ALREADY_DECLARED){ return null;}    //MULTIPLE_DECLARATION
+        if(env.isMultipleDeclared(key) == EnvError.ALREADY_DECLARED){ return null; }    //MULTIPLE_DECLARATION
         else {
             recentST.put(key, entry);
             env.symTable.remove(env.nestingLevel);
-            env.getSymTable().add(env.getNestingLevel(), recentST);
+            env.getSymTable().add(env.getNestingLevel(), recentST);  // TODO: why not getHead.add ?
             return env;
         }
     }

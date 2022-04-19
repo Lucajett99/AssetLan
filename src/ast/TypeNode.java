@@ -13,6 +13,10 @@ public class TypeNode implements Node{
         this.type = type;
     }
 
+    public String getType() {
+        return type;
+    }
+
     @Override
     public String toPrint(String indent) {
        return indent + this.type + " ";
