@@ -56,42 +56,38 @@ public class FunctionNode implements Node {
            return res;
         }else{
             Environment e = Environment.addDeclaration(env, id.getId(), type.getType()); //Declaration of the function
-            if(e == null){ //if function is already declared
+            if(e == null) //if function is already declared
                 res.add(new SemanticError(this.id.getId()+": function already declared [function]"));
-                return res;
-            }else{
-                env = Environment.newScope(env);
-                env.setInsideFunction(true);
+            
+            env = Environment.newScope(env);
+            env.setInsideFunction(true);
 
-                /*Aggiungo parametri formali contenuti in Decp*/
-                if(decp!= null){
-                    res.addAll(decp.checkSemantics(env));
-                }
-
-                /*Aggiungo parametri formali Asset*/
-                if(adec != null) {
-                    res.addAll(adec.checkSemantics(env));
-                }
-
-                /*Aggiungo dichiarazioni in Dec*/
-                if(dec != null) {
-                    for (DecNode decNode : dec) {
-                        res.addAll(decNode.checkSemantics(env));
-                    }
-                }
-
-                if(statement != null){
-                    for (Node st: statement ) {
-                        res.addAll(st.checkSemantics(env));
-                    }
-                }
-
-                Environment.exitScope(env);
-                env.setInsideFunction(false);
-                return res;
+            /*Aggiungo parametri formali contenuti in Decp*/
+            if(decp!= null){
+                res.addAll(decp.checkSemantics(env));
             }
 
+            /*Aggiungo parametri formali Asset*/
+            if(adec != null) {
+                res.addAll(adec.checkSemantics(env));
+            }
 
+            /*Aggiungo dichiarazioni in Dec*/
+            if(dec != null) {
+                for (DecNode decNode : dec) {
+                    res.addAll(decNode.checkSemantics(env));
+                }
+            }
+
+            if(statement != null){
+                for (Node st: statement ) {
+                    res.addAll(st.checkSemantics(env));
+                }
+            }
+
+            Environment.exitScope(env);
+            env.setInsideFunction(false);
+            return res;
         }
     }
 }

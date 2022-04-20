@@ -28,22 +28,32 @@ numberstyle = \tiny,
 
 \title{Report Progetto Compilatori ed Interpreti}
 \author{Marco Benito Tomasone 1038815\\
-Luca Genova\\
-Simone Pio Boldrini 1038792}
+Luca Genova 1038843\\
+Simone  Boldrini 1038792}
 \date{2021-2022}
 
 \begin{document}
     \maketitle
     \tableofcontents
     \chapter{Introduzione}
-    Questo documento è il Report per il progetto del corso di  Compilatori ed Interpreti del prof. Cosimo Laneve A.S. 2021/2022. Il progetto ha come obiettivo quello di costruire un compilatore per il linguaggio \emph{Asset Lan}.
+    Questo documento è il Report per il progetto del corso di  Compilatori ed Interpreti del prof. Cosimo Laneve A.S. 2021/2022. Il progetto ha come obiettivo quello di costruire un compilatore per il linguaggio \emph{AssetLan}.
     AssetLan è un semplice linguaggio imperativo con asset, in cui i parametri possono  essere sia standard che asset, con ricorsione e senza mutua ricorsione. 
     \section{Grammatica del Linguaggio}
-    Ogni programma in AssetLan è formato da 4 parti principali che sono le dichiarazioni di variabili, le dichiarazioni degli asset, le dichiarazioni delle funzioni e la chiamata a delle funzioni. I tipi permessi per le variabili sono  \emph{int} e \emph{bool}, mentre per le funzioni oltre ai due tipi sopracitati è permesso dichiarare funzioni \emph{void}. I parametri asset hanno tipo \emph{asset}. 
+    Ogni programma in AssetLan è formato da quattro parti principali che sono le dichiarazioni di variabili, le dichiarazioni degli asset, le dichiarazioni delle funzioni e la chiamata a delle funzioni. I tipi permessi per le variabili sono  \emph{int} e \emph{bool}, mentre per le funzioni oltre ai due tipi sopracitati è permesso dichiarare funzioni \emph{void}. I parametri asset hanno tipo \emph{asset}. 
 
     Nella dichiarazione di funzioni oltre al tipo e al nome della funzione bisogna indicare una lista di parametri tra parentesi tonde e una lista di asset tra parentesi quadre. Nel corpo di una funzione è possibile fare molteplici dichiarazioni di variabili e poi definire degli statement. 
-    Uno statement può essere un assegnamento, una funzione move che permette di spostare il contenuto di un asset all'interno di un altro asset (svuotando il primo asset), una print, una transfer, una return, un \emph{if-then-else} oppure una chiamata a funzione.  
-
+    Uno statement può essere un assegnamento, una funzione move che permette di spostare il contenuto di un asset all'interno di un altro asset (svuotando il primo asset), una print, una transfer, una return, un \emph{if-then-else} oppure una chiamata a funzione. 
+    Rispetto alla grammatica che ci è stata fornita inizialmente abbiamo apportato due piccole modifiche: 
+    \begin{lstlisting}      
+function: (type | 'void') ID '('(decp)?')' '['(adec)?']' {' dec* statement* '}' ;
+decp: dec;
+    \end{lstlisting}  
+    La prima è per separare la dichiarazione dei parametri formali di una funzione dalle dichiarazioni delle variabili nel corpo della funzione. Per fare ciò è stato inserito un nuovo simbolo non terminale \emph{decp} che richiama il non terminale \emph{dec}.
+    \begin{lstlisting}      
+initcall: ID '(' (exp (',' exp)* )? ')' '[' (bexp (',' bexp)* )? ']' ;
+bexp: exp  ;
+    \end{lstlisting}
+La seconda modifica apportata riguarda l'introduzione di un nuovo simbolo \emph{bexp} che sostituisce le chiamate al simbolo exp all'interno dei parametri asset nella chiamata di una funzione. 
     \chapter{Analisi Lessicale e Sintattica}
     Le prime due fasi del compilatore per il linguaggio AssetLan hanno previsto la costruzione dell'analizzatore lessicale e sintattico. 
     \emph{L'analizzatore lessicale} prende in input le stringhe di codice in AssetLan e ritorna una lista di token. L'analizzatore lessicale genera degli errori dal momento in cui non riconosce un certo token all'interno della grammatica. \\
@@ -77,7 +87,6 @@ public void syntaxError(...){
     \end{lstlisting}
     \section{Esempi}
     In questo primo esempio abbiamo inserito dei token non ammessi dalla grammatica (\$,@,\~, ?). Notiamo come negli errori lessicali siano riportati i primi tre simboli mentre non figura il "?" poichè inserito all'interno di un commento. . 
-   \begin{multicols}{2}
     \begin{lstlisting}
         asset x;$
         void f(int n)[asset $u, asset v]{
@@ -90,8 +99,7 @@ public void syntaxError(...){
         }
         main(~)[1] ;
     \end{lstlisting}
-    \columnbreak
-       \begin{lstlisting}
+   \begin{lstlisting}
         --------LEXICAL ERRORS----------
         Error: token recognition error at: '$' at line 1
         Error: token recognition error at: '$' at line 2
@@ -100,9 +108,8 @@ public void syntaxError(...){
 
         --------SYNTAX ERRORS----------
        \end{lstlisting}
-   \end{multicols}
    In questo secondo esempio non abbiamo inserit errori lessicali ma abbiamo inserito le dichiarazioni degli asset e le dichiarazioni di variabili dopo le dichiarazioni delle funzioni. Notiamo come dia come errore lessicale la presenza della parola \emph{asset} alla riga 10, mentre si aspetta di trovare una dichiarazione di funzione o un id per richiamare una funzione.
-   \begin{multicols}{2}
+   
     \begin{lstlisting}
         void f()[asset u ,asset v]{
             u -o y ;
@@ -117,17 +124,15 @@ public void syntaxError(...){
         int a,b = 3;
         main()[2,3]
     \end{lstlisting}
-    \columnbreak
-       \begin{lstlisting}
+    
+    \begin{lstlisting}
         --------LEXICAL ERRORS----------
 
         --------SYNTAX ERRORS----------
         Error: extraneous input 'asset' expecting {'void', 'int', 'bool', ID} at line 10
         Error: mismatched input ',' expecting '(' at line 10
        \end{lstlisting}
-   \end{multicols}
    In questo terzo esempio manca il non terminale \emph{initcall} della grammatica, che è obbligatorio. Il parser in questo caso genera un errore dichiando come riconosce l'$<$EOF$>$ invece di trovare un'ulteriore dichiarazione a funzione o la chiamata ad una funzione.
-   \begin{multicols}{2}
     \begin{lstlisting}
         int a ; 
         asset x ;
@@ -140,20 +145,66 @@ public void syntaxError(...){
             transfer x ;
         }
     \end{lstlisting}
-    \columnbreak
        \begin{lstlisting}
         --------LEXICAL ERRORS----------
 
         --------SYNTAX ERRORS----------
         Error: mismatched input ';' expecting '[' at line 5
         Error: extraneous input '<EOF>' expecting {'void', 'int', 'bool', ID} at line 10
-       \end{lstlisting}
-   \end{multicols}
-   \section{AST}
-   Per la costruzione dell'Albero di Sintassi astratta sono state implementate tutte le funzioni necessarie all'attraversamento dell'albero nel file \emph{AssetLanVisitorImpl}. 
-
+       \end{lstlisting}    
  \chapter{Analisi Semantica}
- \section{Tabella dei simboli}
- In questa fase della costruzione del nostro compilatore ci siamo concentrati sulla costruzione della tabella dei simboli. Per generare la tabella dei simboli è necessario visitare l'AST, per farlo abbiamo definito tutte le funzioni necessarie all'attraversamento dell'albero nel file \emph{AssetLanVisitorImpl}. \\
- La tabella dei simboli è stata implementata tramite una Lista di HashMap e i metodi per interagire con essa sono definiti nella classe \emph{environment}.
+ \section{Environment}
+ In questo progetto l’ambiente viene definito come un insieme di scope, gestiti dalla classe \emph{Environment}, che contiene la symbolTable implementata come una lista di HashMap di stringhe e STentry. La classe Environment inolte contiene un campo \emph{nestingLevel}. I metodi della classe Environment si occupano della gestione della symbolTable. Ogni volta che si entra in un nuovo ambiente viene creata una nuova symbolTable che viene aggiunta in testa alla lista e viene aumentato il nestingLevel. Allo stesso modo quando si esce da un ambiente viene eliminata la symbolTable che si trova in testa e diminuito il nestingLevel. In questa classe sono anche presenti alcune funzioni per effettuare una lookup all'interno della symbolTable e per aggiungere delle dichiarazioni all'interno della tabella dei simboli. 
+
+ \section{STentry}
+ Questa classe viene utilizzata dall’Environment per costruire una entry di una variabile all’occorrenza ed aggiungerla al proprio scope. Contiene una variabile \emph{nestingLevel}, il tipo ed il numero di argomenti.
+
+ \section{Check Semantics}
+ Le funzioni \emph{checkSemantics} di ogni nodo si occupano di andare a effettuare dei controlli semantici. Molte di loro sono implementate chiamando ricorsivamente i controlli semantici sui nodi dai quali sono composti. 
+ In questa fase ci siamo preoccupati principalmente di controllare variabili e funzioni non dichiarate ed eventuali dichiarazioni multiple nello stesso ambiente. Tutte le funzioni checkSemantics ritornano una lista di errori semantici. 
+
+ \subsection{Variabili o funzioni non dichiarate}
+   Per quanto riguarda il controllo di variabili o funzioni non dichiarate, riportiamo come esempio uno snippet di codice dalla classe \emph{MoveNode}.
+   \begin{lstlisting}[language = Java , frame = trBL , firstnumber = last , escapeinside={(*@}{@*)}]
+
+public ArrayList<SemanticError> checkSemantics(Environment e) {
+    ArrayList<SemanticError> res = new ArrayList<SemanticError>();
+    if(e.isDeclared(id1.getId()) == EnvError.NO_DECLARE){
+        res.add(new SemanticError((id1.getId())+": is not declared [Move]"));
+    }
+    if(e.isDeclared(id2.getId())== EnvError.NO_DECLARE){
+        res.add(new SemanticError((id2.getId())+": is not declared [Move]"));
+    }
+    return res;
+}
+   \end{lstlisting}
+   In questo caso per entrambi gli operandi della funzione move si controlla che all'interno di qualsiasi ambiente della symbolTable sia presente una dichiarazione per quella variabile, altrimenti in caso contrario viene aggiunto un errore. I checkSemantics per le altre classi sulle quali viene effettuato un controllo su possibili variabili non dichiarate sono praticamente speculari a questo. 
+
+\subsection{Dichiarazioni Multiple nello stesso ambiente}
+Per quanto riguarda le dichiarazioni multiple si va a controllare che non esista all'interno dello stesso ambiente nel quale si vuole effettuare la dichiarazione, una dichiarazione con lo stesso nome. Riportiamo, a titolo di esempio, uno snippet di codice preso dalla classe \emph{AssetNode}.
+\begin{lstlisting}[language = Java , frame = trBL , firstnumber = last , escapeinside={(*@}{@*)}]
+public ArrayList<SemanticError> checkSemantics(Environment e) {
+    ArrayList<SemanticError> res = new ArrayList<SemanticError>();
+    if(e.isMultipleDeclared(id.getId()) == EnvError.NO_DECLARE)
+        Environment.addDeclaration(e,id.getId(),"asset");
+    else
+        res.add(new SemanticError(id.getId()+" already declared [assetNode]"));
+    return res;
+}
+\end{lstlisting}
+Mostriamo ora un esempio di codice in cui sono presenti questi due tipi di errore:
+\begin{lstlisting}
+int f;
+asset x ;
+void f(int n)[asset u, asset v]{
+    if (n == 0) u -o y ;
+    else  u -o x ; v -o x ;
+}
+f(5)[2,3] ;
+\end{lstlisting}
+E gli errori che vengono generati:
+\begin{lstlisting}
+f: function already declared [function]
+y: is not declared [Move]
+\end{lstlisting}
 \end{document}

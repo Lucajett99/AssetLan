@@ -35,7 +35,7 @@ public class MoveNode implements Node{
     @Override
     public ArrayList<SemanticError> checkSemantics(Environment e) {
         ArrayList<SemanticError> res = new ArrayList<SemanticError>();
-        if(e.isDeclared(id1.getId())== EnvError.NO_DECLARE){
+        if(e.isDeclared(id1.getId()) == EnvError.NO_DECLARE){
             res.add(new SemanticError((id1.getId())+": is not declared [Move]"));
         }
         if(e.isDeclared(id2.getId())== EnvError.NO_DECLARE){
