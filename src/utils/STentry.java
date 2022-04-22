@@ -5,12 +5,10 @@ import ast.TypeNode;
 
 public class STentry {
     private String key;
-    private int nestingLevel;
     private String type;
     private int nArguments;
-    public STentry(String key, int nestingLevel, String type) {
+    public STentry(String key, String type) {
         this.key = key;
-        this.nestingLevel = nestingLevel;
         this.type = type;
     }
 

@@ -65,13 +65,13 @@ public class Environment {
     * @return Environment with a new entry
     * */
     public static Environment addDeclaration(Environment env, String key, String type){
-        STentry entry = new STentry(key,env.getNestingLevel(), type);
+        STentry entry = new STentry(key, type);
         HashMap<String,STentry> recentST = env.getHead();
         if(env.isMultipleDeclared(key) == EnvError.ALREADY_DECLARED){ return null; }    //MULTIPLE_DECLARATION
         else {
-            recentST.put(key, entry);
+            recentST.put(key, entry); //            env.getHead().put(key, entry); //
             env.symTable.remove(env.nestingLevel);
-            env.getSymTable().add(env.getNestingLevel(), recentST);  // TODO: why not getHead.add ?
+            env.getSymTable().add(env.getNestingLevel(), recentST);
             return env;
         }
     }
