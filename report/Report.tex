@@ -108,7 +108,7 @@ public void syntaxError(...){
 
         --------SYNTAX ERRORS----------
        \end{lstlisting}
-   In questo secondo esempio non abbiamo inserit errori lessicali ma abbiamo inserito le dichiarazioni degli asset e le dichiarazioni di variabili dopo le dichiarazioni delle funzioni. Notiamo come dia come errore lessicale la presenza della parola \emph{asset} alla riga 10, mentre si aspetta di trovare una dichiarazione di funzione o un id per richiamare una funzione.
+   In questo secondo esempio non abbiamo inserito errori lessicali ma abbiamo inserito le dichiarazioni degli asset e delle variabili dopo le dichiarazioni delle funzioni. Notiamo come dia come errore lessicale la presenza della parola \emph{asset} alla riga 10, mentre si aspetta di trovare una dichiarazione di funzione o un id per richiamare una funzione.
    
     \begin{lstlisting}
         void f()[asset u ,asset v]{
@@ -154,10 +154,10 @@ public void syntaxError(...){
        \end{lstlisting}    
  \chapter{Analisi Semantica}
  \section{Environment}
- In questo progetto l’ambiente viene definito come un insieme di scope, gestiti dalla classe \emph{Environment}, che contiene la symbolTable implementata come una lista di HashMap di stringhe e STentry. La classe Environment inolte contiene un campo \emph{nestingLevel}. I metodi della classe Environment si occupano della gestione della symbolTable. Ogni volta che si entra in un nuovo ambiente viene creata una nuova symbolTable che viene aggiunta in testa alla lista e viene aumentato il nestingLevel. Allo stesso modo quando si esce da un ambiente viene eliminata la symbolTable che si trova in testa e diminuito il nestingLevel. In questa classe sono anche presenti alcune funzioni per effettuare una lookup all'interno della symbolTable e per aggiungere delle dichiarazioni all'interno della tabella dei simboli. 
+ In questo progetto l’ambiente viene definito come un insieme di scope, gestiti dalla classe \emph{Environment}, che contiene la symbolTable implementata come una lista di HashMap di stringhe e STentry. La classe Environment inoltre contiene un campo \emph{nestingLevel}. I metodi della classe Environment si occupano della gestione della symbolTable. Ogni volta che si entra in un nuovo ambiente viene creata una nuova symbolTable che viene aggiunta in testa alla lista e viene aumentato il nestingLevel. Allo stesso modo quando si esce da un ambiente viene eliminata la symbolTable che si trova in testa e diminuito il nestingLevel. In questa classe sono anche presenti alcune funzioni per effettuare una lookup all'interno della symbolTable e per aggiungere delle dichiarazioni all'interno della tabella dei simboli. 
 
  \section{STentry}
- Questa classe viene utilizzata dall’Environment per costruire una entry di una variabile all’occorrenza ed aggiungerla al proprio scope. Contiene una variabile \emph{nestingLevel}, il tipo ed il numero di argomenti.
+ Questa classe viene utilizzata dall’Environment per costruire una entry di una variabile all’occorrenza ed aggiungerla al proprio scope. Contiene il tipo ed il numero di argomenti.
 
  \section{Check Semantics}
  Le funzioni \emph{checkSemantics} di ogni nodo si occupano di andare a effettuare dei controlli semantici. Molte di loro sono implementate chiamando ricorsivamente i controlli semantici sui nodi dai quali sono composti. 
