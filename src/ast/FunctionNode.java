@@ -57,7 +57,7 @@ public class FunctionNode implements Node {
         }else{
             Environment e = Environment.addDeclaration(env, id.getId(), type.getType()); //Declaration of the function
             if(e == null) //if function is already declared
-                res.add(new SemanticError(this.id.getId()+": function already declared [function]"));
+                res.add(new SemanticError(this.id.getId()+": id already declared [function]"));
             
             env = Environment.newScope(env);
             env.setInsideFunction(true);
