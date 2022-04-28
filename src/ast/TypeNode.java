@@ -4,10 +4,10 @@ import utils.Environment;
 import utils.SemanticError;
 
 import java.util.ArrayList;
+import java.util.Objects;
 
 public class TypeNode implements Node{
     private String type;
-
 
     public TypeNode(String type) {
         this.type = type;
@@ -24,7 +24,14 @@ public class TypeNode implements Node{
 
     @Override
     public Node typeCheck() {
-        return null;
+        if(Objects.equals(type, "int")){
+            return new IntTypeNode();
+        }else if(Objects.equals(type, "bool")){
+            return new BoolTypeNode();
+        }else{
+            //Error
+            return null;
+        }
     }
 
     @Override

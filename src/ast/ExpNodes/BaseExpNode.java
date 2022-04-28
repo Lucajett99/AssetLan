@@ -20,7 +20,7 @@ public class BaseExpNode implements Node {
 
     @Override
     public Node typeCheck() {
-        return null;
+        return exp.typeCheck();
     }
 
     @Override

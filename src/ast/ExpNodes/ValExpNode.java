@@ -1,6 +1,8 @@
 package ast.ExpNodes;
 
+import ast.IntTypeNode;
 import ast.Node;
+import ast.TypeNode;
 import utils.Environment;
 import utils.SemanticError;
 
@@ -20,7 +22,7 @@ public class ValExpNode implements Node {
 
     @Override
     public Node typeCheck() {
-        return null;
+        return new IntTypeNode();
     }
 
     @Override

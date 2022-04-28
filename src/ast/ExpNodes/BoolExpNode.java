@@ -1,5 +1,6 @@
 package ast.ExpNodes;
 
+import ast.BoolTypeNode;
 import ast.Node;
 import utils.Environment;
 import utils.SemanticError;
@@ -20,7 +21,7 @@ public class BoolExpNode implements Node {
 
     @Override
     public Node typeCheck() {
-        return null;
+        return new BoolTypeNode();
     }
 
     @Override
