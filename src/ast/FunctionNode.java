@@ -55,7 +55,7 @@ public class FunctionNode implements Node {
            res.add(new SemanticError("isn't possibile declare a function [function]"));
            return res;
         }else{
-            Environment e = Environment.addDeclaration(env, id.getId(), type.getType()); //Declaration of the function
+            Environment e = Environment.addDeclaration(env, id.getId(), type); //Declaration of the function
             if(e == null) //if function is already declared
                 res.add(new SemanticError(this.id.getId()+": id already declared [function]"));
             

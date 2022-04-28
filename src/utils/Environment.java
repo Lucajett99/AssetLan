@@ -1,5 +1,7 @@
 package utils;
 
+import ast.Node;
+
 import java.util.ArrayList;
 import java.util.HashMap;
 
@@ -64,11 +66,12 @@ public class Environment {
     * ---------------------------------------------
     * @return Environment with a new entry
     * */
-    public static Environment addDeclaration(Environment env, String key, String type){
-        STentry entry = new STentry(key, type);
+    public static Environment addDeclaration(Environment env, String key, Node type){
+        STentry entry = new STentry();
         HashMap<String,STentry> recentST = env.getHead();
         if(env.isMultipleDeclared(key) == EnvError.ALREADY_DECLARED){ return null; }    //MULTIPLE_DECLARATION
         else {
+            entry.addType(type);
             recentST.put(key, entry); //            env.getHead().put(key, entry); //
             env.symTable.remove(env.nestingLevel);
             env.getSymTable().add(env.getNestingLevel(), recentST);

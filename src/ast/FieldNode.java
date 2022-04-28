@@ -42,7 +42,7 @@ public class FieldNode implements Node {
         ArrayList<SemanticError> res = new ArrayList<SemanticError>();
 
         if(e.isMultipleDeclared(id.getId())!= EnvError.ALREADY_DECLARED){
-            e = Environment.addDeclaration(e,id.getId(), type.getType());
+            e = Environment.addDeclaration(e,id.getId(), type);
         }else{
             res.add(new SemanticError(id.getId()+": already declared [field]"));
         }

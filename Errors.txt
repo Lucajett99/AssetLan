@@ -1,0 +1,5 @@
+--------LEXICAL ERRORS----------
+
+--------SYNTAX ERRORS----------
+Error: extraneous input ';' expecting {'}', 'int', 'bool', 'print', 'transfer', 'return', 'if', ID} at line 3
+

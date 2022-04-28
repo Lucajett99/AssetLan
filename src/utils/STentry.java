@@ -4,19 +4,20 @@ import ast.Node;
 import ast.TypeNode;
 
 public class STentry {
-    private String key;
-    private String type;
+    private Node type;
     private int nArguments;
-    public STentry(String key, String type) {
-        this.key = key;
+
+    public STentry() { }
+
+    public STentry(Node type) {
         this.type = type;
     }
 
-    public String getType() {
+    public Node getType() {
         return type;
     }
 
-    public void addType(String node){
+    public void addType(Node node){
         this.type = node;
     }
 }
