@@ -79,6 +79,7 @@ public class Environment {
         }
     }
 
+
     public static STentry lookup(Environment env, String key){
         ArrayList<HashMap<String, STentry>> st = env.getSymTable();
         int stIndex = env.getNestingLevel();

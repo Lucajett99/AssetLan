@@ -1,8 +1,10 @@
 package ast;
 
 import ast.ExpNodes.BaseExpNode;
+import ast.typeNode.BoolTypeNode;
 import utils.Environment;
 import utils.SemanticError;
+import utils.Utilities;
 
 import java.sql.Array;
 import java.util.ArrayList;
@@ -27,6 +29,18 @@ public class IteNode implements Node{
 
     @Override
     public Node typeCheck() {
+        if(!Utilities.isSubtype(exp.typeCheck(),new BoolTypeNode())){
+                System.out.println("Incopatible Type Error : If condition must be boolean");
+        }
+        if(elseStatement == null){
+            return thenStatement.typeCheck();
+        }else{
+            if(Utilities.isSubtype(thenStatement.typeCheck(),elseStatement.typeCheck()))
+                return thenStatement.typeCheck();
+            else
+                System.out.println("Incompatible Type Error: else/then stm must return the same type");
+        }
+
         return null;
     }
 
