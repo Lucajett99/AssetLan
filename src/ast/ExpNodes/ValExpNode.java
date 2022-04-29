@@ -1,8 +1,7 @@
 package ast.ExpNodes;
 
-import ast.IntTypeNode;
+import ast.typeNode.IntTypeNode;
 import ast.Node;
-import ast.TypeNode;
 import utils.Environment;
 import utils.SemanticError;
 

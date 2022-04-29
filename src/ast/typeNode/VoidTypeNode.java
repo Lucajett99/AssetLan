@@ -1,27 +1,20 @@
-package ast.ExpNodes;
+package ast.typeNode;
 
-import ast.typeNode.BoolTypeNode;
 import ast.Node;
 import utils.Environment;
 import utils.SemanticError;
 
 import java.util.ArrayList;
 
-public class BoolExpNode implements Node {
-    private boolean bool;
-
-    public BoolExpNode(boolean bool) {
-        this.bool = bool;
-    }
-
+public class VoidTypeNode implements Node {
     @Override
     public String toPrint(String indent) {
-        return indent+"BoolExp\n" + bool;
+        return null;
     }
 
     @Override
     public Node typeCheck() {
-        return new BoolTypeNode();
+        return null;
     }
 
     @Override

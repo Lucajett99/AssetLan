@@ -1,16 +1,16 @@
-package ast;
+package ast.typeNode;
 
+import ast.Node;
 import utils.Environment;
 import utils.SemanticError;
 
 import java.util.ArrayList;
 
-public class BoolTypeNode implements Node {
+public class IntTypeNode implements Node {
 
     public String toPrint(String s) {
-        return s+" BoolType\n";
+        return s+" IntType\n";
     }
-
     @Override
     public Node typeCheck() {
         return null;

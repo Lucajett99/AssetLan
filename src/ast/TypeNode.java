@@ -1,5 +1,7 @@
 package ast;
 
+import ast.typeNode.BoolTypeNode;
+import ast.typeNode.IntTypeNode;
 import utils.Environment;
 import utils.SemanticError;
 
