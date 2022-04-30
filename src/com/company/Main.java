@@ -32,7 +32,7 @@ public class Main {
 
             Environment env = new Environment();
             ArrayList<SemanticError> err = ast.checkSemantics(env);
-            if(err != null) {
+            if(!err.isEmpty()) {
                 for (SemanticError e : err) {
                     System.out.println(e.msg);
                 }

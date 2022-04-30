@@ -1,5 +1,7 @@
 --------LEXICAL ERRORS----------
 
 --------SYNTAX ERRORS----------
-Error: extraneous input ';' expecting {'}', 'int', 'bool', 'print', 'transfer', 'return', 'if', ID} at line 3
+Error: missing ';' at 'j' at line 1
+Error: missing '(' at 'false' at line 1
+Error: mismatched input ';' expecting {')', ','} at line 1
 

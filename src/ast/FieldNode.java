@@ -30,7 +30,7 @@ public class FieldNode implements Node {
 
     @Override
     public Node typeCheck() {
-        if(!Utilities.isSubtype(exp.typeCheck(),type.typeCheck())){
+        if(!Utilities.isSubtype(exp.typeCheck(), type.typeCheck())){
             System.out.println("Incompatible type error: field must be "+ type.getType());
         }
         return type.typeCheck();
