@@ -32,7 +32,16 @@ public class ProgramNode implements Node {
 
     @Override
     public Node typeCheck() {
-        return null;
+        for (Node fields:fields) {
+            fields.typeCheck();
+        }
+        for (Node asset:assets) {
+            asset.typeCheck();
+        }
+        for (Node function:functions) {
+            function.typeCheck();
+        }
+        return initcall.typeCheck();
     }
 
     @Override

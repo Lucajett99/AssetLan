@@ -13,7 +13,7 @@ import java.util.ArrayList;
 public class Main {
 
     public static void main(String[] args) throws Exception {
-        String fileName = "AssetLan/src/codeExamples/example1.assetlan";
+        String fileName = "src/codeExamples/example1.assetlan";
         CharStream charStreams = CharStreams.fromFileName(fileName);
         AssetLanLexer lexer = new AssetLanLexer(charStreams);
         CommonTokenStream tokens = new CommonTokenStream(lexer);
@@ -36,7 +36,8 @@ public class Main {
                 for (SemanticError e : err) {
                     System.out.println(e.msg);
                 }
-
+            }else{
+                Node type = ast.typeCheck();
             }
         }
     }

@@ -56,7 +56,7 @@ public class MoveNode implements Node{
         }
 
         STentry second = Environment.lookup(e,id2.getId());
-        type2 = first.getType();
+        type2 = second.getType();
 
         return res;
     }

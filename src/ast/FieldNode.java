@@ -3,6 +3,7 @@ package ast;
 import utils.EnvError;
 import utils.Environment;
 import utils.SemanticError;
+import utils.Utilities;
 
 import java.lang.reflect.Array;
 import java.util.ArrayList;
@@ -29,7 +30,10 @@ public class FieldNode implements Node {
 
     @Override
     public Node typeCheck() {
-        return null;
+        if(!Utilities.isSubtype(exp.typeCheck(),type.typeCheck())){
+            System.out.println("Incompatible type error: field must be "+ type.getType());
+        }
+        return type.typeCheck();
     }
 
     @Override

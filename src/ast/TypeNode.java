@@ -2,6 +2,7 @@ package ast;
 
 import ast.typeNode.BoolTypeNode;
 import ast.typeNode.IntTypeNode;
+import ast.typeNode.VoidTypeNode;
 import utils.Environment;
 import utils.SemanticError;
 
@@ -26,13 +27,16 @@ public class TypeNode implements Node{
 
     @Override
     public Node typeCheck() {
-        if(Objects.equals(type, "int")){
-            return new IntTypeNode();
-        }else if(Objects.equals(type, "bool")){
-            return new BoolTypeNode();
-        }else{
-            //Error
-            return null;
+        switch (type){
+            case "int":
+                return new IntTypeNode();
+            case "bool":
+                return new BoolTypeNode();
+            case "void":
+                return new VoidTypeNode();
+            default:
+                System.out.println("Error TypeNode Conversion : Impossible convert type "+ type);
+                return null;
         }
     }
 

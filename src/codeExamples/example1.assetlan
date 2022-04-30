@@ -1,4 +1,5 @@
 bool test;
+int a = 5;
 asset x ;
 void f(int n)[asset u, asset v]{
 if (n == 0) u -o x ;

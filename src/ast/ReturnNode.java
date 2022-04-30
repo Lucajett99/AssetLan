@@ -19,7 +19,7 @@ public class ReturnNode implements Node{
 
     @Override
     public Node typeCheck() {
-        return null;
+        return exp.typeCheck();
     }
 
     @Override
