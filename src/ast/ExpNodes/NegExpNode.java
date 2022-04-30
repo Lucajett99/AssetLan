@@ -1,8 +1,10 @@
 package ast.ExpNodes;
 
 import ast.Node;
+import ast.typeNode.IntTypeNode;
 import utils.Environment;
 import utils.SemanticError;
+import utils.Utilities;
 
 import java.util.ArrayList;
 
@@ -19,7 +21,11 @@ public class NegExpNode extends BaseExpNode {
 
     @Override
     public Node typeCheck() {
-        return super.typeCheck();
+        if(!(Utilities.isSubtype(exp.typeCheck(), new IntTypeNode()))) {
+            System.out.println("Incompatible type error: Must Be IntTypeNode");
+            System.exit(0);
+        }
+        return new IntTypeNode();
     }
 
     @Override

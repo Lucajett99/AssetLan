@@ -1,6 +1,8 @@
 package ast.ExpNodes;
 
 import ast.Node;
+import ast.typeNode.BoolTypeNode;
+import ast.typeNode.IntTypeNode;
 import utils.Environment;
 import utils.SemanticError;
 import utils.Utilities;
@@ -29,6 +31,33 @@ public class BinExpNode implements Node {
 
     @Override
     public Node typeCheck() {
+        if(op.equals("*") || op.equals("/") || op.equals("+") || op.equals("-")) {
+            if(! (Utilities.isSubtype(left.typeCheck(), new IntTypeNode()) && Utilities.isSubtype(right.typeCheck()
+            , new IntTypeNode()))) {
+                System.out.println("Incompatible type error: Must Be IntTypeNode");
+                System.exit(0);
+            }
+            else
+                return new IntTypeNode();
+        }
+        else if(op.equals("<") || op.equals("<=") || op.equals(">") || op.equals(">=") || op.equals("==") || op.equals("!=")) {
+            if(! (Utilities.isSubtype(left.typeCheck(), new IntTypeNode()) && Utilities.isSubtype(right.typeCheck()
+                    , new IntTypeNode()))) {
+                System.out.println("Incompatible type error: Must Be IntTypeNode");
+                System.exit(0);
+            }
+            else
+                return new BoolTypeNode();
+        }
+        else if(op.equals("==") || op.equals("!=") || op.equals("&&") || op.equals("||")) {
+            if(! (Utilities.isSubtype(left.typeCheck(), new BoolTypeNode()) && Utilities.isSubtype(right.typeCheck()
+                    , new BoolTypeNode()))) {
+                System.out.println("Incompatible type error: Must Be BoolTypeNode");
+                System.exit(0);
+            }
+            else
+                return new BoolTypeNode();
+        }
         return null;
     }
 

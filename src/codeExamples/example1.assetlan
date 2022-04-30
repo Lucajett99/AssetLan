@@ -1,12 +1,10 @@
-bool test;
-int a = 5;
+int a = 500 + 3;
 asset x ;
 void f(int n)[asset u, asset v]{
 if (n == 0) u -o x ;
 else  u -o x ; v -o x ;
 }
 void main()[asset a]{
-    return x + y;
-    main()[];
+    return x;
 }
-main(a)[];
+main()[1] ;

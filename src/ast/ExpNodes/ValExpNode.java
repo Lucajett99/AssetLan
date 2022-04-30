@@ -21,6 +21,7 @@ public class ValExpNode implements Node {
 
     @Override
     public Node typeCheck() {
+
         return new IntTypeNode();
     }
 

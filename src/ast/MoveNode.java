@@ -29,7 +29,7 @@ public class MoveNode implements Node{
 
     @Override
     public Node typeCheck() {
-        if(!(Utilities.isSubtype(type1.typeCheck(),new AssetTypeNode()) ||
+        if(!(Utilities.isSubtype(type1.typeCheck(),new AssetTypeNode()) &&
                 Utilities.isSubtype(type2.typeCheck(),new AssetTypeNode()) )){
            System.out.println("Incompatible type error: Must Be AssetNode");
         };
