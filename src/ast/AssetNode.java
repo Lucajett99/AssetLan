@@ -33,7 +33,7 @@ public class AssetNode implements Node {
     public ArrayList<SemanticError> checkSemantics(Environment e) {
         ArrayList<SemanticError> res = new ArrayList<SemanticError>();
         if(e.isMultipleDeclared(id.getId()) == EnvError.NO_DECLARE)
-            Environment.addDeclaration(e,id.getId(), this);
+            Environment.addDeclaration(e,id.getId(), this,null,0,false);
         else
             res.add(new SemanticError(id.getId()+" already declared [assetNode]"));
         return res;

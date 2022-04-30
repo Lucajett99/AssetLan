@@ -1,8 +1,6 @@
 package ast;
 
-import utils.EnvError;
-import utils.Environment;
-import utils.SemanticError;
+import utils.*;
 
 import java.util.ArrayList;
 
@@ -10,11 +8,13 @@ public class CallNode implements Node{
     private IdNode id;
     private ArrayList<Node> exp;
     private ArrayList<IdNode> listId;
+    private STentry stEntry;
 
     public CallNode(IdNode id, ArrayList<Node> exp, ArrayList<IdNode> listId) {
         this.id = id;
         this.exp = exp;
         this.listId = (listId.size()>0?listId:null);;
+        this.stEntry = null;
     }
 
 
@@ -36,8 +36,23 @@ public class CallNode implements Node{
 
     @Override
     public Node typeCheck() {
-        return null;
+        if(stEntry!= null && stEntry.isFunction() && exp.size()==stEntry.getParameter().size() && listId.size()==stEntry.getnAssets())
+        {
+            for(int i = 0; i< stEntry.getParameter().size();i++){
+                Node ap = exp.get(i);
+                if(!Utilities.isSubtype(ap.typeCheck(),stEntry.getParameter().get(i))){
+                    System.out.println("Incompatible Parameter for Function "+id.getId());
+                    System.exit(0);
+                }
+
+            }
+        }else {
+            System.out.println("Incompatible Type Error");
+            System.exit(0);
+        }
+        return stEntry.getType().typeCheck();
     }
+
 
     @Override
     public String codGeneration() {
@@ -50,6 +65,8 @@ public class CallNode implements Node{
 
         if(e.isDeclared(id.getId())== EnvError.NO_DECLARE){
             res.add(new SemanticError(id.getId()+": function is not declared [Call]"));
+        }else{
+            stEntry = Environment.lookup(e,id.getId());
         }
         if(listId!= null) {
             for (IdNode id : listId) {
