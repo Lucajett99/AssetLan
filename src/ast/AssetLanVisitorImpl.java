@@ -28,7 +28,7 @@ public class AssetLanVisitorImpl extends AssetLanBaseVisitor<Node> {
             functions.add(visit(fuc));
         }
         Node initcall = null;
-        if(ctx.initcall().exception == null)
+ //       if(ctx.initcall().exception == null)
             initcall = visit(ctx.initcall());
 
         res = new ProgramNode(fields, assets, functions, initcall);

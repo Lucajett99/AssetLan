@@ -40,6 +40,11 @@ public class FunctionNode implements Node {
 
     @Override
     public Node typeCheck() {
+     for(Node node: statement){
+         if(node instanceof ReturnNode){
+
+         }
+     }
         return null;
     }
 
