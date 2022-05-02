@@ -1,7 +1,5 @@
 --------LEXICAL ERRORS----------
 
 --------SYNTAX ERRORS----------
-Error: missing ';' at 'j' at line 1
-Error: missing '(' at 'false' at line 1
-Error: mismatched input ';' expecting {')', ','} at line 1
+Error: mismatched input '2' expecting {']', ID} at line 8
 

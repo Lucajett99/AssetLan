@@ -9,9 +9,11 @@ import java.util.ArrayList;
 
 public class DerExpNode implements Node {
     private String id;
+    private Node type;
 
     public DerExpNode(String id) {
         this.id = id;
+        this.type = null;
     }
 
     @Override
@@ -21,7 +23,7 @@ public class DerExpNode implements Node {
 
     @Override
     public Node typeCheck() {
-        return null;
+        return type;
     }
 
     @Override
@@ -35,6 +37,8 @@ public class DerExpNode implements Node {
         if(e.isDeclared(id)== EnvError.NO_DECLARE){
             res.add(new SemanticError(id+": variable is not declared [DerExp]"));
         }
+        else
+            type = Environment.lookup(e,id).getType();
         return res;
     }
 }

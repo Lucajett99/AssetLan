@@ -5,6 +5,7 @@ if (n == 0) u -o x ;
 else  u -o x ; v -o x ;
 }
 void main()[asset a]{
+    f(1)[a,a];
     return x;
 }
 main()[1] ;
