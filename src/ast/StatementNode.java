@@ -19,7 +19,8 @@ public class StatementNode implements Node {
 
     @Override
     public Node typeCheck() {
-        return null;
+        return statement.typeCheck();
+
     }
 
     @Override
@@ -36,4 +37,7 @@ public class StatementNode implements Node {
         return res;
     }
 
+    public Node getStatement() {
+        return statement;
+    }
 }

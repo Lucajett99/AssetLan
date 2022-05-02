@@ -1,5 +1,6 @@
 package ast;
 
+import ast.typeNode.VoidTypeNode;
 import utils.Environment;
 import utils.SemanticError;
 
@@ -19,7 +20,9 @@ public class ReturnNode implements Node{
 
     @Override
     public Node typeCheck() {
-        return exp.typeCheck();
+        if(exp != null)
+            return exp.typeCheck();
+        else return new VoidTypeNode();
     }
 
     @Override

@@ -1,6 +1,7 @@
 package ast;
 
 import ast.Node;
+import ast.typeNode.AssetTypeNode;
 import utils.EnvError;
 import utils.Environment;
 import utils.SemanticError;
@@ -9,6 +10,7 @@ import java.util.ArrayList;
 
 public class AssetNode implements Node {
     private IdNode id;
+
 
     public AssetNode(IdNode id) {
         this.id = id;
@@ -21,7 +23,7 @@ public class AssetNode implements Node {
 
     @Override
     public Node typeCheck() {
-        return null;
+        return new AssetTypeNode();
     }
 
     @Override

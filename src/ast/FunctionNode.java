@@ -2,6 +2,7 @@ package ast;
 
 import utils.Environment;
 import utils.SemanticError;
+import utils.Utilities;
 
 import java.util.ArrayList;
 
@@ -41,8 +42,14 @@ public class FunctionNode implements Node {
     @Override
     public Node typeCheck() {
      for(Node node: statement){
-         if(node instanceof ReturnNode){
-
+         node.typeCheck();
+         StatementNode ns = (StatementNode) node;
+         if(ns.getStatement() instanceof ReturnNode){
+             ReturnNode rn = (ReturnNode) ns.getStatement();
+            if(!Utilities.isSubtype(rn.typeCheck(),type.typeCheck())){  //Errore quando viene fatta la "return;"
+                System.out.println("Incompatible type of declaration method");
+                System.exit(0);
+            };
          }
      }
         return null;
