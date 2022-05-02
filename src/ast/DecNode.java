@@ -65,7 +65,7 @@ public class DecNode implements Node {
                 //in caso é presente un errore dichiarazione multipla
                 res.add(new SemanticError(id_tmp + " already declared [DecNode]"));
             else
-                e = Environment.addDeclaration(e, id_tmp, new TypeNode(type.get(j).getType()),null,0,false);
+                e = Environment.addDeclaration(e, id_tmp, new TypeNode(type.get(j).getStringType()),null,0,false);
         }
         return res;
     }

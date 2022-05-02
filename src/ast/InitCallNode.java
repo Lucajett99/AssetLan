@@ -1,8 +1,7 @@
 package ast;
 
-import utils.EnvError;
-import utils.Environment;
-import utils.SemanticError;
+import org.stringtemplate.v4.ST;
+import utils.*;
 
 import java.util.ArrayList;
 
@@ -11,11 +10,12 @@ public class InitCallNode implements Node{
     private IdNode id;
     private ArrayList<Node> params;
     private ArrayList<Node> bexp;
-
+    private STentry stEntry;
     public InitCallNode(IdNode id, ArrayList<Node> params, ArrayList<Node> bexp) {
         this.id = id;
-        this.params = (params.size()>0?params:null);
-        this.bexp = (bexp.size()>0?bexp:null);
+        this.params = (params.size()>0?params:new ArrayList<>());
+        this.bexp = (bexp.size()>0?bexp:new ArrayList<>());
+        this.stEntry=null;
     }
 
     @Override
@@ -37,7 +37,25 @@ public class InitCallNode implements Node{
 
     @Override
     public Node typeCheck() {
-        return null;
+        if(stEntry!= null
+                && stEntry.isFunction()
+                && params.size()==stEntry.getParameter().size()
+                && bexp.size()==stEntry.getnAssets())
+        {
+            for(int i = 0; i< stEntry.getParameter().size();i++){
+                Node ap = params.get(i);
+                if(!Utilities.isSubtype(ap.typeCheck(),stEntry.getParameter().get(i).typeCheck())){
+                    System.out.println("Incompatible Parameter for Function "+id.getId());
+                    System.exit(0);
+                }
+
+            }
+        }else {
+            System.out.println("Incompatible Type Error [InitCall]");
+            System.exit(0);
+        }
+        return stEntry.getType().typeCheck();
+
     }
 
     @Override
@@ -50,6 +68,8 @@ public class InitCallNode implements Node{
         ArrayList<SemanticError> res = new ArrayList<SemanticError>();
         if(e.isDeclared(id.getId())== EnvError.NO_DECLARE){
             res.add(new SemanticError(id.getId()+": init function is not declared"));
+        }else{
+            stEntry = Environment.lookup(e,id.getId());
         }
         if(bexp!= null){
             for (Node node:bexp) {

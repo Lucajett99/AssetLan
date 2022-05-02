@@ -16,7 +16,7 @@ public class TypeNode implements Node{
         this.type = type;
     }
 
-    public String getType() {
+    public String getStringType() {
         return type;
     }
 

@@ -1,5 +1,6 @@
 package ast;
 
+import ast.typeNode.VoidTypeNode;
 import utils.Environment;
 import utils.SemanticError;
 import utils.Utilities;
@@ -45,11 +46,17 @@ public class FunctionNode implements Node {
          node.typeCheck();
          StatementNode ns = (StatementNode) node;
          if(ns.getStatement() instanceof ReturnNode){
-             ReturnNode rn = (ReturnNode) ns.getStatement();
-            if(!Utilities.isSubtype(rn.typeCheck(),type.typeCheck())){  //Errore quando viene fatta la "return;"
-                System.out.println("Incompatible type of declaration method");
-                System.exit(0);
-            };
+             if(Utilities.isSubtype(type.typeCheck(),new VoidTypeNode())){
+                 System.out.println("Declation function as Void type: mustn't be a return stm");
+                 System.exit(0);
+             }
+             else{
+                 ReturnNode rn = (ReturnNode) ns.getStatement();
+                if(!Utilities.isSubtype(rn.typeCheck(),type.typeCheck())){  //Errore quando viene fatta la "return;"
+                    System.out.println("Incompatible type of declaration method: must be a return "+ type.getStringType());
+                    System.exit(0);
+                };
+             }
          }
      }
         return null;

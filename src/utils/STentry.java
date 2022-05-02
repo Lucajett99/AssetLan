@@ -39,7 +39,7 @@ public class STentry {
     }
 
     public ArrayList<TypeNode> getParameter(){
-        return parameter;
+        return parameter!=null?(parameter):new ArrayList<>();
     }
     public Node getType() {
         return type;

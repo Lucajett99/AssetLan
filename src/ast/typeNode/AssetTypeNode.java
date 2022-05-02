@@ -6,7 +6,7 @@ import utils.SemanticError;
 
 import java.util.ArrayList;
 
-public class AssetTypeNode implements Node {
+public class AssetTypeNode extends IntTypeNode {
     @Override
     public String toPrint(String indent) {
         return null;

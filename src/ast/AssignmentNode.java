@@ -3,16 +3,19 @@ package ast;
 import utils.EnvError;
 import utils.Environment;
 import utils.SemanticError;
+import utils.Utilities;
 
 import java.util.ArrayList;
 
 public class AssignmentNode implements Node {
     private IdNode id;
     private Node exp;
+    private Node type;
 
     public AssignmentNode(IdNode ID, Node exp){
         this.id = ID;
         this.exp = exp;
+        this.type = null;
     }
 
     @Override
@@ -22,7 +25,11 @@ public class AssignmentNode implements Node {
 
     @Override
     public Node typeCheck() {
-        return null;
+        if(!Utilities.isSubtype(type.typeCheck(),exp.typeCheck())){
+            System.out.println("Incompatible type expression : required "+type.typeCheck());
+            System.exit(0);
+        }
+        return type.typeCheck();
     }
 
     @Override
@@ -35,6 +42,8 @@ public class AssignmentNode implements Node {
         ArrayList<SemanticError> res = new ArrayList<SemanticError>();
         if(e.isDeclared(id.getId())== EnvError.NO_DECLARE){
             res.add(new SemanticError(id.getId()+": is not declared"));
+        }else{
+            type = Environment.lookup(e,id.getId()).getType();
         }
         if(exp != null){
             res.addAll(exp.checkSemantics(e));

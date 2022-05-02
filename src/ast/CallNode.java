@@ -13,7 +13,7 @@ public class CallNode implements Node{
     public CallNode(IdNode id, ArrayList<Node> exp, ArrayList<IdNode> listId) {
         this.id = id;
         this.exp = exp;
-        this.listId = (listId.size()>0?listId:null);;
+        this.listId = (listId.size()>0?listId:new ArrayList<>());
         this.stEntry = null;
     }
 
@@ -36,18 +36,21 @@ public class CallNode implements Node{
 
     @Override
     public Node typeCheck() {
-        if(stEntry!= null && stEntry.isFunction() && exp.size()==stEntry.getParameter().size() && listId.size()==stEntry.getnAssets())
+        if(stEntry!= null
+                && stEntry.isFunction()
+                && exp.size()==stEntry.getParameter().size()
+                && listId.size()==stEntry.getnAssets())
         {
             for(int i = 0; i< stEntry.getParameter().size();i++){
                 Node ap = exp.get(i);
-                if(!Utilities.isSubtype(ap.typeCheck(),stEntry.getParameter().get(i))){
+                if(!Utilities.isSubtype(ap.typeCheck(),stEntry.getParameter().get(i).typeCheck())){
                     System.out.println("Incompatible Parameter for Function "+id.getId());
                     System.exit(0);
                 }
 
             }
         }else {
-            System.out.println("Incompatible Type Error");
+            System.out.println("Incompatible Type Error [Call]");
             System.exit(0);
         }
         return stEntry.getType().typeCheck();

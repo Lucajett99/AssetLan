@@ -30,7 +30,7 @@ public class IteNode implements Node{
     @Override
     public Node typeCheck() {
         if(!Utilities.isSubtype(exp.typeCheck(),new BoolTypeNode())){
-                System.out.println("Incopatible Type Error : If condition must be boolean");
+                System.out.println("Incompatible Type Error : If condition must be boolean");
         }
         if(elseStatement == null){
             return thenStatement.typeCheck();
