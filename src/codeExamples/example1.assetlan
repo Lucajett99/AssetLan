@@ -9,6 +9,7 @@ int iter(int n)[]{
     return iter(n+1)[];
 }
 void main(int y)[asset a]{
+    y = a;
     f(iter(y)[])[a,a];
 }
 main(a)[2];
