@@ -25,10 +25,10 @@ public class AssignmentNode implements Node {
 
     @Override
     public Node typeCheck() {
-        if(!Utilities.isSubtype(exp.typeCheck(),type.typeCheck())){
+        if(!Utilities.isSubtype(type.typeCheck(), exp.typeCheck())){
             System.out.println("Incompatible type expression : required "+type.typeCheck());
             System.exit(0);
-        }
+        } //TODO: REMEMBER WE INVERTED PARAMS
         return type.typeCheck();
     }
 

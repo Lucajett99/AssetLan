@@ -10,20 +10,10 @@ import java.util.HashMap;
 public class Environment {
     private final ArrayList<HashMap<String, STentry>> symTable = new ArrayList<HashMap<String,STentry>>();
     private int nestingLevel;
-    private boolean insideFunction;
+
     public Environment() {
         nestingLevel = -1;
-        insideFunction = false;
     }
-
-    public boolean isInsideFunction() {
-        return insideFunction;
-    }
-
-    public void setInsideFunction(boolean insideFunct) {
-        this.insideFunction = insideFunct;
-    }
-
 
     public ArrayList<HashMap<String, STentry>> getSymTable() {
         return symTable;
@@ -62,6 +52,7 @@ public class Environment {
             return EnvError.DECLARED;
         }
     }
+
     /*Add a Symbol in a ST
     * the STentry type is made inside of this method
     * ---------------------------------------------

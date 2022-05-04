@@ -11,23 +11,23 @@ public class STentry {
     private ArrayList<TypeNode> parameter;
     private int nArgs;
     private int nAssets;
-    private boolean function; //return true if symbol is a function , false is a variable
+    private boolean isFunction; //return true if symbol is a function , false is a variable
 
-    public STentry(Node type, int nestingLevel, ArrayList<TypeNode> parameter, int nArgs, int nAssets, boolean function) {
+    public STentry(Node type, int nestingLevel, ArrayList<TypeNode> parameter, int nArgs, int nAssets, boolean isFunction) {
         this.type = type;
         this.nestingLevel = nestingLevel;
         this.parameter = parameter;
         this.nArgs = nArgs;
         this.nAssets = nAssets;
-        this.function = function;
+        this.isFunction = isFunction;
     }
 
     public boolean isFunction() {
-        return function;
+        return isFunction;
     }
 
     public void setFunction(boolean function) {
-        this.function = function;
+        this.isFunction = function;
     }
 
     public int getnAssets() {

@@ -27,7 +27,7 @@ public class TransferNode implements Node{
     @Override
     public Node typeCheck() {
         if(type != null){
-            if(!Utilities.isSubtype(type.typeCheck(),new AssetTypeNode())){
+            if(!Utilities.isSubtype(type.typeCheck(), new AssetTypeNode())){
                 System.out.println("Incompatible Type System : Transfer must be Asset");
             }
         }

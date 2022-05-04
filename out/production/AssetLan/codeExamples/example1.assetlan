@@ -1,11 +1,16 @@
 int a = 500 + 3;
+int b;
 asset x ;
 void f(int n)[asset u, asset v]{
+v = 20;
 if (n == 0) u -o x ;
 else  u -o x ; v -o x ;
 }
-void main()[asset a]{
-    f(1)[a,a];
-    return x;
+int iter(int n)[]{
+    return iter(n+1)[];
 }
-main()[1] ;
+void main(int y)[asset a]{
+    y = a;
+    f(iter(y)[])[a,a];
+}
+main(a)[a];

@@ -20,7 +20,6 @@ public class StatementNode implements Node {
     @Override
     public Node typeCheck() {
         return statement.typeCheck();
-
     }
 
     @Override

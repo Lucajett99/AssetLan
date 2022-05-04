@@ -43,8 +43,8 @@ public class InitCallNode implements Node{
                 && bexp.size()==stEntry.getnAssets())
         {
             for(int i = 0; i< stEntry.getParameter().size();i++){
-                Node ap = params.get(i);
-                if(!Utilities.isSubtype(ap.typeCheck(),stEntry.getParameter().get(i).typeCheck())){
+                Node actualParam = params.get(i);
+                if(!Utilities.isSubtype(actualParam.typeCheck(), stEntry.getParameter().get(i).typeCheck())){
                     System.out.println("Incompatible Parameter for Function "+id.getId());
                     System.exit(0);
                 }

@@ -70,15 +70,13 @@ public class FunctionNode implements Node {
     @Override
     public ArrayList<SemanticError> checkSemantics(Environment env) {
         ArrayList<SemanticError> res = new ArrayList<SemanticError>();
-
-        env = Environment.addDeclaration(env,id.getId(), this.type,(decp!=null)?decp.getDecp().getListType():null,(adec!= null)?adec.getId().size():0,true); //Declaration of the function
+        //We store for the asset only the number of the assets because we already know the type
+        env = Environment.addDeclaration(env, id.getId(), this.type, (decp!=null)?decp.getDecp().getListType():null,(adec!= null)?adec.getId().size():0,true); //Declaration of the function
         if(env == null) //if function is already declared
             res.add(new SemanticError(this.id.getId()+": id already declared [function]"));
 
         env = Environment.newScope(env);
         //to allow recursion
-
-        env.setInsideFunction(true);
 
         /*Aggiungo parametri formali contenuti in Decp*/
         if(decp!= null){
@@ -89,7 +87,6 @@ public class FunctionNode implements Node {
         if(adec != null) {
             res.addAll(adec.checkSemantics(env));
         }
-
 
         /*Aggiungo dichiarazioni in Dec*/
         if(dec != null) {
@@ -105,7 +102,6 @@ public class FunctionNode implements Node {
         }
 
         Environment.exitScope(env);
-        env.setInsideFunction(false);
         return res;
     }
 

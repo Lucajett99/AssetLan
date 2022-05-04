@@ -46,6 +46,7 @@ public class DecNode implements Node {
         return indent + "Dec\n" + str + "\n";
     }
 
+    //We don't need type Check because is only a declaration Type ID. We just add into the ST in CheckSemantics.
     @Override
     public Node typeCheck() {
         return null;

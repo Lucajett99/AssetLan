@@ -2,6 +2,7 @@ int a = 500 + 3;
 int b;
 asset x ;
 void f(int n)[asset u, asset v]{
+v = 20;
 if (n == 0) u -o x ;
 else  u -o x ; v -o x ;
 }
@@ -12,4 +13,4 @@ void main(int y)[asset a]{
     y = a;
     f(iter(y)[])[a,a];
 }
-main(a)[2];
+main(a)[20];

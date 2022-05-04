@@ -33,7 +33,7 @@ public class MoveNode implements Node{
                 Utilities.isSubtype(type2.typeCheck(),new AssetTypeNode()) )){
            System.out.println("Incompatible type error: Must Be AssetNode");
         };
-        return new VoidTypeNode();
+        return new AssetTypeNode();
     }
 
     @Override

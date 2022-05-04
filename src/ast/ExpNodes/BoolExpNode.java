@@ -8,7 +8,7 @@ import utils.SemanticError;
 import java.util.ArrayList;
 
 public class BoolExpNode implements Node {
-    private boolean bool;
+    private final boolean bool;
 
     public BoolExpNode(boolean bool) {
         this.bool = bool;

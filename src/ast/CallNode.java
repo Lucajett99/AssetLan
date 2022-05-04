@@ -36,7 +36,7 @@ public class CallNode implements Node{
 
     @Override
     public Node typeCheck() {
-        if(stEntry!= null
+        if(stEntry != null
                 && stEntry.isFunction()
                 && exp.size()==stEntry.getParameter().size()
                 && listId.size()==stEntry.getnAssets())
