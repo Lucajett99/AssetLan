@@ -1,5 +1,5 @@
 --------LEXICAL ERRORS----------
 
 --------SYNTAX ERRORS----------
-Error: extraneous input '2' expecting {']', ID} at line 9
+Error: extraneous input '5' expecting {']', ID} at line 5
 

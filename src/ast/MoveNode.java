@@ -47,16 +47,18 @@ public class MoveNode implements Node{
         if(e.isDeclared(id1.getId()) == EnvError.NO_DECLARE){
             res.add(new SemanticError((id1.getId())+": is not declared [Move]"));
         }
-
-        STentry first = Environment.lookup(e,id1.getId());
-        type1 = first.getType();
+        else {
+            STentry first = Environment.lookup(e,id1.getId());
+            type1 = first.getType();
+        }
 
         if(e.isDeclared(id2.getId())== EnvError.NO_DECLARE){
             res.add(new SemanticError((id2.getId())+": is not declared [Move]"));
         }
-
-        STentry second = Environment.lookup(e,id2.getId());
-        type2 = second.getType();
+        else {
+            STentry second = Environment.lookup(e,id2.getId());
+            type2 = second.getType();
+        }
 
         return res;
     }
