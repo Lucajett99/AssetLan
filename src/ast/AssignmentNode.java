@@ -28,7 +28,7 @@ public class AssignmentNode implements Node {
         if(!Utilities.isSubtype(type.typeCheck(), exp.typeCheck())){
             System.out.println("Incompatible type expression : required "+type.typeCheck());
             System.exit(0);
-        } //TODO: REMEMBER WE INVERTED PARAMS
+        }
         return type.typeCheck();
     }
 

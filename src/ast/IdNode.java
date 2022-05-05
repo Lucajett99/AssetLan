@@ -8,6 +8,7 @@ import java.util.ArrayList;
 
 public class IdNode implements Node{
     private String id;
+    private Node type;
 
     public String getId() {
         return id;
@@ -15,6 +16,7 @@ public class IdNode implements Node{
 
     public IdNode(String id) {
         this.id = id;
+        this.type = null;
     }
 
     @Override
@@ -24,7 +26,7 @@ public class IdNode implements Node{
 
     @Override
     public Node typeCheck() {
-        return null;
+        return this.type;
     }
 
     @Override
@@ -34,6 +36,8 @@ public class IdNode implements Node{
 
     @Override
     public ArrayList<SemanticError> checkSemantics(Environment e) {
-        return null;
+        ArrayList<SemanticError> res = new ArrayList<>();
+        this.type = Environment.lookup(e, id).getType().typeCheck();
+        return res;
     }
 }

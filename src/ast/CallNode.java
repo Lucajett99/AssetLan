@@ -1,5 +1,7 @@
 package ast;
 
+import ast.typeNode.AssetTypeNode;
+import ast.typeNode.IntTypeNode;
 import utils.*;
 
 import java.util.ArrayList;
@@ -36,25 +38,30 @@ public class CallNode implements Node{
 
     @Override
     public Node typeCheck() {
-        if(stEntry != null
-                && stEntry.isFunction()
-                && exp.size()==stEntry.getParameter().size()
-                && listId.size()==stEntry.getnAssets())
-        {
-            for(int i = 0; i< stEntry.getParameter().size();i++){
-                Node ap = exp.get(i);
-                if(!Utilities.isSubtype(ap.typeCheck(),stEntry.getParameter().get(i).typeCheck())){
-                    System.out.println("Incompatible Parameter for Function "+id.getId());
+        if (stEntry != null && stEntry.isFunction()) {
+            if (exp.size() != stEntry.getParameter().size())
+                System.out.println("Incorrect Number of Params in Function " + id.getId());
+            if (listId.size() != stEntry.getnAssets())
+                System.out.println("Incorrect Number of Asset in Function " + id.getId());
+            //Check for each params if type is equal with type in ST
+            for (int i = 0; i < stEntry.getParameter().size(); i++) {
+                Node actualParam = exp.get(i);
+                if (!Utilities.isSubtype(actualParam.typeCheck(), stEntry.getParameter().get(i).typeCheck())) {
+                    System.out.println("Incompatible Parameter for Function " + id.getId());
                     System.exit(0);
                 }
-
             }
-        }else {
-            System.out.println("Incompatible Type Error [Call]");
-            System.exit(0);
+            //Check if all bexp are Int or Asset
+            for (int i = 0; i < stEntry.getnAssets(); i++) {
+                if (!Utilities.isSubtype(listId.get(i).typeCheck(), new AssetTypeNode()) ||
+                        !Utilities.isSubtype(listId.get(i).typeCheck(), new IntTypeNode())) {
+                    System.out.println("Incompatible Asset Parameter for Function " + id.getId());
+                    //System.exit(0);
+                }
+            }
         }
         return stEntry.getType().typeCheck();
-    }
+}
 
 
     @Override
@@ -75,6 +82,8 @@ public class CallNode implements Node{
             for (IdNode id : listId) {
                 if (e.isDeclared(id.getId()) == EnvError.NO_DECLARE)
                     res.add(new SemanticError(id.getId() + " : assetID no declared [Call]"));
+                else
+                    res.addAll(id.checkSemantics(e));
             }
         }
         if(exp != null){

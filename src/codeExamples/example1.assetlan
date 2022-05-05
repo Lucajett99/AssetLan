@@ -1,16 +1,15 @@
 int a = 500 + 3;
-int b;
+bool cazzone;
 asset x ;
 void f(int n)[asset u, asset v]{
-v = 20;
 if (n == 0) u -o x ;
 else  u -o x ; v -o x ;
 }
-int iter(int n)[]{
-    return iter(n+1)[];
+int iter(int n)[asset x]{
+    return iter(n+1)[cazzone];
 }
 void main(int y)[asset a]{
     y = a;
-    f(iter(y)[])[a,a];
+    f(iter(y)[cazzone])[a,a];
 }
-main(a)[20];
+main(a)[2];

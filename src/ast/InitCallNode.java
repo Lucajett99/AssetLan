@@ -1,5 +1,7 @@
 package ast;
 
+import ast.typeNode.AssetTypeNode;
+import ast.typeNode.IntTypeNode;
 import org.stringtemplate.v4.ST;
 import utils.*;
 
@@ -37,27 +39,30 @@ public class InitCallNode implements Node{
 
     @Override
     public Node typeCheck() {
-        if(stEntry!= null
-                && stEntry.isFunction()
-                && params.size()==stEntry.getParameter().size()
-                && bexp.size()==stEntry.getnAssets())
-        {
-            for(int i = 0; i< stEntry.getParameter().size();i++){
+        if (stEntry != null && stEntry.isFunction()) {
+            if (params.size() != stEntry.getParameter().size())
+                System.out.println("Incorrect Number of Params in Function " + id.getId());
+            if (bexp.size() != stEntry.getnAssets())
+                System.out.println("Incorrect Number of Asset in Function " + id.getId());
+            //Check for each params if type is equal with type in ST
+            for (int i = 0; i < stEntry.getParameter().size(); i++) {
                 Node actualParam = params.get(i);
-                if(!Utilities.isSubtype(actualParam.typeCheck(), stEntry.getParameter().get(i).typeCheck())){
-                    System.out.println("Incompatible Parameter for Function "+id.getId());
+                if (!Utilities.isSubtype(actualParam.typeCheck(), stEntry.getParameter().get(i).typeCheck())) {
+                    System.out.println("Incompatible Parameter for Function " + id.getId());
                     System.exit(0);
                 }
-
             }
-        }else {
-            System.out.println("Incompatible Type Error [InitCall]");
-            System.exit(0);
+            //Check if all bexp are Int or Asset
+            for (int i = 0; i < stEntry.getnAssets(); i++) {
+                if (!Utilities.isSubtype(bexp.get(i).typeCheck(), new AssetTypeNode()) ||
+                        !Utilities.isSubtype(bexp.get(i).typeCheck(), new IntTypeNode())) {
+                    System.out.println("Incompatible Asset Parameter for Function " + id.getId());
+                    System.exit(0);
+                }
+            }
         }
         return stEntry.getType().typeCheck();
-
     }
-
     @Override
     public String codGeneration() {
         return null;
