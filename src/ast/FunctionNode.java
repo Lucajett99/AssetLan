@@ -43,7 +43,6 @@ public class FunctionNode implements Node {
     @Override
     public Node typeCheck() {
      for(Node node: statement){
-         node.typeCheck();
          StatementNode ns = (StatementNode) node;
          if(ns.getStatement() instanceof ReturnNode){
              if(Utilities.isSubtype(type.typeCheck(),new VoidTypeNode())){
@@ -58,6 +57,7 @@ public class FunctionNode implements Node {
                 };
              }
          }
+         else node.typeCheck();
      }
         return null;
     }
