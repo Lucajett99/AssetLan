@@ -12,4 +12,6 @@ public interface Node {
     String codGeneration();
 
     ArrayList<SemanticError> checkSemantics(Environment e);
+
+    ArrayList<String> checkEffects(Environment e);
 }

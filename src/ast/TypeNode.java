@@ -49,4 +49,9 @@ public class TypeNode implements Node{
     public ArrayList<SemanticError> checkSemantics(Environment e) {
         return null;
     }
+
+    @Override
+    public ArrayList<String> checkEffects(Environment e) {
+        return null;
+    }
 }

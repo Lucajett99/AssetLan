@@ -40,4 +40,9 @@ public class IdNode implements Node{
         this.type = Environment.lookup(e, id).getType().typeCheck();
         return res;
     }
+
+    @Override
+    public ArrayList<String> checkEffects(Environment e) {
+        return null;
+    }
 }

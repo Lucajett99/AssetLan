@@ -2,14 +2,13 @@ int a = 500 + 3;
 bool cazzone;
 asset x ;
 void f(int n)[asset u, asset v]{
-if (n == 0) u -o x ;
-else  u -o x ; v -o x ;
+transfer u;
+transfer v;
 }
-int iter(int n)[]{
-    return iter(n+1)[cazzone];
+void a(int n)[asset u, asset v]{
+transfer u;
 }
-void main(int y)[asset a]{
-    y = a;
-    f(iter(y)[])[a,a];
+void b(int n)[asset u, asset v]{
+transfer v;
 }
-main(a)[2];
+f(a)[2,3];

@@ -57,4 +57,14 @@ public class IteNode implements Node{
         if(elseStatement!= null){ res.addAll(elseStatement.checkSemantics(e));}
         return res;
     }
+
+    @Override
+    public ArrayList<String> checkEffects(Environment e) {
+        ArrayList<String> res = new ArrayList<String>();
+
+        res.addAll(thenStatement.checkEffects(e));
+        if(elseStatement!= null)
+            res.addAll(elseStatement.checkEffects(e));
+        return res;
+    }
 }

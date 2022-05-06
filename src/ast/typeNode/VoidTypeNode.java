@@ -26,4 +26,9 @@ public class VoidTypeNode implements Node {
     public ArrayList<SemanticError> checkSemantics(Environment e) {
         return new ArrayList<SemanticError>();
     }
+
+    @Override
+    public ArrayList<String> checkEffects(Environment e) {
+        return null;
+    }
 }

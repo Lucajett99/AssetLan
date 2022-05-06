@@ -12,6 +12,7 @@ public class STentry {
     private int nArgs;
     private int nAssets;
     private boolean isFunction; //return true if symbol is a function , false is a variable
+    private int liquidity;
 
     public STentry(Node type, int nestingLevel, ArrayList<TypeNode> parameter, int nArgs, int nAssets, boolean isFunction) {
         this.type = type;
@@ -20,6 +21,14 @@ public class STentry {
         this.nArgs = nArgs;
         this.nAssets = nAssets;
         this.isFunction = isFunction;
+    }
+
+    public int getLiquidity() {
+        return liquidity;
+    }
+
+    public void setLiquidity(int liquidity) {
+        this.liquidity = liquidity;
     }
 
     public boolean isFunction() {

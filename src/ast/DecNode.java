@@ -70,4 +70,9 @@ public class DecNode implements Node {
         }
         return res;
     }
+
+    @Override
+    public ArrayList<String> checkEffects(Environment e) {
+        return null;
+    }
 }

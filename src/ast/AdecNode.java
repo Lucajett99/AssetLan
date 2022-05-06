@@ -54,4 +54,19 @@ public class AdecNode implements Node {
         }
         return res;
     }
+
+    @Override
+    public ArrayList<String> checkEffects(Environment e) {
+        ArrayList<String> res = new ArrayList<String>();
+        if(id != null) {
+            for (IdNode idAss : id) {
+                if (e.isMultipleDeclared(idAss.getId()) == EnvError.ALREADY_DECLARED) {
+                    res.add(idAss.getId() + " : already declared [adec]");
+                } else {
+                    e = Environment.addDeclaration(e, idAss.getId(), new AssetNode(idAss),null,0,false,1);
+                }
+            }
+        }
+        return res;
+    }
 }

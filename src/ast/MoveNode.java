@@ -62,4 +62,23 @@ public class MoveNode implements Node{
 
         return res;
     }
+
+    @Override
+    public ArrayList<String> checkEffects(Environment e) {
+        ArrayList<String> res = new ArrayList<String>();
+        if (e.isDeclared(id1.getId()) == EnvError.NO_DECLARE) {
+            res.add(id1.getId() + ": is not declared [Move]");
+        } else {
+            STentry first = Environment.lookup(e, id1.getId());
+            first.setLiquidity(0);
+        }
+
+        if (e.isDeclared(id2.getId()) == EnvError.NO_DECLARE) {
+            res.add(id2.getId() + ": is not declared [Move]");
+        } else {
+            STentry second = Environment.lookup(e, id2.getId());
+            second.setLiquidity(1);
+        }
+        return res;
+    }
 }

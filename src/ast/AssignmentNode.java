@@ -51,4 +51,15 @@ public class AssignmentNode implements Node {
     
         return res;
     }
+
+    @Override
+    public ArrayList<String> checkEffects(Environment e) {
+        ArrayList<String> res = new ArrayList<String>();
+        if(e.isDeclared(id.getId())== EnvError.NO_DECLARE){
+            res.add(id.getId()+": is not declared");
+        }else{
+            Environment.lookup(e,id.getId()).setLiquidity(1);
+        }
+        return res;
+    }
 }

@@ -36,6 +36,11 @@ public class StatementNode implements Node {
         return res;
     }
 
+    @Override
+    public ArrayList<String> checkEffects(Environment e) {
+        return statement.checkEffects(e);
+    }
+
     public Node getStatement() {
         return statement;
     }

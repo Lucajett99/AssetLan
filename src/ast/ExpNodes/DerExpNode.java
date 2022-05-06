@@ -41,4 +41,9 @@ public class DerExpNode implements Node {
             type = Environment.lookup(e,id).getType();
         return res;
     }
+
+    @Override
+    public ArrayList<String> checkEffects(Environment e) {
+        return null;
+    }
 }

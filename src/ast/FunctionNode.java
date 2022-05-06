@@ -2,6 +2,7 @@ package ast;
 
 import ast.typeNode.VoidTypeNode;
 import utils.Environment;
+import utils.STentry;
 import utils.SemanticError;
 import utils.Utilities;
 
@@ -74,35 +75,63 @@ public class FunctionNode implements Node {
         env = Environment.addDeclaration(env, id.getId(), this.type, (decp!=null)?decp.getDecp().getListType():null,(adec!= null)?adec.getId().size():0,true); //Declaration of the function
         if(env == null) //if function is already declared
             res.add(new SemanticError(this.id.getId()+": id already declared [function]"));
+        else {
+            env = Environment.newScope(env);
+            //to allow recursion
 
-        env = Environment.newScope(env);
-        //to allow recursion
+            /*Aggiungo parametri formali contenuti in Decp*/
+            if (decp != null) {
+                res.addAll(decp.checkSemantics(env));
+            }
 
-        /*Aggiungo parametri formali contenuti in Decp*/
-        if(decp!= null){
-            res.addAll(decp.checkSemantics(env));
+            /*Aggiungo parametri formali Asset*/
+            if (adec != null) {
+                res.addAll(adec.checkSemantics(env));
+            }
+
+            /*Aggiungo dichiarazioni in Dec*/
+            if (dec != null) {
+                for (DecNode decNode : dec) {
+                    res.addAll(decNode.checkSemantics(env));
+                }
+            }
+
+            if (statement != null) {
+                for (Node st : statement) {
+                    res.addAll(st.checkSemantics(env));
+                }
+            }
+
+            Environment.exitScope(env);
         }
+        return res;
+    }
 
+    @Override
+    public ArrayList<String> checkEffects(Environment e) {
+        ArrayList<String> res = new ArrayList<String>();
+        //We store for the asset only the number of the assets because we already know the type
+        e = Environment.addDeclaration(e, id.getId(), this.type, (decp!=null)?decp.getDecp().getListType():null,(adec!= null)?adec.getId().size():0,true); //Declaration of the function
+        e = Environment.newScope(e);
+        //to allow recursion
         /*Aggiungo parametri formali Asset*/
         if(adec != null) {
-            res.addAll(adec.checkSemantics(env));
-        }
-
-        /*Aggiungo dichiarazioni in Dec*/
-        if(dec != null) {
-            for (DecNode decNode : dec) {
-                res.addAll(decNode.checkSemantics(env));
-            }
+            res.addAll(adec.checkEffects(e));
         }
 
         if(statement != null){
             for (Node st: statement ) {
-                res.addAll(st.checkSemantics(env));
+                res.addAll(st.checkEffects(e));
             }
         }
 
-        Environment.exitScope(env);
+        if(adec != null){
+            for(IdNode id : adec.getId()){
+                STentry entry = Environment.lookup(e,id.getId());
+                System.out.println("ASSET "+id.getId()+" : "+entry.getLiquidity());
+            }
+        }
+        Environment.exitScope(e);
         return res;
     }
-
 }
