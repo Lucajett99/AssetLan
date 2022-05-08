@@ -53,7 +53,7 @@ public class CallNode implements Node{
             }
             //Check if all bexp are Int or Asset
             for (int i = 0; i < stEntry.getnAssets(); i++) {
-                if (!Utilities.isSubtype(listId.get(i).typeCheck(), new AssetTypeNode()) ||
+                if (!Utilities.isSubtype(listId.get(i).typeCheck(), new AssetTypeNode()) &&
                         !Utilities.isSubtype(listId.get(i).typeCheck(), new IntTypeNode())) {
                     System.out.println("Incompatible Asset Parameter for Function " + id.getId());
                     //System.exit(0);
@@ -93,5 +93,10 @@ public class CallNode implements Node{
         }
 
         return res;
+    }
+
+    @Override
+    public ArrayList<String> checkEffects(Environment e) {
+        return new ArrayList<String>();
     }
 }

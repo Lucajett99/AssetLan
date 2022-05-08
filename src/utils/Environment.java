@@ -71,7 +71,7 @@ public class Environment {
     * */
     public static Environment addFunctionDeclaration(Environment env, int offset, String key, Node type, ArrayList<TypeNode> parameter,
                                                      int nAssets, boolean function){
-        STentry entry = new STentry(type, offset, env.nestingLevel, parameter, (parameter!=null)?parameter.size():0, nAssets,function);
+        STentry entry = new STentry(type, offset, env.nestingLevel, parameter, parameter.size(), nAssets, function);
         HashMap<String,STentry> recentST = env.getHead();
         if(env.isMultipleDeclared(key) == EnvError.ALREADY_DECLARED){ return null; }    //MULTIPLE_DECLARATION
         else {
@@ -96,6 +96,7 @@ public class Environment {
             return env;
         }
     }
+
 
 
     public static STentry lookup(Environment env, String key){
@@ -124,5 +125,21 @@ public class Environment {
     public static Environment exitScope(Environment env){
         env.removeExternalEnv();
         return env;
+    }
+
+    /*liquidity control*/
+    public static void setLiquidity(Environment e,String key,int liquidity){
+        STentry entry = lookup(e,key);
+        if(entry!=null){
+            entry.setLiquidity(liquidity);
+        }
+    }
+
+    public static boolean checkLiquidity(Environment e,String key,int liquidity){
+        STentry entry = lookup(e,key);
+        if(entry!=null){
+            return entry.getLiquidity() == liquidity;
+        }
+        return false;
     }
 }

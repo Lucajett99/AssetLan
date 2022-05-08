@@ -2,10 +2,7 @@ package ast;
 
 import ast.typeNode.AssetTypeNode;
 import ast.typeNode.VoidTypeNode;
-import utils.EnvError;
-import utils.Environment;
-import utils.SemanticError;
-import utils.Utilities;
+import utils.*;
 
 import java.lang.reflect.Array;
 import java.util.ArrayList;
@@ -47,6 +44,16 @@ public class TransferNode implements Node{
         }
         type = Environment.lookup(e,id.getId()).getType();
 
+        return res;
+    }
+
+    @Override
+    public ArrayList<String> checkEffects(Environment e) {
+        ArrayList<String> res = new ArrayList<String>();
+        if(e.isDeclared(id.getId())== EnvError.NO_DECLARE){
+            res.add(id.getId()+": is not declared [transfer]");
+        }
+        Environment.lookup(e,id.getId()).setLiquidity(0);
         return res;
     }
 }

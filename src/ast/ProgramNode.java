@@ -85,7 +85,26 @@ public class ProgramNode implements Node {
             }
         }
         res.addAll(initcall.checkSemantics(e));
+
         return res;
     }
+
+    @Override
+    public ArrayList<String> checkEffects(Environment e) {
+        ArrayList<String> res = new ArrayList<>();
+        e = Environment.newScope(e);
+        if(assets!= null){
+            for (Node node: assets) {
+                res.addAll(node.checkEffects(e));
+            }
+        }
+        if(functions!= null){
+            for (Node node: functions) {
+                res.addAll(node.checkEffects(e));
+            }
+        }
+        //res.addAll(initcall.checkEffects(e));
+        return res;
+        }
 }
 

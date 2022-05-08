@@ -48,4 +48,9 @@ public class IdNode implements Node{
 
         return res;
     }
+
+    @Override
+    public ArrayList<String> checkEffects(Environment e) {
+        return null;
+    }
 }

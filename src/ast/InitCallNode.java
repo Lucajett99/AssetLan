@@ -89,5 +89,10 @@ public class InitCallNode implements Node{
         }
         return res;
     }
+
+    @Override
+    public ArrayList<String> checkEffects(Environment e) {
+        return new ArrayList<String>();
+    }
 }
 

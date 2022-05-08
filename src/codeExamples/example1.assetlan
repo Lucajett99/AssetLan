@@ -1,5 +1,15 @@
-int a = 5;
-int f()[]{
-return  -a;
+int a = 500 + 3;
+bool cazzone;
+asset x ;
+void f(int n)[asset u, asset v]{
+transfer u;
+transfer v;
 }
-f()[];
+void a(int n)[asset u, asset v]{
+transfer u;
+}
+void b(int n)[asset u, asset v]{
+transfer v;
+}
+f(a)[2,3];
+

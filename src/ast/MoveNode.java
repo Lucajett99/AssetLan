@@ -47,17 +47,38 @@ public class MoveNode implements Node{
         if(e.isDeclared(id1.getId()) == EnvError.NO_DECLARE){
             res.add(new SemanticError((id1.getId())+": is not declared [Move]"));
         }
-
-        STentry first = Environment.lookup(e,id1.getId());
-        type1 = first.getType();
+        else {
+            STentry first = Environment.lookup(e,id1.getId());
+            type1 = first.getType();
+        }
 
         if(e.isDeclared(id2.getId())== EnvError.NO_DECLARE){
             res.add(new SemanticError((id2.getId())+": is not declared [Move]"));
         }
+        else {
+            STentry second = Environment.lookup(e,id2.getId());
+            type2 = second.getType();
+        }
 
-        STentry second = Environment.lookup(e,id2.getId());
-        type2 = second.getType();
+        return res;
+    }
 
+    @Override
+    public ArrayList<String> checkEffects(Environment e) {
+        ArrayList<String> res = new ArrayList<String>();
+        if (e.isDeclared(id1.getId()) == EnvError.NO_DECLARE) {
+            res.add(id1.getId() + ": is not declared [Move]");
+        } else {
+            STentry first = Environment.lookup(e, id1.getId());
+            first.setLiquidity(0);
+        }
+
+        if (e.isDeclared(id2.getId()) == EnvError.NO_DECLARE) {
+            res.add(id2.getId() + ": is not declared [Move]");
+        } else {
+            STentry second = Environment.lookup(e, id2.getId());
+            second.setLiquidity(1);
+        }
         return res;
     }
 }

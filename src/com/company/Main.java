@@ -26,18 +26,24 @@ public class Main {
         AssetLanVisitorImpl visitor = new AssetLanVisitorImpl();
         Node ast = visitor.visit(parser.program());
 
-        if(errorListener.getSyntaxErrors().size() == 0 ){
+        if (errorListener.getSyntaxErrors().size() == 0) {
             System.out.println("Visualizing AST...");
             System.out.println(ast.toPrint(""));
 
             Environment env = new Environment();
             ArrayList<SemanticError> err = ast.checkSemantics(env);
-            if(!err.isEmpty()) {
+            if (!err.isEmpty()) {
                 for (SemanticError e : err) {
                     System.out.println(e.msg);
                 }
-            }else{
+            } else {
                 Node type = ast.typeCheck();
+                ArrayList<String> errEffects = ast.checkEffects(new Environment());
+                if (!errEffects.isEmpty()) {
+                    for (String e : errEffects) {
+                        System.out.println(e);
+                    }
+                }
             }
         }
     }

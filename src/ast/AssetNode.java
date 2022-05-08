@@ -40,4 +40,15 @@ public class AssetNode implements Node {
             res.add(new SemanticError(id.getId()+" already declared [assetNode]"));
         return res;
     }
+
+    @Override
+    public ArrayList<String> checkEffects(Environment e) {
+        ArrayList<String> res = new ArrayList<>();
+        if(e.isMultipleDeclared(id.getId()) == EnvError.NO_DECLARE)
+            Environment.addDeclaration(e, e.setDecOffset(),id.getId(), this);
+        else
+            res.add(id.getId()+" already declared [assetNode]");
+
+        return res;
+    }
 }

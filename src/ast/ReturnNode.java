@@ -38,4 +38,9 @@ public class ReturnNode implements Node{
         else
             return res;
     }
+
+    @Override
+    public ArrayList<String> checkEffects(Environment e) {
+        return new ArrayList<String>();
+    }
 }
