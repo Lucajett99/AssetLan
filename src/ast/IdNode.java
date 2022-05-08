@@ -10,6 +10,9 @@ public class IdNode implements Node{
     private String id;
     private Node type;
 
+    private STentry sTentry;
+    private int nestingLevel;
+
     public String getId() {
         return id;
     }
@@ -17,6 +20,8 @@ public class IdNode implements Node{
     public IdNode(String id) {
         this.id = id;
         this.type = null;
+        this.sTentry = null;
+        this.nestingLevel = -1;
     }
 
     @Override
@@ -38,6 +43,9 @@ public class IdNode implements Node{
     public ArrayList<SemanticError> checkSemantics(Environment e) {
         ArrayList<SemanticError> res = new ArrayList<>();
         this.type = Environment.lookup(e, id).getType().typeCheck();
+        this.sTentry = Environment.lookup(e, id);
+        this.nestingLevel = e.getNestingLevel();
+
         return res;
     }
 }

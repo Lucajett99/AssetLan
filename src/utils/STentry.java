@@ -7,19 +7,40 @@ import java.util.ArrayList;
 
 public class STentry {
     private Node type;
+
+    private int offset;
     private int nestingLevel;
     private ArrayList<TypeNode> parameter;
     private int nArgs;
     private int nAssets;
     private boolean isFunction; //return true if symbol is a function , false is a variable
 
-    public STentry(Node type, int nestingLevel, ArrayList<TypeNode> parameter, int nArgs, int nAssets, boolean isFunction) {
+    public STentry(Node type,int offset, int nestingLevel, ArrayList<TypeNode> parameter, int nArgs, int nAssets, boolean isFunction) {
         this.type = type;
+        this.offset = offset;
         this.nestingLevel = nestingLevel;
         this.parameter = parameter;
         this.nArgs = nArgs;
         this.nAssets = nAssets;
         this.isFunction = isFunction;
+    }
+
+    public STentry(Node type, int offset, int nestingLevel){
+        this.type = type;
+        this.offset = offset;
+        this.nestingLevel = nestingLevel;
+        this.parameter = null;
+        this.nArgs = 0;
+        this.nAssets = 0;
+        this.isFunction = false;
+    }
+
+    public int getOffset() {
+        return offset;
+    }
+
+    public int getNestingLevel() {
+        return nestingLevel;
     }
 
     public boolean isFunction() {

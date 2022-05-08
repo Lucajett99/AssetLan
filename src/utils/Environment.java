@@ -10,13 +10,24 @@ import java.util.HashMap;
 public class Environment {
     private final ArrayList<HashMap<String, STentry>> symTable = new ArrayList<HashMap<String,STentry>>();
     private int nestingLevel;
+    private int offset;
 
     public Environment() {
-        nestingLevel = -1;
+        this.nestingLevel = -1;
+        this.offset = 0;
     }
 
     public ArrayList<HashMap<String, STentry>> getSymTable() {
         return symTable;
+    }
+
+    public int getOffset() {
+        return this.offset;
+    }
+
+    public int setDecOffset() {
+        this.offset--;
+        return offset;
     }
 
     public int getNestingLevel() {
@@ -58,13 +69,28 @@ public class Environment {
     * ---------------------------------------------
     * @return Environment with a new entry
     * */
-    public static Environment addDeclaration(Environment env, String key, Node type, ArrayList<TypeNode> parameter, int nAssets, boolean function){
-        STentry entry = new STentry(type, env.nestingLevel, parameter,(parameter!=null)?parameter.size():0,nAssets,function);
+    public static Environment addFunctionDeclaration(Environment env, int offset, String key, Node type, ArrayList<TypeNode> parameter,
+                                                     int nAssets, boolean function){
+        STentry entry = new STentry(type, offset, env.nestingLevel, parameter, (parameter!=null)?parameter.size():0, nAssets,function);
         HashMap<String,STentry> recentST = env.getHead();
         if(env.isMultipleDeclared(key) == EnvError.ALREADY_DECLARED){ return null; }    //MULTIPLE_DECLARATION
         else {
             entry.addType(type);
-            recentST.put(key, entry); //            env.getHead().put(key, entry); //
+            recentST.put(key, entry); //env.getHead().put(key, entry);
+            env.symTable.remove(env.nestingLevel);
+            env.getSymTable().add(env.getNestingLevel(), recentST);
+            return env;
+        }
+    }
+    public static Environment addDeclaration(Environment env, int offset, String key, Node type) {
+        STentry entry = new STentry(type, offset, env.nestingLevel);
+        HashMap<String, STentry> recentST = env.getHead();
+        if (env.isMultipleDeclared(key) == EnvError.ALREADY_DECLARED) {
+            return null;
+        }    //MULTIPLE_DECLARATION
+        else {
+            entry.addType(type);
+            recentST.put(key, entry); //env.getHead().put(key, entry);
             env.symTable.remove(env.nestingLevel);
             env.getSymTable().add(env.getNestingLevel(), recentST);
             return env;
@@ -88,9 +114,10 @@ public class Environment {
      * and make a new Symbol Table for the last one*/
     public static Environment newScope(Environment env){
         env.nestingLevel++;
+        env.offset = 0;
         HashMap<String, STentry> newHM = new HashMap<String, STentry>();
         if(env.getSymTable().add(newHM)) return env;
-        else return env;
+        else return env; //TODO: ??????
     }
 
     /*Close the last environment, remove the last ST*/

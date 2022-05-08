@@ -27,7 +27,12 @@ public class BoolExpNode implements Node {
 
     @Override
     public String codGeneration() {
-        return null;
+        String boolExpCode = "";
+        if(bool == true)
+            boolExpCode += "li $a0 1 \n";
+        else
+            boolExpCode += "li $a0 0 \n";
+        return boolExpCode;
     }
 
     @Override

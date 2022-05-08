@@ -37,10 +37,14 @@ public class FieldNode implements Node {
         }
         return type.typeCheck();
     }
-
+    // We only generate the code of the exp node if it exist
     @Override
     public String codGeneration() {
-        return null;
+        String fieldCode = "";
+        if (exp != null)
+            fieldCode += exp.codGeneration();
+        return fieldCode;
+        //TODO: I have to generate more code?
     }
 
     @Override
@@ -48,7 +52,7 @@ public class FieldNode implements Node {
         ArrayList<SemanticError> res = new ArrayList<SemanticError>();
 
         if(e.isMultipleDeclared(id.getId())!= EnvError.ALREADY_DECLARED){
-            e = Environment.addDeclaration(e,id.getId(), type, null,0,false);
+            e = Environment.addDeclaration(e, e.setDecOffset(), id.getId(), type);
         }else{
             res.add(new SemanticError(id.getId()+": already declared [field]"));
         }

@@ -3,7 +3,11 @@ package ast.ExpNodes;
 import ast.Node;
 import ast.typeNode.BoolTypeNode;
 import ast.typeNode.IntTypeNode;
+import utils.Environment;
+import utils.SemanticError;
 import utils.Utilities;
+
+import java.util.ArrayList;
 
 public class NotExpNode extends BaseExpNode {
     public NotExpNode(Node exp) {
@@ -17,6 +21,16 @@ public class NotExpNode extends BaseExpNode {
             System.exit(0);
         }
         return new BoolTypeNode();
+    }
+
+    @Override
+    public String codGeneration() {
+        return super.codGeneration();
+    }
+
+    @Override
+    public ArrayList<SemanticError> checkSemantics(Environment e) {
+        return super.checkSemantics(e);
     }
 
     @Override

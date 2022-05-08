@@ -22,7 +22,9 @@ public class PrintNode implements Node{
     }
 
     public String codGeneration() {
-        return exp.codGeneration();
+        String printCode = exp.codGeneration()
+                          +  "print $a0 \n" ;
+        return printCode;
     }
 
     public ArrayList<SemanticError> checkSemantics(Environment e) {

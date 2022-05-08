@@ -63,7 +63,40 @@ public class BinExpNode implements Node {
 
     @Override
     public String codGeneration() {
-        return null;
+        String binExpCode = "";
+        binExpCode += left.codGeneration() + "\n"
+                   + "push $a0 \n"
+                   + right.codGeneration() + "\n"
+                   + "lw $t 0($sp)";
+        switch (op){
+            case "+":
+                binExpCode += "add $a0 $t1 $a0 \n";
+            case "-":
+                binExpCode += "sub $a0 $t1 $a0 \n";
+            case "*":
+                binExpCode += "mult $a0 $t1 $a0 \n";
+            case "%":
+                binExpCode += "div $a0 $t1 $a0 \n";
+            case "<":
+                binExpCode += "lt $a0 $t1 $a0 \n";
+            case "<=":
+                binExpCode += "le $a0 $t1 $a0 \n";
+            case ">":
+                binExpCode += "gt $a0 $t1 $a0 \n";
+            case ">=":
+                binExpCode += "ge $a0 $t1 $a0 \n";
+            case "==":
+                binExpCode += "eq $a0 $t1 $a0 \n";
+            case "!=":
+                binExpCode += "eq $a0 $t1 $a0 \n";
+                binExpCode += "not $a0 $a0 \n";
+            case "&&":
+                binExpCode += "and $a0 $t1 $a0 \n";
+            case "||":
+                binExpCode += "or $a0 $t1 $a0 \n";
+        }
+        binExpCode += "addi $sp $sp 4 \n";
+        return binExpCode;
     }
 
     @Override

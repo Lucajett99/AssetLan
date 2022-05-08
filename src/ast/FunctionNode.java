@@ -71,7 +71,7 @@ public class FunctionNode implements Node {
     public ArrayList<SemanticError> checkSemantics(Environment env) {
         ArrayList<SemanticError> res = new ArrayList<SemanticError>();
         //We store for the asset only the number of the assets because we already know the type
-        env = Environment.addDeclaration(env, id.getId(), this.type, (decp!=null)?decp.getDecp().getListType():null,(adec!= null)?adec.getId().size():0,true); //Declaration of the function
+        env = Environment.addFunctionDeclaration(env, env.setDecOffset(), id.getId(), this.type, (decp!=null)?decp.getDecp().getListType():null,(adec!= null)?adec.getId().size():0,true); //Declaration of the function
         if(env == null) //if function is already declared
             res.add(new SemanticError(this.id.getId()+": id already declared [function]"));
 

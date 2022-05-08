@@ -1,15 +1,5 @@
-int a = 500 + 3;
-bool cazzone;
-asset x ;
-void f(int n)[asset u, asset v]{
-if (n == 0) u -o x ;
-else  u -o x ; v -o x ;
+int a = 5;
+int f()[]{
+return  -a;
 }
-int iter(int n)[asset x]{
-    return iter(n+1)[cazzone];
-}
-void main(int y)[asset a]{
-    y = a;
-    f(iter(y)[cazzone])[a,a];
-}
-main(a)[2];
+f()[];

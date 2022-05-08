@@ -26,7 +26,7 @@ public class ValExpNode implements Node {
 
     @Override
     public String codGeneration() {
-        return null;
+        return "li $a0 " + number + " \n";
     }
 
     @Override

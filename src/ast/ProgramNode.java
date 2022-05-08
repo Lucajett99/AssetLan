@@ -46,7 +46,23 @@ public class ProgramNode implements Node {
 
     @Override
     public String codGeneration() {
-        return null;
+        String fieldCode = "";
+        String assetCode = "";
+        String functionCode = "";
+        String initcallCode = "";
+
+        for(Node field : fields)
+            fieldCode += field.codGeneration();
+
+        for(Node asset : assets)
+            assetCode += asset.codGeneration();
+
+        for(Node function : functions)
+            functionCode += function.codGeneration();
+
+        initcallCode = initcall.codGeneration();
+
+        return  fieldCode + assetCode + functionCode + initcallCode;
     }
 
     @Override
@@ -58,12 +74,12 @@ public class ProgramNode implements Node {
                 res.addAll(node.checkSemantics(e));
             }
         }
-        if(assets!= null){
+        if(assets != null){
             for (Node node: assets) {
                 res.addAll(node.checkSemantics(e));
             }
         }
-        if(functions!= null){
+        if(functions != null){
             for (Node node: functions) {
                 res.addAll(node.checkSemantics(e));
             }

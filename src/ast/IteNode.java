@@ -46,7 +46,17 @@ public class IteNode implements Node{
 
     @Override
     public String codGeneration() {
-        return null;
+        String iteCode = "";
+        String trueLabel = Utilities.freshLabel();
+        String endIfLabel = Utilities.freshLabel();
+        iteCode += exp.codGeneration()
+                + "beq $a0 1 " + trueLabel + "\n"  //TODO: CHECK IF CAN I DO THIS
+                + elseStatement.codGeneration()
+                + "b" + endIfLabel + " \n"
+                + trueLabel + ": \n"
+                + thenStatement.codGeneration()
+                + endIfLabel + ": \n";
+        return iteCode;
     }
 
     @Override
