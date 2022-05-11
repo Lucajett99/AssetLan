@@ -25,7 +25,10 @@ public class NotExpNode extends BaseExpNode {
 
     @Override
     public String codGeneration() {
-        return super.codGeneration();
+        String notExp = "";
+        notExp += exp.codGeneration()
+                + "not $a0 $a0 \n";
+        return notExp;
     }
 
     @Override

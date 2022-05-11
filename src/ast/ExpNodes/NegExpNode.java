@@ -30,7 +30,11 @@ public class NegExpNode extends BaseExpNode {
 
     @Override
     public String codGeneration() {
-        return super.codGeneration();
+        String negCode = "";
+        negCode += exp.codGeneration()
+                + "mult $a0 $a0 -1 \n";
+        return  negCode;
+
     }
 
     @Override

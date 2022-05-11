@@ -34,7 +34,11 @@ public class AssignmentNode implements Node {
 
     @Override
     public String codGeneration() {
-        return null;
+        String assignmentCode = "";
+        assignmentCode += exp.codGeneration()
+                       + id.codGeneration()
+                       + "sw $a0 0($al)";
+        return assignmentCode;
     }
 
     @Override

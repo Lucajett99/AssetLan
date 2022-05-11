@@ -30,6 +30,11 @@ public class Environment {
         return offset;
     }
 
+    public int setFunOffset(){
+        this.offset = this.offset - 2;
+        return offset;
+    }
+
     public int getNestingLevel() {
         return nestingLevel;
     }
@@ -117,13 +122,20 @@ public class Environment {
         env.nestingLevel++;
         env.offset = 0;
         HashMap<String, STentry> newHM = new HashMap<String, STentry>();
-        if(env.getSymTable().add(newHM)) return env;
-        else return env; //TODO: ??????
+        env.getSymTable().add(newHM);
+        return env;
     }
 
     /*Close the last environment, remove the last ST*/
     public static Environment exitScope(Environment env){
         env.removeExternalEnv();
+        if(env.getNestingLevel() > -1){
+        int minimumOffset = 0;
+            HashMap<String,STentry> lastEnv = env.getSymTable().get(env.nestingLevel);
+            for(String id : lastEnv.keySet())
+                minimumOffset = lastEnv.get(id).getOffset() < minimumOffset ? lastEnv.get(id).getOffset() : minimumOffset;
+        env.offset = minimumOffset;
+        }
         return env;
     }
 
