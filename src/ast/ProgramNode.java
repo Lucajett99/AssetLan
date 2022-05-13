@@ -1,9 +1,14 @@
 package ast;
 
+import ast.typeNode.AssetTypeNode;
+import org.stringtemplate.v4.ST;
 import utils.Environment;
+import utils.STentry;
 import utils.SemanticError;
+import utils.Utilities;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 
 public class ProgramNode implements Node {
     private ArrayList<Node> fields;
@@ -104,6 +109,14 @@ public class ProgramNode implements Node {
             }
         }
         //res.addAll(initcall.checkEffects(e));
+        System.out.println("Check Effect on Global Asset");
+        HashMap<String, STentry> env = e.getSymTable().get(0);//at the end of the execution there is one environment
+
+        for(String id : env.keySet() ){//get id to access to environment
+            STentry entry = env.get(id);
+            if(Utilities.isSubtype(entry.getType().typeCheck(), new AssetTypeNode()))
+                System.out.println(id + ": "+ env.get(id).getLiquidity());
+        }
         return res;
         }
 }

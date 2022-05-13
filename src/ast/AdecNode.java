@@ -64,6 +64,7 @@ public class AdecNode implements Node {
                     res.add(idAss.getId() + " : already declared [adec]");
                 } else {
                     e = Environment.addDeclaration(e,e.setDecOffset() ,idAss.getId(), new AssetNode(idAss));
+                    Environment.lookup(e,idAss.getId()).setLiquidity(1);
                 }
             }
         }

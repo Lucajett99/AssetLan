@@ -124,6 +124,15 @@ public class Environment {
     /*Close the last environment, remove the last ST*/
     public static Environment exitScope(Environment env){
         env.removeExternalEnv();
+        if(env.getNestingLevel()>-1){
+            HashMap<String,STentry> lastEnv = env.getSymTable().get(env.nestingLevel);
+            int minimumOffset = 0;
+            for ( String id : lastEnv.keySet()){
+                int offset = lastEnv.get(id).getOffset();
+                if(offset < minimumOffset)minimumOffset=offset;
+            }
+            env.offset = minimumOffset;
+        }
         return env;
     }
 
