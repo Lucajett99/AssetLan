@@ -11,12 +11,10 @@ import java.util.ArrayList;
 
 public class DerExpNode implements Node {
     private String id;
-    private Node type;
     private STentry sTentry;
     private int nestingLevel;
     public DerExpNode(String id) {
         this.id = id;
-        this.type = null;
         this.sTentry = null;
         this.nestingLevel = -1;
     }
@@ -28,13 +26,14 @@ public class DerExpNode implements Node {
 
     @Override
     public Node typeCheck() {
-        return type.typeCheck();
+        return sTentry.getType().typeCheck();
     }
 
     @Override
     public String codGeneration() {
-        String derExpCode = "";
-        int nestingLevel = sTentry.getNestingLevel();
+        String derExpCode = "lw $al 0($fp)";
+
+        //Used for management of the access link
         for (int i = 0; i < nestingLevel - sTentry.getNestingLevel(); i++)
             derExpCode+= "lw $al 0($al) \n";
         derExpCode += "lw $al" + sTentry.getNestingLevel() +"\n";
@@ -48,9 +47,8 @@ public class DerExpNode implements Node {
             res.add(new SemanticError(id+": variable is not declared [DerExp]"));
         }
         else {
-            type = Environment.lookup(e,id).getType();
             this.sTentry = Environment.lookup(e, id);
-            nestingLevel = e.getNestingLevel();
+            this.nestingLevel = e.getNestingLevel();
         }
         return res;
     }

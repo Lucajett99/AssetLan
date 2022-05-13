@@ -36,7 +36,11 @@ public class IdNode implements Node{
 
     @Override
     public String codGeneration() {
-        return null;
+        String idCode = "lw $al 0($fp) \n";
+        for(int i = 0; i < nestingLevel - sTentry.getNestingLevel(); i++)
+            idCode += "lw $al 0($al) \n";
+        idCode += "sw $a0 0($al) \n";
+        return idCode;
     }
 
     @Override

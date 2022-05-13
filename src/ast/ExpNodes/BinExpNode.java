@@ -67,7 +67,7 @@ public class BinExpNode implements Node {
         binExpCode += left.codGeneration() + "\n"
                    + "push $a0 \n"
                    + right.codGeneration() + "\n"
-                   + "lw $t 0($sp)";
+                   + "lw $t1 0($sp)"; // load the left operand in $t1
         switch (op){
             case "+":
                 binExpCode += "add $a0 $t1 $a0 \n";
@@ -75,7 +75,7 @@ public class BinExpNode implements Node {
                 binExpCode += "sub $a0 $t1 $a0 \n";
             case "*":
                 binExpCode += "mult $a0 $t1 $a0 \n";
-            case "%":
+            case "/":
                 binExpCode += "div $a0 $t1 $a0 \n";
             case "<":
                 binExpCode += "lt $a0 $t1 $a0 \n";
@@ -95,7 +95,7 @@ public class BinExpNode implements Node {
             case "||":
                 binExpCode += "or $a0 $t1 $a0 \n";
         }
-        binExpCode += "addi $sp $sp 4 \n";
+        binExpCode += "pop \n";
         return binExpCode;
     }
 

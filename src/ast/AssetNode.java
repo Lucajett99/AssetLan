@@ -10,6 +10,7 @@ import java.util.ArrayList;
 
 public class AssetNode implements Node {
     private IdNode id;
+    private int offset;
 
 
     public AssetNode(IdNode id) {
@@ -34,8 +35,11 @@ public class AssetNode implements Node {
     @Override
     public ArrayList<SemanticError> checkSemantics(Environment e) {
         ArrayList<SemanticError> res = new ArrayList<SemanticError>();
-        if(e.isMultipleDeclared(id.getId()) == EnvError.NO_DECLARE)
-            Environment.addDeclaration(e, e.setDecOffset(), id.getId(), this);
+        if(e.isMultipleDeclared(id.getId()) == EnvError.NO_DECLARE){
+            int offset = e.setDecOffset();
+            Environment.addDeclaration(e, offset, id.getId(), this);
+            this.offset = offset;
+        }
         else
             res.add(new SemanticError(id.getId()+" already declared [assetNode]"));
         return res;
