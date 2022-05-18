@@ -1,9 +1,11 @@
 package ast;
 
 import ast.ExpNodes.*;
+import com.sun.org.apache.xpath.internal.operations.Bool;
 import gen.AssetLanBaseVisitor;
 import gen.AssetLanParser.*;
 
+import gen.AssetLanParser;
 import org.antlr.v4.runtime.tree.ErrorNode;
 import org.antlr.v4.runtime.tree.RuleNode;
 import org.antlr.v4.runtime.tree.TerminalNode;
@@ -82,7 +84,7 @@ public class AssetLanVisitorImpl extends AssetLanBaseVisitor<Node> {
     }
 
     @Override
-    public Node visitDec(DecContext ctx) {
+    public Node visitDec(AssetLanParser.DecContext ctx) {
         ArrayList<TypeNode> type = new ArrayList<TypeNode>();
         ArrayList<IdNode> id = new ArrayList<IdNode>();
         for (TypeContext tc : ctx.type()) {
@@ -180,12 +182,22 @@ public class AssetLanVisitorImpl extends AssetLanBaseVisitor<Node> {
     @Override
     public Node visitIte(IteContext ctx) {
         IteNode ret = null;
-        if(ctx.statement().size()==1){ //there's one only statement IF(cond)THEN{statement} ELSE null
-            ret = new IteNode(visit(ctx.exp()),visit(ctx.statement().get(0)),null);
-        }else if(ctx.statement().size()==2){ //there are two statement IF(cond)THEN{statement} ELSE {statement}
-            ret = new IteNode(visit(ctx.exp()),visit(ctx.statement().get(0)),visit(ctx.statement().get(1)));
+
+        ArrayList<Node> listStatement= new ArrayList<>();
+        for(StatementContext stc : ctx.statement()){
+            listStatement.add(visit(stc));
+
         }
-        return ret;
+        ElseStatementContext ctxElse = ctx.elseStatement();
+        ArrayList<Node> elseStatement  = null;
+            if(ctxElse !=  null){
+                elseStatement = new ArrayList<Node>();
+                for(StatementContext stc : ctxElse.statement()){
+                    elseStatement.add(visit(stc));
+                }
+            }
+
+        return new IteNode(visit(ctx.exp()),listStatement,elseStatement);
     }
 
     @Override

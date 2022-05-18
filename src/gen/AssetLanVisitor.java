@@ -1,4 +1,4 @@
-package gen;// Generated from C:/Users/dino9/Desktop/UNI/MAGISTRALE/COMPILATORI E INTERPRETI/Progetto/AssetLan/src\AssetLan.g4 by ANTLR 4.9.2
+package gen;// Generated from C:/Users/simon/Desktop/AssetLan/AssetLan/src\AssetLan.g4 by ANTLR 4.9.2
 import org.antlr.v4.runtime.tree.ParseTreeVisitor;
 
 /**
@@ -99,6 +99,12 @@ public interface AssetLanVisitor<T> extends ParseTreeVisitor<T> {
 	 * @return the visitor result
 	 */
 	T visitIte(AssetLanParser.IteContext ctx);
+	/**
+	 * Visit a parse tree produced by {@link AssetLanParser#elseStatement}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitElseStatement(AssetLanParser.ElseStatementContext ctx);
 	/**
 	 * Visit a parse tree produced by {@link AssetLanParser#call}.
 	 * @param ctx the parse tree

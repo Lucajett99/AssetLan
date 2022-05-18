@@ -2,6 +2,7 @@ package ast;
 
 import ast.ExpNodes.BaseExpNode;
 import ast.typeNode.BoolTypeNode;
+import ast.typeNode.VoidTypeNode;
 import utils.Environment;
 import utils.SemanticError;
 import utils.Utilities;
@@ -9,12 +10,12 @@ import utils.Utilities;
 import java.sql.Array;
 import java.util.ArrayList;
 
-public class IteNode implements Node{
+public class IteNode implements Node {
     private Node exp;
-    private Node thenStatement;
-    private Node elseStatement;
+    private ArrayList<Node> thenStatement;
+    private ArrayList<Node> elseStatement;
 
-    public IteNode(Node exp, Node thenStatement, Node elseStatement) {
+    public IteNode(Node exp, ArrayList<Node> thenStatement, ArrayList<Node> elseStatement) {
         this.exp = exp;
         this.thenStatement = thenStatement;
         this.elseStatement = elseStatement;
@@ -23,30 +24,40 @@ public class IteNode implements Node{
 
     @Override
     public String toPrint(String indent) {
-        return indent+" if ("+exp.toPrint(indent)+ ") then "+thenStatement.toPrint(indent)+
-                (elseStatement==null?" ":" else "+ elseStatement.toPrint(indent));
+        String s1 = "";//to print then Statement
+        String s2 = "";//to print else statement
+        for (Node n : thenStatement) {
+            s1 += n.toPrint(indent);
+        }
+        if(elseStatement != null){
+            for(Node n: elseStatement){
+                s2+=n.toPrint(indent);
+            }
+        }
+        return " if ("+exp.toPrint(indent)+") then "+ s1 +" else "+ s2;
     }
+
 
     @Override
     public Node typeCheck() {
         if(!Utilities.isSubtype(exp.typeCheck(),new BoolTypeNode())){
-                System.out.println("Incompatible Type Error : If condition must be boolean");
+               System.out.println("Incompatible Type Error : If condition must be boolean");
         }
-        if(elseStatement == null){
-            return thenStatement.typeCheck();
-        }else{
-            if(Utilities.isSubtype(thenStatement.typeCheck(),elseStatement.typeCheck()))
-                return thenStatement.typeCheck();
-            else
-                System.out.println("Incompatible Type Error: else/then stm must return the same type");
+        for(Node node : thenStatement){
+            node.typeCheck();
+        }
+        if(elseStatement != null){
+            for(Node node : elseStatement){
+                node.typeCheck();
+            }
         }
 
-        return null;
+        return new VoidTypeNode();
     }
 
     @Override
     public String codGeneration() {
-        String iteCode = "";
+    /*    String iteCode = "";
         String trueLabel = Utilities.freshLabel();
         String endIfLabel = Utilities.freshLabel();
         iteCode += exp.codGeneration()
@@ -56,25 +67,33 @@ public class IteNode implements Node{
                 + trueLabel + ": \n"
                 + thenStatement.codGeneration()
                 + endIfLabel + ": \n";
-        return iteCode;
+        return iteCode;*/
+        return null;
     }
 
     @Override
     public ArrayList<SemanticError> checkSemantics(Environment e) {
         ArrayList<SemanticError> res = new ArrayList<SemanticError>();
         res.addAll(exp.checkSemantics(e));
-        res.addAll(thenStatement.checkSemantics(e));
-        if(elseStatement!= null){ res.addAll(elseStatement.checkSemantics(e));}
+        //non posso fare altre dichiarazioni per cui non ha senso entrare in un nuovo ambiente per eseguire la check Semantics
+        for(Node node: thenStatement)
+            res.addAll(node.checkSemantics(e));
+
+        if(elseStatement!= null){
+            for(Node node: elseStatement)
+                res.addAll(node.checkSemantics(e));
+        }
         return res;
     }
 
     @Override
     public ArrayList<String> checkEffects(Environment e) {
-        ArrayList<String> res = new ArrayList<String>();
+        /*ArrayList<String> res = new ArrayList<String>();
 
         res.addAll(thenStatement.checkEffects(e));
         if(elseStatement!= null)
             res.addAll(elseStatement.checkEffects(e));
-        return res;
+        return res;*/
+        return null;
     }
 }

@@ -1,5 +1,19 @@
 asset x;
 void f(int n)[asset u, asset v]{
+if(5){
+    print x;
+    print y;
+    if(true){
+        print 5;
+        print 6;
+    }
+    else{print 7;}
+}
+else{
+    x -o x;
+    transfer x;
+}
+
 }
 f(1)[2,3];
 

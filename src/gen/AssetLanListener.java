@@ -1,4 +1,4 @@
-package gen;// Generated from C:/Users/dino9/Desktop/UNI/MAGISTRALE/COMPILATORI E INTERPRETI/Progetto/AssetLan/src\AssetLan.g4 by ANTLR 4.9.2
+package gen;// Generated from C:/Users/simon/Desktop/AssetLan/AssetLan/src\AssetLan.g4 by ANTLR 4.9.2
 import org.antlr.v4.runtime.tree.ParseTreeListener;
 
 /**
@@ -156,6 +156,16 @@ public interface AssetLanListener extends ParseTreeListener {
 	 * @param ctx the parse tree
 	 */
 	void exitIte(AssetLanParser.IteContext ctx);
+	/**
+	 * Enter a parse tree produced by {@link AssetLanParser#elseStatement}.
+	 * @param ctx the parse tree
+	 */
+	void enterElseStatement(AssetLanParser.ElseStatementContext ctx);
+	/**
+	 * Exit a parse tree produced by {@link AssetLanParser#elseStatement}.
+	 * @param ctx the parse tree
+	 */
+	void exitElseStatement(AssetLanParser.ElseStatementContext ctx);
 	/**
 	 * Enter a parse tree produced by {@link AssetLanParser#call}.
 	 * @param ctx the parse tree
