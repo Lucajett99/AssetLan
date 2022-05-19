@@ -1,9 +1,14 @@
 package ast;
 
+import ast.typeNode.AssetTypeNode;
+import org.stringtemplate.v4.ST;
 import utils.Environment;
+import utils.STentry;
 import utils.SemanticError;
+import utils.Utilities;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 
 public class ProgramNode implements Node {
     private ArrayList<Node> fields;
@@ -85,26 +90,41 @@ public class ProgramNode implements Node {
             }
         }
         res.addAll(initcall.checkSemantics(e));
-
+        Environment.exitScope(e);
         return res;
     }
 
     @Override
-    public ArrayList<String> checkEffects(Environment e) {
-        ArrayList<String> res = new ArrayList<>();
+    public Environment checkEffects(Environment e) {
         e = Environment.newScope(e);
-        if(assets!= null){
+        if(assets != null){
             for (Node node: assets) {
-                res.addAll(node.checkEffects(e));
+                e = node.checkEffects(e);
             }
         }
-        if(functions!= null){
-            for (Node node: functions) {
-                res.addAll(node.checkEffects(e));
+        Environment assetGlobal = e;
+        if(functions != null){
+            for(Node fun : functions){
+                e = fun.checkEffects(e);
             }
         }
-        //res.addAll(initcall.checkEffects(e));
-        return res;
+        e = initcall.checkEffects(e);
+
+        HashMap<String,STentry> lastEnv= e.getSymTable().get(0);
+        for(String id : lastEnv.keySet()){
+            STentry entry = Environment.lookup(e,id);
+            if(Utilities.isSubtype(entry.getType(),new AssetTypeNode())){
+                if(entry.getLiquidity() != 0){
+                    if(entry.getLiquidity() != 0  ){
+                        System.out.println("Il contratto non é liquido!");
+                        System.exit(0);
+                    }
+                }
+            }
         }
+        System.out.println("Il contratto é liquido!");
+        return null;
+
+    }
 }
 

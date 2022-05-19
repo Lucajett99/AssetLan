@@ -13,5 +13,5 @@ public interface Node {
 
     ArrayList<SemanticError> checkSemantics(Environment e);
 
-    ArrayList<String> checkEffects(Environment e);
+    Environment checkEffects(Environment e);
 }

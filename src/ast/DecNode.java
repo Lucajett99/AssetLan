@@ -72,7 +72,7 @@ public class DecNode implements Node {
     }
 
     @Override
-    public ArrayList<String> checkEffects(Environment e) {
+    public Environment checkEffects(Environment e) {
         return null;
     }
 }

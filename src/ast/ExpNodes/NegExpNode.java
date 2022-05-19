@@ -3,10 +3,7 @@ package ast.ExpNodes;
 import ast.Node;
 import ast.typeNode.IntTypeNode;
 import utils.Environment;
-import utils.SemanticError;
 import utils.Utilities;
-
-import java.util.ArrayList;
 
 public class NegExpNode extends BaseExpNode {
 
@@ -38,7 +35,7 @@ public class NegExpNode extends BaseExpNode {
     }
 
     @Override
-    public ArrayList<SemanticError> checkSemantics(Environment e) {
-        return super.checkSemantics(e);
+    public Environment checkEffects(Environment e) {
+        return null;
     }
 }

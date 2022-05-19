@@ -3,9 +3,12 @@ package ast;
 import ast.typeNode.AssetTypeNode;
 import ast.typeNode.IntTypeNode;
 import org.stringtemplate.v4.ST;
+import org.stringtemplate.v4.STErrorListener;
 import utils.*;
 
+import javax.swing.plaf.nimbus.State;
 import java.util.ArrayList;
+import java.util.List;
 
 public class InitCallNode implements Node{
 
@@ -39,25 +42,34 @@ public class InitCallNode implements Node{
 
     @Override
     public Node typeCheck() {
-        if (stEntry != null && stEntry.isFunction()) {
-            if (params.size() != stEntry.getParameter().size())
+        if (stEntry != null &&(stEntry.getNode() instanceof FunctionNode)) {
+            DecpNode formalDecParams = stEntry.getNode().getDecpNode();
+            int lengthFormalDecPar = formalDecParams == null ? 0 : formalDecParams.getDecp().getListId().size();
+            if (params.size() != lengthFormalDecPar)
                 System.out.println("Incorrect Number of Params in Function " + id.getId());
-            if (bexp.size() != stEntry.getnAssets())
+
+            AdecNode formalAdecParams = stEntry.getNode().getADec();
+            int lengthFormalAdecPar = formalAdecParams == null ? 0 : formalAdecParams.getId().size();
+            if (bexp.size() !=  lengthFormalAdecPar)
                 System.out.println("Incorrect Number of Asset in Function " + id.getId());
             //Check for each params if type is equal with type in ST
-            for (int i = 0; i < stEntry.getParameter().size(); i++) {
-                Node actualParam = params.get(i);
-                if (!Utilities.isSubtype(actualParam.typeCheck(), stEntry.getParameter().get(i).typeCheck())) {
-                    System.out.println("Incompatible Parameter for Function " + id.getId());
-                    System.exit(0);
+            if(formalDecParams != null) {
+                for (int i = 0; i < lengthFormalDecPar; i++) {
+                    Node actualParam = params.get(i);
+                    if (!Utilities.isSubtype(actualParam.typeCheck(), formalDecParams.getDecp().getListType().get(i).typeCheck())) {
+                        System.out.println("Incompatible Parameter for Function " + id.getId());
+                        System.exit(0);
+                    }
                 }
             }
             //Check if all bexp are Int or Asset
-            for (int i = 0; i < stEntry.getnAssets(); i++) {
-                if (!Utilities.isSubtype(bexp.get(i).typeCheck(), new AssetTypeNode()) ||
-                        !Utilities.isSubtype(bexp.get(i).typeCheck(), new IntTypeNode())) {
-                    System.out.println("Incompatible Asset Parameter for Function " + id.getId());
-                    System.exit(0);
+            if(formalAdecParams != null) {
+                for (int i = 0; i <lengthFormalAdecPar; i++) {
+                    if (!Utilities.isSubtype(bexp.get(i).typeCheck(), new AssetTypeNode()) &&
+                            !Utilities.isSubtype(bexp.get(i).typeCheck(), new IntTypeNode())) {
+                        System.out.println("Incompatible Asset Parameter for Function " + id.getId());
+                        System.exit(0);
+                    }
                 }
             }
         }
@@ -91,8 +103,28 @@ public class InitCallNode implements Node{
     }
 
     @Override
-    public ArrayList<String> checkEffects(Environment e) {
-        return new ArrayList<String>();
+    public Environment checkEffects(Environment e) {
+        STentry st = Environment.lookup(e,id.getId());
+        e = Environment.newScope(e);
+        for( IdNode node : st.getNode().getADec().getId()){
+            e = Environment.addDeclaration(e,node.getId(),1);
+        }
+        //stmLists non sará mai null poiché non esistono funzioni senza corpo
+        ArrayList<StatementNode> stmList= st.getNode().getStatement();
+        for(StatementNode stm : stmList){
+            e = stm.checkEffects(e);
+        }
+        if(st.getNode().getADec() != null){
+            for( IdNode node : st.getNode().getADec().getId()){
+                if(Environment.lookup(e,node.getId()).getLiquidity()!=0){
+                    System.out.println("La funzione "+id.getId()+ " non é liquida!");
+                    System.exit(0);
+                };
+            }
+        }
+        e = Environment.exitScope(e);
+
+        return e;
     }
 }
 

@@ -40,7 +40,7 @@ public class ReturnNode implements Node{
     }
 
     @Override
-    public ArrayList<String> checkEffects(Environment e) {
-        return new ArrayList<String>();
+    public Environment checkEffects(Environment e) {
+        return null;
     }
 }

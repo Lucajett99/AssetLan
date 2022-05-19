@@ -38,7 +38,8 @@ transfer    : 'transfer' ID;
 
 ret	    : 'return' (exp)?;
 
-ite         : 'if' '(' exp ')' statement ('else' statement)?;
+ite         : 'if' '(' exp ')' '{'statement* '}' ('else' '{' elseStatement'}')?;
+elseStatement : statement* ;
 
 call        : ID '(' (exp (',' exp)* )? ')' '[' (ID (',' ID)* )? ']' ;
 

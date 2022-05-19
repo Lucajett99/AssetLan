@@ -2,7 +2,6 @@ package ast.ExpNodes;
 
 import ast.Node;
 import ast.typeNode.BoolTypeNode;
-import ast.typeNode.IntTypeNode;
 import utils.Environment;
 import utils.SemanticError;
 import utils.Utilities;
@@ -37,7 +36,7 @@ public class NotExpNode extends BaseExpNode {
     }
 
     @Override
-    public String toPrint(String indent) {
-        return indent+"NotExp\n" + this.exp.toPrint(indent+"  ");
+    public Environment checkEffects(Environment e) {
+        return null;
     }
 }

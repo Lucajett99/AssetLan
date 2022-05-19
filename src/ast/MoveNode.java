@@ -71,21 +71,12 @@ public class MoveNode implements Node{
     }
 
     @Override
-    public ArrayList<String> checkEffects(Environment e) {
-        ArrayList<String> res = new ArrayList<String>();
-        if (e.isDeclared(id1.getId()) == EnvError.NO_DECLARE) {
-            res.add(id1.getId() + ": is not declared [Move]");
-        } else {
-            STentry first = Environment.lookup(e, id1.getId());
-            first.setLiquidity(0);
-        }
-
-        if (e.isDeclared(id2.getId()) == EnvError.NO_DECLARE) {
-            res.add(id2.getId() + ": is not declared [Move]");
-        } else {
-            STentry second = Environment.lookup(e, id2.getId());
-            second.setLiquidity(1);
-        }
-        return res;
+    public Environment checkEffects(Environment e) {
+        Environment e1 = e;                 //passaggio per riferimento?
+        int liq1 = Environment.lookup(e,id1.getId()).getLiquidity(); // /gamma'(x)
+        int liq2 = Environment.lookup(e,id2.getId()).getLiquidity();//  /gamma'(y)
+        Environment.lookup(e1,id1.getId()).setLiquidity(0);         //  /gamma"[x -> 0 , y -> \gamma'(x) (+) \gamma'(y)]
+        Environment.lookup(e1,id2.getId()).setLiquidity(Math.max(liq1,liq2));
+        return e1;
     }
 }

@@ -40,9 +40,8 @@ public class DecpNode implements Node{
     public ArrayList<SemanticError> checkSemantics(Environment e) {
         return decp.checkSemantics(e);
     }
-
     @Override
-    public ArrayList<String> checkEffects(Environment e) {
+    public Environment checkEffects(Environment e) {
         return null;
     }
 }

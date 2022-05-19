@@ -5,6 +5,7 @@ import ast.typeNode.IntTypeNode;
 import utils.*;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 
 public class CallNode implements Node{
     private IdNode id;
@@ -14,8 +15,8 @@ public class CallNode implements Node{
 
     public CallNode(IdNode id, ArrayList<Node> exp, ArrayList<IdNode> listId) {
         this.id = id;
-        this.exp = exp;
-        this.listId = (listId.size()>0?listId:new ArrayList<>());
+        this.exp = exp; //actualDecParams
+        this.listId = (listId.size()>0?listId:new ArrayList<>()); //actualAdecParams
         this.stEntry = null;
     }
 
@@ -38,30 +39,39 @@ public class CallNode implements Node{
 
     @Override
     public Node typeCheck() {
-        if (stEntry != null && stEntry.isFunction()) {
-            if (exp.size() != stEntry.getParameter().size())
+        if (stEntry != null &&(stEntry.getNode() instanceof FunctionNode)) {
+            DecpNode formalDecParams = stEntry.getNode().getDecpNode();
+            int lengthFormalDecPar = formalDecParams == null ? 0 : formalDecParams.getDecp().getListId().size();
+            if (exp.size() != lengthFormalDecPar)
                 System.out.println("Incorrect Number of Params in Function " + id.getId());
-            if (listId.size() != stEntry.getnAssets())
+
+            AdecNode formalAdecParams = stEntry.getNode().getADec();
+            int lengthFormalAdecPar = formalAdecParams == null ? 0 : formalAdecParams.getId().size();
+            if (listId.size() !=  lengthFormalAdecPar)
                 System.out.println("Incorrect Number of Asset in Function " + id.getId());
             //Check for each params if type is equal with type in ST
-            for (int i = 0; i < stEntry.getParameter().size(); i++) {
-                Node actualParam = exp.get(i);
-                if (!Utilities.isSubtype(actualParam.typeCheck(), stEntry.getParameter().get(i).typeCheck())) {
-                    System.out.println("Incompatible Parameter for Function " + id.getId());
-                    System.exit(0);
+            if(formalDecParams != null) {
+                for (int i = 0; i < lengthFormalDecPar; i++) {
+                    Node actualParam = exp.get(i);
+                    if (!Utilities.isSubtype(actualParam.typeCheck(), formalDecParams.getDecp().getListType().get(i).typeCheck())) {
+                        System.out.println("Incompatible Parameter for Function " + id.getId());
+                        System.exit(0);
+                    }
                 }
             }
             //Check if all bexp are Int or Asset
-            for (int i = 0; i < stEntry.getnAssets(); i++) {
-                if (!Utilities.isSubtype(listId.get(i).typeCheck(), new AssetTypeNode()) &&
-                        !Utilities.isSubtype(listId.get(i).typeCheck(), new IntTypeNode())) {
-                    System.out.println("Incompatible Asset Parameter for Function " + id.getId());
-                    //System.exit(0);
+            if(formalAdecParams != null) {
+                for (int i = 0; i <lengthFormalAdecPar; i++) {
+                    if (!Utilities.isSubtype(listId.get(i).typeCheck(), new AssetTypeNode()) &&
+                            !Utilities.isSubtype(listId.get(i).typeCheck(), new IntTypeNode())) {
+                        System.out.println("Incompatible Asset Parameter for Function " + id.getId());
+                        System.exit(0);
+                    }
                 }
             }
         }
         return stEntry.getType().typeCheck();
-}
+    }
 
 
     @Override
@@ -96,7 +106,44 @@ public class CallNode implements Node{
     }
 
     @Override
-    public ArrayList<String> checkEffects(Environment e) {
-        return new ArrayList<String>();
+    public Environment checkEffects(Environment e) {
+        STentry st = Environment.lookup(e,id.getId());
+        ArrayList<StatementNode> stmList= st.getNode().getStatement();
+        e = Environment.newScope(e);
+
+        //Identificatori Asset
+
+        //Sappiamo per definizione che size dei parametri formali == size parametri attuali
+        ArrayList<IdNode> actualParameter = listId != null ? listId : new ArrayList<>();
+        ArrayList<IdNode> formalParameter = st.getNode().getADec() != null ? st.getNode().getADec().getId() : new ArrayList<>();
+
+        for (int i = 0; i < actualParameter.size(); i++) {
+            //aggiorno l'attuale in base al formale
+            STentry entryA = Environment.lookup(e, actualParameter.get(i).getId());
+            //STentry entryF = Environment.lookup(e,formalParameter.get(i).getId());
+            Environment.addDeclaration(e, formalParameter.get(i).getId(), entryA.getLiquidity());
+            entryA.setLiquidity(0);
+        }
+
+        for(StatementNode stm : stmList){
+            if(stm.getStatement() instanceof CallNode && ((CallNode) stm.getStatement()).id == this.id) {
+                //chiamata ricorsiva presumiamo ci voglia il punto fisso
+            }
+            e = stm.checkEffects(e);
+        }
+
+//probabilmente non bisogna riassegnare i parametri formali agli attuali precedenti
+
+        for(int i = 0; i< formalParameter.size();i++){
+            //aggiorno l'attuale in base al formale
+            STentry entryF = Environment.lookup(e,formalParameter.get(i).getId());
+            if(entryF.getLiquidity() != 0){
+                System.out.println("funzione "+id.getId()+" non é liquida!");
+                System.exit(0);
+            }
+        }
+        e = Environment.exitScope(e);
+
+        return e;
     }
 }
