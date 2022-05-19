@@ -90,34 +90,41 @@ public class ProgramNode implements Node {
             }
         }
         res.addAll(initcall.checkSemantics(e));
-
+        Environment.exitScope(e);
         return res;
     }
 
     @Override
-    public ArrayList<String> checkEffects(Environment e) {
-        ArrayList<String> res = new ArrayList<>();
+    public Environment checkEffects(Environment e) {
         e = Environment.newScope(e);
-        if(assets!= null){
+        if(assets != null){
             for (Node node: assets) {
-                res.addAll(node.checkEffects(e));
+                e = node.checkEffects(e);
             }
         }
-        if(functions!= null){
-            for (Node node: functions) {
-                res.addAll(node.checkEffects(e));
+        Environment assetGlobal = e;
+        if(functions != null){
+            for(Node fun : functions){
+                e = fun.checkEffects(e);
             }
         }
-        //res.addAll(initcall.checkEffects(e));
-        System.out.println("Check Effect on Global Asset");
-        HashMap<String, STentry> env = e.getSymTable().get(0);//at the end of the execution there is one environment
+        e = initcall.checkEffects(e);
 
-        for(String id : env.keySet() ){//get id to access to environment
-            STentry entry = env.get(id);
-            if(Utilities.isSubtype(entry.getType().typeCheck(), new AssetTypeNode()))
-                System.out.println(id + ": "+ env.get(id).getLiquidity());
+        HashMap<String,STentry> lastEnv= e.getSymTable().get(0);
+        for(String id : lastEnv.keySet()){
+            STentry entry = Environment.lookup(e,id);
+            if(Utilities.isSubtype(entry.getType(),new AssetTypeNode())){
+                if(entry.getLiquidity() != 0){
+                    if(entry.getLiquidity() != 0  ){
+                        System.out.println("Il contratto non é liquido!");
+                        System.exit(0);
+                    }
+                }
+            }
         }
-        return res;
-        }
+        System.out.println("Il contratto é liquido!");
+        return null;
+
+    }
 }
 

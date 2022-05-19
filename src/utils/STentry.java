@@ -1,8 +1,11 @@
 package utils;
 
+import ast.FunctionNode;
 import ast.Node;
+import ast.StatementNode;
 import ast.TypeNode;
 
+import javax.swing.plaf.nimbus.State;
 import java.util.ArrayList;
 
 public class STentry {
@@ -10,30 +13,37 @@ public class STentry {
 
     private int offset;
     private int nestingLevel;
-    private ArrayList<TypeNode> parameter;
-    private int nArgs;
-    private int nAssets;
-    private boolean isFunction; //return true if symbol is a function , false is a variable
+    private FunctionNode node;
     private int liquidity;
 
-    public STentry(Node type,int offset, int nestingLevel, ArrayList<TypeNode> parameter, int nArgs, int nAssets, boolean isFunction) {
+    public STentry(Node type,int offset, int nestingLevel,FunctionNode node) {
         this.type = type;
         this.offset = offset;
         this.nestingLevel = nestingLevel;
-        this.parameter = parameter;
-        this.nArgs = nArgs;
-        this.nAssets = nAssets;
-        this.isFunction = isFunction;
+        this.node = node;
+        this.liquidity = -1;
     }
 
     public STentry(Node type, int offset, int nestingLevel){
         this.type = type;
         this.offset = offset;
         this.nestingLevel = nestingLevel;
-        this.parameter = null;
-        this.nArgs = 0;
-        this.nAssets = 0;
-        this.isFunction = false;
+        this.node = null;
+        this.liquidity = 0;
+    }
+    public STentry(int liquidity){
+        this.type = type;
+        this.offset = offset;
+        this.nestingLevel = nestingLevel;
+        this.liquidity = liquidity;
+    }
+
+    public FunctionNode getNode() {
+        return node;
+    }
+
+    public void setNode(FunctionNode node) {
+        this.node = node;
     }
 
     public int getOffset() {
@@ -52,25 +62,7 @@ public class STentry {
         this.liquidity = liquidity;
     }
 
-    public boolean isFunction() {
-        return isFunction;
-    }
 
-    public void setFunction(boolean function) {
-        this.isFunction = function;
-    }
-
-    public int getnAssets() {
-        return nAssets;
-    }
-
-    public void setnAssets(int nAssets) {
-        this.nAssets = nAssets;
-    }
-
-    public ArrayList<TypeNode> getParameter(){
-        return parameter!=null?(parameter) : new ArrayList<>();
-    }
     public Node getType() {
         return type;
     }

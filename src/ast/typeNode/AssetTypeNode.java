@@ -14,7 +14,7 @@ public class AssetTypeNode extends IntTypeNode {
 
     @Override
     public Node typeCheck() {
-        return null;
+        return this;
     }
 
     @Override
@@ -24,6 +24,6 @@ public class AssetTypeNode extends IntTypeNode {
 
     @Override
     public ArrayList<SemanticError> checkSemantics(Environment e) {
-        return new ArrayList<SemanticError>();
+        return null;
     }
 }

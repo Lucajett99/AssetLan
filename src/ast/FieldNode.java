@@ -63,9 +63,8 @@ public class FieldNode implements Node {
 
         return res;
     }
-
     @Override
-    public ArrayList<String> checkEffects(Environment e) {
+    public Environment checkEffects(Environment e) {
         return null;
     }
 }

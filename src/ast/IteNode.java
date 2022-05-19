@@ -87,13 +87,8 @@ public class IteNode implements Node {
     }
 
     @Override
-    public ArrayList<String> checkEffects(Environment e) {
-        /*ArrayList<String> res = new ArrayList<String>();
-
-        res.addAll(thenStatement.checkEffects(e));
-        if(elseStatement!= null)
-            res.addAll(elseStatement.checkEffects(e));
-        return res;*/
+    public Environment checkEffects(Environment e) {
+        //Definire operatore Max(Environment e, Environment e1)
         return null;
     }
 }

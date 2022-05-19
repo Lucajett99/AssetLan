@@ -46,14 +46,12 @@ public class AssetNode implements Node {
     }
 
     @Override
-    public ArrayList<String> checkEffects(Environment e) {
-        ArrayList<String> res = new ArrayList<>();
-        if(e.isMultipleDeclared(id.getId()) == EnvError.NO_DECLARE) {
-            Environment.addDeclaration(e, e.setDecOffset(), id.getId(), this);
-            Environment.lookup(e,id.getId()).setLiquidity(1);
-        }else
-            res.add(id.getId()+" already declared [assetNode]");
-
-        return res;
+    public Environment checkEffects(Environment e) {
+        return Environment.addDeclaration(e,0,id.getId(),new AssetTypeNode());
     }
+
+    public int isLiquid(Environment e){
+        return Environment.lookup(e,id.getId()).getLiquidity();
+    }
+
 }

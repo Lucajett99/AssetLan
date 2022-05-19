@@ -13,7 +13,7 @@ import java.util.ArrayList;
 public class Main {
 
     public static void main(String[] args) throws Exception {
-        String fileName = "src/codeExamples/example1.assetlan";
+        String fileName = "AssetLan/src/codeExamples/example1.assetlan";
         CharStream charStreams = CharStreams.fromFileName(fileName);
         AssetLanLexer lexer = new AssetLanLexer(charStreams);
         CommonTokenStream tokens = new CommonTokenStream(lexer);
@@ -38,12 +38,8 @@ public class Main {
                 }
             } else {
                 Node type = ast.typeCheck();
-               /* ArrayList<String> errEffects = ast.checkEffects(new Environment());
-                if (!errEffects.isEmpty()) {
-                    for (String e : errEffects) {
-                        System.out.println(e);
-                    }
-                }*/
+                Environment envEffects = ast.checkEffects(new Environment());
+
             }
         }
     }

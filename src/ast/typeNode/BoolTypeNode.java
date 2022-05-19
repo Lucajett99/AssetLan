@@ -14,7 +14,7 @@ public class BoolTypeNode implements Node {
 
     @Override
     public Node typeCheck() {
-        return null;
+        return this;
     }
 
     @Override
@@ -28,7 +28,7 @@ public class BoolTypeNode implements Node {
     }
 
     @Override
-    public ArrayList<String> checkEffects(Environment e) {
+    public Environment checkEffects(Environment e) {
         return null;
     }
 }

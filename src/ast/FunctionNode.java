@@ -2,7 +2,6 @@ package ast;
 
 import ast.typeNode.VoidTypeNode;
 import utils.Environment;
-import utils.STentry;
 import utils.SemanticError;
 import utils.Utilities;
 
@@ -22,6 +21,22 @@ public class FunctionNode implements Node {
         this.id = id;
         this.dec = dec;
         this.adec = adec;
+        this.statement = statement;
+    }
+
+    public DecpNode getDecpNode() {
+        return decp;
+    }
+
+    public AdecNode getADec() {
+        return adec;
+    }
+
+    public ArrayList<StatementNode> getStatement() {
+        return statement;
+    }
+
+    public void setStatement(ArrayList<StatementNode> statement) {
         this.statement = statement;
     }
 
@@ -72,7 +87,7 @@ public class FunctionNode implements Node {
     public ArrayList<SemanticError> checkSemantics(Environment env) {
         ArrayList<SemanticError> res = new ArrayList<SemanticError>();
         //We store for the asset only the number of the assets because we already know the type
-        env = Environment.addFunctionDeclaration(env, env.setDecOffset(), id.getId(), this.type, (decp!=null)?decp.getDecp().getListType():null,(adec!= null)?adec.getId().size():0,true); //Declaration of the function
+        env = Environment.addFunctionDeclaration(env, env.setDecOffset(), id.getId(), this.type, this); //Declaration of the function
         if(env == null) //if function is already declared
             res.add(new SemanticError(this.id.getId()+": id already declared [function]"));
         else {
@@ -108,32 +123,10 @@ public class FunctionNode implements Node {
     }
 
     @Override
-    public ArrayList<String> checkEffects(Environment e) {
-        ArrayList<String> res = new ArrayList<String>();
-        //We store for the asset only the number of the assets because we already know the type
+    public Environment checkEffects(Environment e) {
         ArrayList<TypeNode> parameters = (decp!=null)?decp.getDecp().getListType():null;
         int nAssets = (adec!= null)?adec.getId().size():0;
-        e = Environment.addFunctionDeclaration(e, e.setDecOffset() ,id.getId(), this.type, parameters , nAssets,true); //Declaration of the function
-        e = Environment.newScope(e);
-        //to allow recursion
-        /*Aggiungo parametri formali Asset*/
-        if(adec != null) {
-            res.addAll(adec.checkEffects(e));
-        }
-
-        if(statement != null){
-            for (Node st: statement ) {
-                res.addAll(st.checkEffects(e));
-            }
-        }
-
-        if(adec != null){
-            for(IdNode id : adec.getId()){
-                STentry entry = Environment.lookup(e,id.getId());
-                System.out.println("ASSET "+id.getId()+" : "+entry.getLiquidity());
-            }
-        }
-        Environment.exitScope(e);
-        return res;
+        e = Environment.addFunctionDeclaration(e, e.setDecOffset() ,id.getId(), this.type,this); //Declaration of the function
+        return e;
     }
 }

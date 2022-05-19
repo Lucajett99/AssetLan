@@ -225,10 +225,12 @@ public class AssetLanVisitorImpl extends AssetLanBaseVisitor<Node> {
         }
         ArrayList<Node> bexp = new ArrayList<>();
 
-        for(BexpContext node : ctx.bexp()){
-                bexp.add(visit(node));
+        for(BexpContext node : ctx.bexp()) {
+            bexp.add(visit(node));
         }
+
         return new InitCallNode(id,params,bexp);
+
     }
 
     /*---------------Luca-------------*/

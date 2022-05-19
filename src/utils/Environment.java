@@ -1,6 +1,8 @@
 package utils;
 
+import ast.FunctionNode;
 import ast.Node;
+import ast.StatementNode;
 import ast.TypeNode;
 
 import java.util.ArrayList;
@@ -74,9 +76,8 @@ public class Environment {
     * ---------------------------------------------
     * @return Environment with a new entry
     * */
-    public static Environment addFunctionDeclaration(Environment env, int offset, String key, Node type, ArrayList<TypeNode> parameter,
-                                                     int nAssets, boolean function){
-        STentry entry = new STentry(type, offset, env.nestingLevel, parameter, parameter.size(), nAssets, function);
+    public static Environment addFunctionDeclaration(Environment env, int offset, String key, Node type, FunctionNode funNode){
+        STentry entry = new STentry(type, offset, env.nestingLevel,funNode );
         HashMap<String,STentry> recentST = env.getHead();
         if(env.isMultipleDeclared(key) == EnvError.ALREADY_DECLARED){ return null; }    //MULTIPLE_DECLARATION
         else {
@@ -102,7 +103,21 @@ public class Environment {
         }
     }
 
+    public static Environment addDeclaration(Environment env, String key, int liquidity) {
+        STentry entry = new STentry(null, 0, env.nestingLevel);
+        entry.setLiquidity(liquidity);
+        HashMap<String, STentry> recentST = env.getHead();
+        if (env.isMultipleDeclared(key) == EnvError.ALREADY_DECLARED) {
+            return null;
+        }    //MULTIPLE_DECLARATION
+        else {
 
+            recentST.put(key, entry); //env.getHead().put(key, entry);
+            env.symTable.remove(env.nestingLevel);
+            env.getSymTable().add(env.getNestingLevel(), recentST);
+            return env;
+        }
+    }
 
     public static STentry lookup(Environment env, String key){
         ArrayList<HashMap<String, STentry>> st = env.getSymTable();
@@ -130,7 +145,7 @@ public class Environment {
     public static Environment exitScope(Environment env){
         env.removeExternalEnv();
         if(env.getNestingLevel() > -1){
-        int minimumOffset = 0;
+            int minimumOffset = 0;
             HashMap<String,STentry> lastEnv = env.getSymTable().get(env.nestingLevel);
             for(String id : lastEnv.keySet())
                 minimumOffset = lastEnv.get(id).getOffset() < minimumOffset ? lastEnv.get(id).getOffset() : minimumOffset;
@@ -154,4 +169,6 @@ public class Environment {
         }
         return false;
     }
+
+
 }
