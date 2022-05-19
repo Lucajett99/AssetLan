@@ -32,8 +32,10 @@ public class TransferNode implements Node{
     }
 
     @Override
+
     public String codGeneration() {
-        return null;
+        String transferCode =
+
     }
 
     @Override

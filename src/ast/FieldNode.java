@@ -1,9 +1,6 @@
 package ast;
 
-import utils.EnvError;
-import utils.Environment;
-import utils.SemanticError;
-import utils.Utilities;
+import utils.*;
 
 import java.lang.reflect.Array;
 import java.util.ArrayList;
@@ -12,6 +9,9 @@ public class FieldNode implements Node {
     private TypeNode type;
     private IdNode id;
     private Node exp;
+
+    private STentry sTentry;
+
 
     public FieldNode(Node type, IdNode id, Node exp) {
         this.type = (TypeNode) type;
@@ -37,14 +37,17 @@ public class FieldNode implements Node {
         }
         return type.typeCheck();
     }
-    // We only generate the code of the exp node if it exist
+    // We only generate the code if the expNode exist
     @Override
     public String codGeneration() {
         String fieldCode = "";
-        if (exp != null)
-            fieldCode += exp.codGeneration();
+        // I will only use the STentry  because I declare and inizialize variable at same time
+        if (exp != null) {
+            fieldCode += exp.codGeneration() +
+                         "sw $a0 " + sTentry.getOffset()+"($fp) \n";
+
+        }
         return fieldCode;
-        //TODO: I have to generate more code?
     }
 
     @Override
@@ -53,7 +56,8 @@ public class FieldNode implements Node {
 
         if(e.isMultipleDeclared(id.getId())!= EnvError.ALREADY_DECLARED){
             e = Environment.addDeclaration(e, e.setDecOffset(), id.getId(), type);
-        }else{
+            sTentry = e.lookup(e, id.getId());
+        } else {
             res.add(new SemanticError(id.getId()+": already declared [field]"));
         }
 

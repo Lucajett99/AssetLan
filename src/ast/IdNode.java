@@ -29,6 +29,16 @@ public class IdNode implements Node{
         return indent + "ID " + id + "\n";
     }
 
+    public String emptyValueCodGeneration(){
+        //this function will be used in move and Transfer node to empty the register
+        return  "li " + sTentry.getOffset() + "($al) 0";
+    }
+    public String updateValueCodGeneration(){
+        //this function will be used in move and Transfer node to empty the register
+        return  "sw $a0" + sTentry.getOffset() + "($al)";
+    }
+
+
     @Override
     public Node typeCheck() {
         return this.type;
@@ -39,7 +49,7 @@ public class IdNode implements Node{
         String idCode = "lw $al 0($fp) \n";
         for(int i = 0; i < nestingLevel - sTentry.getNestingLevel(); i++)
             idCode += "lw $al 0($al) \n";
-        idCode += "sw $a0 0($al) \n";
+        idCode += "sw $a0 " + sTentry.getOffset() + "($al) \n";
         return idCode;
     }
 

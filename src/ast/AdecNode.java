@@ -39,6 +39,7 @@ public class AdecNode implements Node {
     }
 
     @Override
+    //There is no code generation for asset declaration
     public String codGeneration() {
         return null;
     }

@@ -38,7 +38,14 @@ public class MoveNode implements Node{
 
     @Override
     public String codGeneration() {
-        return null;
+        String moveCode =  id1.codGeneration()
+                         + id1.emptyValueCodGeneration() //the value of id1 is saved in $a0 I empty the register
+                         + "push $a0 \n"
+                         + id2.codGeneration() //now $al is setted to the value of
+                         + "lw $t 0($sp) \n"
+                         + "add $a0 $a0 $t \n" //now $a0 contains the sum of id1 and id2, I have to load id2
+                         + id2.updateValueCodGeneration();
+        return moveCode;
     }
 
     @Override
