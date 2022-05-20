@@ -116,32 +116,25 @@ public class BinExpNode implements Node {
         return null;
     }
 
+    @Override
     public int evaluateExp(){
-        int l = 0,r = 0;
-        if(left instanceof ValExpNode){
-            l = ((ValExpNode) left).getNumber();
-        }else if(left instanceof BinExpNode){
-            l = ((BinExpNode) left).evaluateExp();
-        }
-        if(right instanceof ValExpNode){
-            r =  ((ValExpNode) right).getNumber();
-        }else if(right instanceof BinExpNode){
-            r = ((BinExpNode) right).evaluateExp();
-        }
-
+        int l = left.evaluateExp();
+        int r = right.evaluateExp();
         switch (op){
             case "+":
                 return l + r;
             case "-":
                 return l - r;
             case "/":
-                return r==0?0:l / r;
+                if(r == 0) {
+                    System.out.println("Division by 0 error");
+                    System.exit(0);
+                }
+                else
+                    return l / r;
             case "*":
-                return l*r;
+                return l * r;
         }
-
-
         return 0;
     }
-
 }

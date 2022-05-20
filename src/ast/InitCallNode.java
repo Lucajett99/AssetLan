@@ -112,20 +112,14 @@ public class InitCallNode implements Node{
             int index = 0;
             int number = 0;
             if(bexp.size() > 0){
-            for( IdNode node : st.getNode().getADec().getId()) {
-                if (bexp.get(index) instanceof BinExpNode) {
-                    BinExpNode bin = (BinExpNode) bexp.get(index);
-                    number = bin.evaluateExp();
-                } else if (bexp.get(index) instanceof ValExpNode) {
-                    ValExpNode val = (ValExpNode) bexp.get(index);
-                    number = val.getNumber();
+                for( IdNode node : st.getNode().getADec().getId()) {
+                    number = bexp.get(index).evaluateExp();
+                    if (number != 0) {
+                        e = Environment.addDeclaration(e, node.getId(), 1);
+                    } else {
+                        e = Environment.addDeclaration(e, node.getId(), 0);
+                    }
                 }
-                if (number != 0) {
-                    e = Environment.addDeclaration(e, node.getId(), 1);
-                } else {
-                    e = Environment.addDeclaration(e, node.getId(), 0);
-                }
-            }
             }
         }
         if(st.getNode().getStatement() != null){

@@ -37,4 +37,9 @@ public class BaseExpNode implements Node {
     public Environment checkEffects(Environment e) {
         return null;
     }
+
+    @Override
+    public int evaluateExp() {
+        return exp.evaluateExp();
+    }
 }

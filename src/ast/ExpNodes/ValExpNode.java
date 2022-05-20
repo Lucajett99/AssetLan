@@ -39,6 +39,11 @@ public class ValExpNode implements Node {
         return null;
     }
 
+    @Override
+    public int evaluateExp() {
+        return number;
+    }
+
     public int getNumber() {
         return number;
     }

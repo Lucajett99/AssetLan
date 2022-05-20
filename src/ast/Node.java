@@ -14,4 +14,8 @@ public interface Node {
     ArrayList<SemanticError> checkSemantics(Environment e);
 
     Environment checkEffects(Environment e);
+
+    default int evaluateExp() {
+        return 0;
+    }
 }
