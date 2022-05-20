@@ -16,7 +16,7 @@ public class ValExpNode implements Node {
 
     @Override
     public String toPrint(String indent) {
-        return indent+"ValExp" + indent + number + "\n";
+        return indent + "ValExp" + indent + number + "\n";
     }
 
     @Override
@@ -38,4 +38,9 @@ public class ValExpNode implements Node {
     public Environment checkEffects(Environment e) {
         return null;
     }
+
+    public int getNumber() {
+        return number;
+    }
+
 }

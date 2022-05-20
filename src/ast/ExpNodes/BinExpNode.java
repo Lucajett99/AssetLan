@@ -115,4 +115,33 @@ public class BinExpNode implements Node {
     public Environment checkEffects(Environment e) {
         return null;
     }
+
+    public int evaluateExp(){
+        int l = 0,r = 0;
+        if(left instanceof ValExpNode){
+            l = ((ValExpNode) left).getNumber();
+        }else if(left instanceof BinExpNode){
+            l = ((BinExpNode) left).evaluateExp();
+        }
+        if(right instanceof ValExpNode){
+            r =  ((ValExpNode) right).getNumber();
+        }else if(right instanceof BinExpNode){
+            r = ((BinExpNode) right).evaluateExp();
+        }
+
+        switch (op){
+            case "+":
+                return l + r;
+            case "-":
+                return l - r;
+            case "/":
+                return r==0?0:l / r;
+            case "*":
+                return l*r;
+        }
+
+
+        return 0;
+    }
+
 }
