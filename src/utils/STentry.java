@@ -1,12 +1,7 @@
 package utils;
 
-import ast.FunctionNode;
+import ast.function.FunctionNode;
 import ast.Node;
-import ast.StatementNode;
-import ast.TypeNode;
-
-import javax.swing.plaf.nimbus.State;
-import java.util.ArrayList;
 
 public class STentry {
     private Node type;

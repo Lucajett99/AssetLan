@@ -50,8 +50,4 @@ public class AssetNode implements Node {
         return Environment.addDeclaration(e,0,id.getId(),new AssetTypeNode());
     }
 
-    public int isLiquid(Environment e){
-        return Environment.lookup(e,id.getId()).getLiquidity();
-    }
-
 }

@@ -1,12 +1,12 @@
-package ast;
+package ast.function;
 
-import utils.EnvError;
+import ast.Node;
 import utils.Environment;
 import utils.SemanticError;
 
 import java.util.ArrayList;
 
-public class DecpNode implements Node{
+public class DecpNode implements Node {
     private DecNode decp;
 
     public DecNode getDecp() {

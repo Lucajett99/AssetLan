@@ -1,5 +1,6 @@
-package ast;
+package ast.function;
 
+import ast.Node;
 import utils.Environment;
 import utils.SemanticError;
 

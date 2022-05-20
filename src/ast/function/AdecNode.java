@@ -1,5 +1,8 @@
-package ast;
+package ast.function;
 
+import ast.AssetNode;
+import ast.IdNode;
+import ast.Node;
 import utils.EnvError;
 import utils.Environment;
 import utils.SemanticError;

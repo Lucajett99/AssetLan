@@ -1,12 +1,13 @@
-package ast;
+package ast.statement;
 
 import ast.ExpNodes.BaseExpNode;
+import ast.Node;
 import utils.Environment;
 import utils.SemanticError;
 
 import java.util.ArrayList;
 
-public class PrintNode implements Node{
+public class PrintNode implements Node {
     private Node exp;
 
     public PrintNode(Node exp){
@@ -33,6 +34,6 @@ public class PrintNode implements Node{
 
     @Override
     public Environment checkEffects(Environment e) {
-        return null;
+        return e;
     }
 }

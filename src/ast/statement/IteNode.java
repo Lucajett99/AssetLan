@@ -1,6 +1,7 @@
-package ast;
+package ast.statement;
 
 import ast.ExpNodes.BaseExpNode;
+import ast.Node;
 import ast.typeNode.BoolTypeNode;
 import ast.typeNode.VoidTypeNode;
 import utils.Environment;
@@ -89,6 +90,6 @@ public class IteNode implements Node {
     @Override
     public Environment checkEffects(Environment e) {
         //Definire operatore Max(Environment e, Environment e1)
-        return null;
+        return e;
     }
 }

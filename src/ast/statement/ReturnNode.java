@@ -1,12 +1,13 @@
-package ast;
+package ast.statement;
 
+import ast.Node;
 import ast.typeNode.VoidTypeNode;
 import utils.Environment;
 import utils.SemanticError;
 
 import java.util.ArrayList;
 
-public class ReturnNode implements Node{
+public class ReturnNode implements Node {
     private Node exp;
 
     public ReturnNode(Node exp) {
@@ -41,6 +42,6 @@ public class ReturnNode implements Node{
 
     @Override
     public Environment checkEffects(Environment e) {
-        return null;
+        return e;
     }
 }

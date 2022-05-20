@@ -1,14 +1,14 @@
 package ast;
 
+import ast.function.AdecNode;
+import ast.function.DecpNode;
+import ast.function.FunctionNode;
+import ast.function.StatementNode;
 import ast.typeNode.AssetTypeNode;
 import ast.typeNode.IntTypeNode;
-import org.stringtemplate.v4.ST;
-import org.stringtemplate.v4.STErrorListener;
 import utils.*;
 
-import javax.swing.plaf.nimbus.State;
 import java.util.ArrayList;
-import java.util.List;
 
 public class InitCallNode implements Node{
 
@@ -106,13 +106,16 @@ public class InitCallNode implements Node{
     public Environment checkEffects(Environment e) {
         STentry st = Environment.lookup(e,id.getId());
         e = Environment.newScope(e);
-        for( IdNode node : st.getNode().getADec().getId()){
-            e = Environment.addDeclaration(e,node.getId(),1);
+        if(st.getNode().getADec() != null){
+            for( IdNode node : st.getNode().getADec().getId()){
+                e = Environment.addDeclaration(e,node.getId(),1);//try to get value passed in code
+            }
         }
-        //stmLists non sará mai null poiché non esistono funzioni senza corpo
+        if(st.getNode().getStatement() != null){
         ArrayList<StatementNode> stmList= st.getNode().getStatement();
-        for(StatementNode stm : stmList){
-            e = stm.checkEffects(e);
+            for(StatementNode stm : stmList){
+                e = stm.checkEffects(e);
+            }
         }
         if(st.getNode().getADec() != null){
             for( IdNode node : st.getNode().getADec().getId()){
