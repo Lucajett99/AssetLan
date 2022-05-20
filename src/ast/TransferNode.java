@@ -34,8 +34,11 @@ public class TransferNode implements Node{
     @Override
 
     public String codGeneration() {
-        String transferCode =
-
+        // I suppose to have a register $b (balance) in which i will store the aggregate sum of all transfers in the program
+        String transferCode = id.codGeneration()
+                            + id.emptyValueCodGeneration()
+                            + "move $b $a0";
+        return transferCode;
     }
 
     @Override
