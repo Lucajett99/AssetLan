@@ -1,12 +1,14 @@
-package ast;
+package ast.statement;
 
+import ast.IdNode;
+import ast.Node;
 import ast.typeNode.AssetTypeNode;
 import ast.typeNode.VoidTypeNode;
 import utils.*;
 
 import java.util.ArrayList;
 
-public class MoveNode implements Node{
+public class MoveNode implements Node {
 
     private IdNode id1;
     private Node type1;

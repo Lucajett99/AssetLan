@@ -110,20 +110,9 @@ public class ProgramNode implements Node {
         }
         e = initcall.checkEffects(e);
 
-        HashMap<String,STentry> lastEnv= e.getSymTable().get(0);
-        for(String id : lastEnv.keySet()){
-            STentry entry = Environment.lookup(e,id);
-            if(Utilities.isSubtype(entry.getType(),new AssetTypeNode())){
-                if(entry.getLiquidity() != 0){
-                    if(entry.getLiquidity() != 0  ){
-                        System.out.println("Il contratto non é liquido!");
-                        System.exit(0);
-                    }
-                }
-            }
-        }
-        System.out.println("Il contratto é liquido!");
-        return null;
+        System.out.println(Environment.checkGlobalLiquidity(e));
+        Environment.exitScope(e);
+        return e;
 
     }
 }

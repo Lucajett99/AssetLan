@@ -1,13 +1,18 @@
-package ast;
+package ast.statement;
 
+import ast.IdNode;
+import ast.Node;
+import ast.function.AdecNode;
+import ast.function.DecpNode;
+import ast.function.FunctionNode;
+import ast.function.StatementNode;
 import ast.typeNode.AssetTypeNode;
 import ast.typeNode.IntTypeNode;
 import utils.*;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 
-public class CallNode implements Node{
+public class CallNode implements Node {
     private IdNode id;
     private ArrayList<Node> exp;
     private ArrayList<IdNode> listId;
@@ -125,17 +130,18 @@ public class CallNode implements Node{
             entryA.setLiquidity(0);
         }
 
-        for(StatementNode stm : stmList){
-            if(stm.getStatement() instanceof CallNode && ((CallNode) stm.getStatement()).id == this.id) {
-                //chiamata ricorsiva presumiamo ci voglia il punto fisso
+        if(stmList != null){
+            for(StatementNode stm : stmList){
+                if(stm.getStatement() instanceof CallNode && ((CallNode) stm.getStatement()).id == this.id) {
+                    //chiamata ricorsiva presumiamo ci voglia il punto fisso
+                }
+                e = stm.checkEffects(e);
             }
-            e = stm.checkEffects(e);
         }
 
-//probabilmente non bisogna riassegnare i parametri formali agli attuali precedenti
-
         for(int i = 0; i< formalParameter.size();i++){
-            //aggiorno l'attuale in base al formale
+            //check that function has liquid
+            //=> all formal parameter are empty
             STentry entryF = Environment.lookup(e,formalParameter.get(i).getId());
             if(entryF.getLiquidity() != 0){
                 System.out.println("funzione "+id.getId()+" non é liquida!");

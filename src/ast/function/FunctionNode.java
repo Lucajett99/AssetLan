@@ -1,5 +1,7 @@
-package ast;
+package ast.function;
 
+import ast.*;
+import ast.statement.ReturnNode;
 import ast.typeNode.VoidTypeNode;
 import utils.Environment;
 import utils.SemanticError;
@@ -124,9 +126,7 @@ public class FunctionNode implements Node {
 
     @Override
     public Environment checkEffects(Environment e) {
-        ArrayList<TypeNode> parameters = (decp!=null)?decp.getDecp().getListType():null;
-        int nAssets = (adec!= null)?adec.getId().size():0;
-        e = Environment.addFunctionDeclaration(e, e.setDecOffset() ,id.getId(), this.type,this); //Declaration of the function
+        e = Environment.addFunctionDeclaration(e, e.setDecOffset() ,id.getId(), this.type,this);
         return e;
     }
 }

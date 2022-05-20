@@ -1,5 +1,7 @@
-package ast;
+package ast.statement;
 
+import ast.IdNode;
+import ast.Node;
 import utils.EnvError;
 import utils.Environment;
 import utils.SemanticError;

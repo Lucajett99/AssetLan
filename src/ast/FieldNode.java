@@ -70,5 +70,5 @@ public class FieldNode implements Node {
     @Override
     public Environment checkEffects(Environment e) {
         return null;
-    }
+    }//null because checkEffects mustn't be called
 }

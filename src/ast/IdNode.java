@@ -65,6 +65,6 @@ public class IdNode implements Node{
 
     @Override
     public Environment checkEffects(Environment e) {
-        return null;
+        return e;
     }
 }

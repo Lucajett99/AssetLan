@@ -1,5 +1,7 @@
-package ast;
+package ast.statement;
 
+import ast.IdNode;
+import ast.Node;
 import ast.typeNode.AssetTypeNode;
 import ast.typeNode.VoidTypeNode;
 import utils.*;
@@ -7,7 +9,7 @@ import utils.*;
 import java.lang.reflect.Array;
 import java.util.ArrayList;
 
-public class TransferNode implements Node{
+public class TransferNode implements Node {
     private IdNode id;
     private Node type;
 

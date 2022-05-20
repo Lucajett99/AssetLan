@@ -1,5 +1,8 @@
-package ast;
+package ast.function;
 
+import ast.IdNode;
+import ast.Node;
+import ast.TypeNode;
 import utils.EnvError;
 import utils.Environment;
 import utils.SemanticError;
@@ -74,5 +77,5 @@ public class DecNode implements Node {
     @Override
     public Environment checkEffects(Environment e) {
         return null;
-    }
+    }//mustn't be called
 }

@@ -1,7 +1,8 @@
 package ast;
 
 import ast.ExpNodes.*;
-import com.sun.org.apache.xpath.internal.operations.Bool;
+import ast.function.*;
+import ast.statement.*;
 import gen.AssetLanBaseVisitor;
 import gen.AssetLanParser.*;
 
