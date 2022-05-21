@@ -18,6 +18,13 @@ public class STentry {
         this.node = node;
         this.liquidity = -1;
     }
+    public STentry(Node type,int offset, int nestingLevel,FunctionNode node, int liquidity) {
+        this.type = type;
+        this.offset = offset;
+        this.nestingLevel = nestingLevel;
+        this.node = node;
+        this.liquidity = liquidity;
+    }
 
     public STentry(Node type, int offset, int nestingLevel){
         this.type = type;

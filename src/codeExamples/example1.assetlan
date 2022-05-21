@@ -1,12 +1,10 @@
-int a; int b = 0 ;
-asset z ;
-void g()[]{
-    a = b;
+asset x ;
+void f(int n)[asset u, asset v]{
+if (n == 0) {u -o x ;}
+else { u -o x ; v -o x ; }
 }
-void f(int x)[asset z]{
-    int y
-    a = y ;		// non e` errore
-    b = b+x ;
-    g()[] ;
+void main()[asset a]{
+f(0)[a,a] ;	// semantica di f()[a,a] ?
+transfer x ;
 }
-f(1)[2/(2-2)]
+main()[1] ;

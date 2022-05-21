@@ -22,7 +22,6 @@ public class IteNode implements Node {
         this.elseStatement = elseStatement;
     }
 
-
     @Override
     public String toPrint(String indent) {
         String s1 = "";//to print then Statement
@@ -90,6 +89,23 @@ public class IteNode implements Node {
     @Override
     public Environment checkEffects(Environment e) {
         //Definire operatore Max(Environment e, Environment e1)
-        return e;
+
+        Environment e1 = e.copy();
+        Environment e2 = e.copy();
+        if(elseStatement == null){
+            for(Node node : thenStatement){
+                e1 = node.checkEffects(e1);
+            }
+            return Environment.max(e,e1);
+        }else{
+            for(Node node : thenStatement){
+                e1 = node.checkEffects(e1);
+            }
+            for(Node node : elseStatement){
+                e2 = node.checkEffects(e2);
+            }
+
+            return Environment.max(e1,e2);
+        }
     }
 }
