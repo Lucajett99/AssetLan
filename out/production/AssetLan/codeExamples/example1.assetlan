@@ -1,15 +1,12 @@
-int a = 500 + 3;
-bool cazzone;
-asset x ;
-void f(int n)[asset u, asset v]{
-transfer u;
-transfer v;
+int a; int b = 0 ;
+asset z ;
+void g()[]{
+    a = b;
 }
-void a(int n)[asset u, asset v]{
-transfer u;
+void f(int x)[]{
+    int y
+    a = y ;		// non e` errore
+    b = b+x ;
+    g()[] ;
 }
-void b(int n)[asset u, asset v]{
-transfer v;
-}
-f(a)[2,3];
-
+f(1)[]

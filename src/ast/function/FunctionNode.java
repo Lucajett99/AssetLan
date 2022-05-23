@@ -82,6 +82,14 @@ public class FunctionNode implements Node {
 
     @Override
     public String codGeneration() {
+        String funLabel = Utilities.freshLabel();
+        String functionCode = funLabel + ":\n"
+                            + "move $fp $sp \n"
+                            + "push $ra"; // TODO: restore the $fp if the function is void
+        for (StatementNode statementNode : statement)
+            functionCode += statementNode.codGeneration();
+        functionCode += "";
+
         return null;
     }
 

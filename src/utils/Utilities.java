@@ -15,11 +15,11 @@ public class Utilities {
         // ( (a instanceof BoolTypeNode) && (b instanceof IntTypeNode) ); //
     }
 
-    public static int getLabelCounter() {
+    private static int getLabelCounter() {
         return labelCounter;
     }
 
-    public static void updateLabelCounter() {
+    private static void updateLabelCounter() {
         labelCounter++;
     }
 
