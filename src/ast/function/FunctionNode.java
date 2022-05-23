@@ -26,6 +26,10 @@ public class FunctionNode implements Node {
         this.statement = statement;
     }
 
+    public IdNode getId() {
+        return id;
+    }
+
     public DecpNode getDecpNode() {
         return decp;
     }

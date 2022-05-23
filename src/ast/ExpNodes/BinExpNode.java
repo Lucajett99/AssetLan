@@ -115,4 +115,26 @@ public class BinExpNode implements Node {
     public Environment checkEffects(Environment e) {
         return null;
     }
+
+    @Override
+    public int evaluateExp(){
+        int l = left.evaluateExp();
+        int r = right.evaluateExp();
+        switch (op){
+            case "+":
+                return l + r;
+            case "-":
+                return l - r;
+            case "/":
+                if(r == 0) {
+                    System.out.println("Division by 0 error");
+                    System.exit(0);
+                }
+                else
+                    return l / r;
+            case "*":
+                return l * r;
+        }
+        return 0;
+    }
 }

@@ -1,5 +1,7 @@
 package ast;
 
+import ast.ExpNodes.BinExpNode;
+import ast.ExpNodes.ValExpNode;
 import ast.function.AdecNode;
 import ast.function.DecpNode;
 import ast.function.FunctionNode;
@@ -65,7 +67,7 @@ public class InitCallNode implements Node{
                 }
             }
             //Check if all bexp are Int or Asset
-            if(formalAdecParams != null) {
+            if(formalAdecParams != null && bexp.size() > 0) {
                 for (int i = 0; i <lengthFormalAdecPar; i++) {
                     if (!Utilities.isSubtype(bexp.get(i).typeCheck(), new AssetTypeNode()) &&
                             !Utilities.isSubtype(bexp.get(i).typeCheck(), new IntTypeNode())) {
@@ -125,8 +127,17 @@ public class InitCallNode implements Node{
         STentry st = Environment.lookup(e,id.getId());
         e = Environment.newScope(e);
         if(st.getNode().getADec() != null){
-            for( IdNode node : st.getNode().getADec().getId()){
-                e = Environment.addDeclaration(e,node.getId(),1);//try to get value passed in code
+            int index = 0;
+            int number = 0;
+            if(bexp.size() > 0){
+                for( IdNode node : st.getNode().getADec().getId()) {
+                    number = bexp.get(index).evaluateExp();
+                    if (number != 0) {
+                        e = Environment.addDeclaration(e, node.getId(), 1);
+                    } else {
+                        e = Environment.addDeclaration(e, node.getId(), 0);
+                    }
+                }
             }
         }
         if(st.getNode().getStatement() != null){

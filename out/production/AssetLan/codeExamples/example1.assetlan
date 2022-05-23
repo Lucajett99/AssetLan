@@ -3,10 +3,18 @@ asset z ;
 void g()[]{
     a = b;
 }
+<<<<<<< HEAD
 void f(int x)[]{
+=======
+void f(int x)[asset z]{
+>>>>>>> 97bbd8a4465c147ccb82955e877e051dbe160a95
     int y
     a = y ;		// non e` errore
     b = b+x ;
     g()[] ;
 }
+<<<<<<< HEAD
 f(1)[]
+=======
+f(1)[2/(2-2)]
+>>>>>>> 97bbd8a4465c147ccb82955e877e051dbe160a95

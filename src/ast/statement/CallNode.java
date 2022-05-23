@@ -18,6 +18,9 @@ public class CallNode implements Node {
     private ArrayList<IdNode> listId;
     private STentry stEntry;
 
+    public String getId(){
+        return id.getId();
+    }
     public CallNode(IdNode id, ArrayList<Node> exp, ArrayList<IdNode> listId) {
         this.id = id;
         this.exp = exp; //actualDecParams
@@ -25,6 +28,11 @@ public class CallNode implements Node {
         this.stEntry = null;
     }
 
+
+
+    public ArrayList<IdNode> getListId() {
+        return listId;
+    }
 
     @Override
     public String toPrint(String indent) {
@@ -55,7 +63,7 @@ public class CallNode implements Node {
             if (listId.size() !=  lengthFormalAdecPar)
                 System.out.println("Incorrect Number of Asset in Function " + id.getId());
             //Check for each params if type is equal with type in ST
-            if(formalDecParams != null) {
+            if(formalDecParams != null && exp!= null) {
                 for (int i = 0; i < lengthFormalDecPar; i++) {
                     Node actualParam = exp.get(i);
                     if (!Utilities.isSubtype(actualParam.typeCheck(), formalDecParams.getDecp().getListType().get(i).typeCheck())) {
@@ -114,6 +122,11 @@ public class CallNode implements Node {
     public Environment checkEffects(Environment e) {
         STentry st = Environment.lookup(e,id.getId());
         ArrayList<StatementNode> stmList= st.getNode().getStatement();
+        for(StatementNode stm : stmList){
+            if(stm.getStatement() instanceof CallNode && ((CallNode) stm.getStatement()).id == this.id) {
+                return Utilities.fixPointMethod(e, st.getNode(), this);
+            }
+        }
         e = Environment.newScope(e);
 
         //Identificatori Asset
@@ -131,12 +144,9 @@ public class CallNode implements Node {
         }
 
         if(stmList != null){
-            for(StatementNode stm : stmList){
-                if(stm.getStatement() instanceof CallNode && ((CallNode) stm.getStatement()).id == this.id) {
-                    //chiamata ricorsiva presumiamo ci voglia il punto fisso
-                }
-                e = stm.checkEffects(e);
-            }
+            for(StatementNode stm : stmList)
+                  e = stm.checkEffects(e);
+
         }
 
         for(int i = 0; i< formalParameter.size();i++){

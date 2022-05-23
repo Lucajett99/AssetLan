@@ -1,12 +1,11 @@
-int a; int b = 0 ;
-asset z ;
-void g()[]{
-    a = b;
-}
-void f(int x)[]{
-    int y
-    a = y ;		// non e` errore
-    b = b+x ;
-    g()[] ;
-}
-f(1)[]
+int a ;
+     asset x ;
+     void f(int n)[asset u, asset v, asset w]{
+        u -o x ;
+	f(n)[v,w,u] ;
+     }
+     void main()[asset a, asset b, asset c]{
+	f(7)[a,b,c] ;
+	transfer x ;
+     }
+     main()[1,2,3] ;
