@@ -18,6 +18,8 @@ public class InitCallNode implements Node{
     private ArrayList<Node> params;
     private ArrayList<Node> bexp;
     private STentry stEntry;
+
+    private int nestingLevel;
     public InitCallNode(IdNode id, ArrayList<Node> params, ArrayList<Node> bexp) {
         this.id = id;
         this.params = (params.size()>0?params:new ArrayList<>());
@@ -79,7 +81,22 @@ public class InitCallNode implements Node{
     }
     @Override
     public String codGeneration() {
-        return null;
+        String initCallCode = "push $fp \n";
+        //I add the assets in inverse order
+        for(int i = bexp.size(); i > 0 ; i--)
+            initCallCode += bexp.get(i).codGeneration()
+                    + "push $a0 \n";
+        //I add the parameters in inverse order
+        for(int i = params.size(); i > 0 ; i--)
+            initCallCode += params.get(i).codGeneration()
+                    + "push $a0 \n";
+        //Now i will set the access link
+        initCallCode += "lw $al 0($fp) \n";
+        for(int i = 0; i < nestingLevel - stEntry.getNestingLevel(); i++)
+            initCallCode += "lw $al 0($al) \n";
+        initCallCode += "push $al"
+                     + "jal";
+        return initCallCode + "print $b \n";
     }
 
     @Override
@@ -89,6 +106,7 @@ public class InitCallNode implements Node{
             res.add(new SemanticError(id.getId()+": init function is not declared"));
         }else{
             stEntry = Environment.lookup(e,id.getId());
+            nestingLevel = e.getNestingLevel();
         }
         if(bexp!= null){
             for (Node node:bexp) {
