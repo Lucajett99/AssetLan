@@ -90,8 +90,8 @@ public class IteNode implements Node {
     public Environment checkEffects(Environment e) {
         //Definire operatore Max(Environment e, Environment e1)
 
-        Environment e1 = e.copy();
-        Environment e2 = e.copy();
+        Environment e1 = e.clone();
+        Environment e2 = e.clone();
         if(elseStatement == null){
             for(Node node : thenStatement){
                 e1 = node.checkEffects(e1);

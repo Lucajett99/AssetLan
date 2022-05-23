@@ -3,6 +3,8 @@ package utils;
 import ast.function.FunctionNode;
 import ast.Node;
 
+import java.util.Objects;
+
 public class STentry {
     private Node type;
 
@@ -71,5 +73,14 @@ public class STentry {
 
     public void addType(Node node){
         this.type = node;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        STentry sTentry = (STentry) o;
+
+        return offset == sTentry.offset && nestingLevel == sTentry.nestingLevel && this.liquidity == sTentry.liquidity;
     }
 }

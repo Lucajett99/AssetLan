@@ -8,6 +8,7 @@ import org.stringtemplate.v4.ST;
 import javax.swing.text.html.parser.Entity;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Objects;
 
 
 public class Environment {
@@ -35,7 +36,7 @@ public class Environment {
         return this.offset;
     }
 
-    public Environment copy(){
+    public Environment clone(){
         ArrayList<HashMap<String, STentry>> newST = new ArrayList<HashMap<String,STentry>>();
         for(int i =0; i< symTable.size();i++){
             HashMap<String,STentry> HM = new HashMap<String,STentry>();
@@ -47,6 +48,23 @@ public class Environment {
         }
         return new Environment(newST,nestingLevel,offset);
     }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Environment that = (Environment) o;
+
+        for (int i = 0;i< symTable.size();i++) {
+            for(String id : symTable.get(i).keySet()){
+                STentry entry1 = that.symTable.get(i).get(id);
+                STentry entry2 = symTable.get(i).get(id);
+                if(!entry1.equals(entry2))return false;
+            }
+        }
+        return nestingLevel == that.nestingLevel && offset == that.offset;
+    }
+
     public int setDecOffset() {
         this.offset--;
         return offset;
