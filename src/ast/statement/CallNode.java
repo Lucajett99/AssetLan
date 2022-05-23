@@ -55,9 +55,10 @@ public class CallNode implements Node {
         if (stEntry != null &&(stEntry.getNode() instanceof FunctionNode)) {
             DecpNode formalDecParams = stEntry.getNode().getDecpNode();
             int lengthFormalDecPar = formalDecParams == null ? 0 : formalDecParams.getDecp().getListId().size();
-            if (exp.size() != lengthFormalDecPar)
+            if (exp.size() != lengthFormalDecPar) {
                 System.out.println("Incorrect Number of Params in Function " + id.getId());
-
+                System.exit(0);
+            }
             AdecNode formalAdecParams = stEntry.getNode().getADec();
             int lengthFormalAdecPar = formalAdecParams == null ? 0 : formalAdecParams.getId().size();
             if (listId.size() !=  lengthFormalAdecPar)
@@ -122,9 +123,11 @@ public class CallNode implements Node {
     public Environment checkEffects(Environment e) {
         STentry st = Environment.lookup(e,id.getId());
         ArrayList<StatementNode> stmList= st.getNode().getStatement();
-        for(StatementNode stm : stmList){
-            if(stm.getStatement() instanceof CallNode && ((CallNode) stm.getStatement()).id == this.id) {
-                return Utilities.fixPointMethod(e, st.getNode(), this);
+        if(stmList != null){
+            for(StatementNode stm : stmList){
+                if(stm.getStatement() instanceof CallNode && ((CallNode) stm.getStatement()).id == this.id) {
+                    return Utilities.fixPointMethod(e, st.getNode(), this);
+                }
             }
         }
         e = Environment.newScope(e);

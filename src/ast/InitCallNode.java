@@ -119,6 +119,7 @@ public class InitCallNode implements Node{
                     } else {
                         e = Environment.addDeclaration(e, node.getId(), 0);
                     }
+                    index++;
                 }
             }
         }

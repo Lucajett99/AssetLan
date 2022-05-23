@@ -27,6 +27,8 @@ public class Utilities {
         labelCounter++;
     }
 
+    private static final int MAXITER = 100;
+
     public static String freshLabel(){
         String label = "label" + getLabelCounter();
         updateLabelCounter();
@@ -41,25 +43,26 @@ public class Utilities {
 
         ArrayList<IdNode> actualParameter = callNode.getListId() != null ? callNode.getListId() : new ArrayList<>();
         ArrayList<IdNode> formalParameter = funNode.getADec() != null ? funNode.getADec().getId() : new ArrayList<>();
-
+        int iteration = 0;
         do{ //TODO: fare controlli
             e_end = e_start.clone();
-
+            iteration++;
+            System.out.println("iter: "+iteration);
             for (int i = 0; i < actualParameter.size(); i++) {
                 //aggiorno l'attuale in base al formale
                 STentry entryA = Environment.lookup(e_end, actualParameter.get(i).getId());
                 //STentry entryF = Environment.lookup(e,formalParameter.get(i).getId());
                 STentry entryF = Environment.lookup(e_start, formalParameter.get(i).getId());
                 entryF.setLiquidity(entryA.getLiquidity());
+                //TODO: svuotare i parametri attuali in caso vengano gia passati alla func
             }
 
             for (StatementNode stm: stmList) {
-
                 if(!(stm.getStatement() instanceof CallNode )){
                     e_start = stm.checkEffects(e_start);
                 }
             }
-        }while(!(e_start.equals(e_end)));
+        }while(!(e_start.equals(e_end)) && iteration <MAXITER );
 
         return e_end;
 
