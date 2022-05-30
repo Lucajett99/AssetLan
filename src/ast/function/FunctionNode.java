@@ -17,6 +17,8 @@ public class FunctionNode implements Node {
     private AdecNode adec;
     private ArrayList<StatementNode> statement;
 
+    private String funLabel;
+
     public FunctionNode(TypeNode type, IdNode id, DecpNode decp, ArrayList<DecNode> dec, AdecNode adec, ArrayList<StatementNode> statement) {
         this.type = type;
         this.decp = (decp);
@@ -24,6 +26,7 @@ public class FunctionNode implements Node {
         this.dec = dec;
         this.adec = adec;
         this.statement = statement;
+        this.funLabel = Utilities.freshLabel();
     }
 
     public IdNode getId() {
@@ -33,6 +36,7 @@ public class FunctionNode implements Node {
     public DecpNode getDecpNode() {
         return decp;
     }
+
 
     public AdecNode getADec() {
         return adec;
@@ -46,6 +50,9 @@ public class FunctionNode implements Node {
         this.statement = statement;
     }
 
+    public String getFunLabel() {
+        return funLabel;
+    }
     @Override
     public String toPrint(String indent) {
         String str="";
@@ -81,20 +88,27 @@ public class FunctionNode implements Node {
          }
          else node.typeCheck();
      }
-        return null;
+        return null; //TODO: controllare che effettivamente torni null
     }
 
     @Override
     public String codGeneration() {
-        String funLabel = Utilities.freshLabel();
-        String functionCode = funLabel + ":\n"
-                            + "move $fp $sp \n"
-                            + "push $ra"; // TODO: restore the $fp if the function is void
-        for (StatementNode statementNode : statement)
-            functionCode += statementNode.codGeneration();
-        functionCode += "";
+        int adecSize = adec.getId().size();
+        int decpSize = decp.getDecp().getListId().size();
+        String funCode = funLabel + ":\n"  //label of the function
+                       + "mv $fp $sp\n"
+                       + "push $ra\n";
+        for (Node statement : this.statement)
+            funCode += statement.codGeneration();
+        funCode += "lw $ra 0($sp)\n" //$ra <- top
+                + "pop \n";
+        for (int i = 0; i < adecSize + decpSize; i++)
+            funCode += "pop \n";
+        funCode += "lw $fp 0($sp)\n" //$fp <-top
+                + "pop \n"
+                + "jr $ra";
 
-        return null;
+        return funCode;
     }
 
     @Override
