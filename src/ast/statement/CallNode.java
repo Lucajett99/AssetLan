@@ -18,6 +18,8 @@ public class CallNode implements Node {
     private ArrayList<IdNode> listId;
     private STentry stEntry;
 
+    private int nestingLevel;
+
     public String getId(){
         return id.getId();
     }
@@ -90,7 +92,25 @@ public class CallNode implements Node {
 
     @Override
     public String codGeneration() {
-        return null;
+        String initCode = "push $fp \n";
+        //I add the assets in inverse order
+        for(int i = exp.size(); i > 0 ; i--)
+            initCode += exp.get(i).codGeneration()
+                    + "push $a0 \n";
+        //I add the parameters in inverse order
+        for(int i = listId.size(); i > 0 ; i--)
+            initCode += listId.get(i).codGeneration()
+                    + "push $a0 \n";
+        //Now i will set the access link
+        initCode += "lw $al 0($fp) \n";
+        for(int i = 0; i < nestingLevel - stEntry.getNestingLevel(); i++)
+            initCode += "lw $al 0($al) \n";
+        initCode += "push $al";
+        String label = stEntry.getNode().getFunLabel();
+        initCode += "jal " + label; //jump at label and store the next instruction in ra
+        return initCode + "print $b \n";
+
+
     }
 
     @Override
@@ -101,6 +121,7 @@ public class CallNode implements Node {
             res.add(new SemanticError(id.getId()+": function is not declared [Call]"));
         }else{
             stEntry = Environment.lookup(e,id.getId());
+            nestingLevel = e.getNestingLevel();
         }
         if(listId!= null) {
             for (IdNode id : listId) {

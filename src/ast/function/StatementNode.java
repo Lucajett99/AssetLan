@@ -25,7 +25,7 @@ public class StatementNode implements Node {
 
     @Override
     public String codGeneration() {
-        return null;
+        return statement.codGeneration();
     }
 
     @Override

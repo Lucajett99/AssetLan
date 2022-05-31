@@ -4,6 +4,9 @@ import ast.AssetLanVisitorImpl;
 import ast.Node;
 import gen.AssetLanLexer;
 import gen.AssetLanParser;
+import gen.interpreter.SVMLexer;
+import gen.interpreter.SVMParser;
+import gen.interpreter.SVMVisitor;
 import org.antlr.v4.runtime.*;
 import utils.Environment;
 import utils.SemanticError;
@@ -40,7 +43,15 @@ public class Main {
                 Node type = ast.typeCheck();
                 Environment envEffects = ast.checkEffects(new Environment());
 
+                /*CharStream codGeneration = ast.codGeneration() //generate an asm file
+                SVMLexer svmLexer = new SVMLexer(codGeneration);
+                CommonTokenStream svmTokens = new CommonTokenStream(svmLexer);
+                SVMParser svmParser = new SVMParser(svmTokens);
+
+                svmLexer.addErrorListener(errorListener);
+                svmParser.addErrorListener(errorListener);*/
             }
+
         }
     }
 }
