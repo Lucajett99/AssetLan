@@ -2,6 +2,8 @@ package ast.statement;
 
 import ast.ExpNodes.BaseExpNode;
 import ast.Node;
+import ast.function.FunctionNode;
+import ast.function.StatementNode;
 import ast.typeNode.BoolTypeNode;
 import ast.typeNode.VoidTypeNode;
 import utils.Environment;
@@ -20,6 +22,14 @@ public class IteNode implements Node {
         this.exp = exp;
         this.thenStatement = thenStatement;
         this.elseStatement = elseStatement;
+    }
+
+    public ArrayList<Node> getThenStatement() {
+        return this.thenStatement;
+    }
+
+    public ArrayList<Node> getElseStatement() {
+        return this.elseStatement;
     }
 
     @Override
@@ -93,11 +103,33 @@ public class IteNode implements Node {
         Environment e1 = e.clone();
         Environment e2 = e.clone();
         if(elseStatement == null){
+            for(Node node : thenStatement) {
+                StatementNode stmNode = (StatementNode) node;
+                if (stmNode.getStatement() instanceof CallNode) {
+                    CallNode cnode = (CallNode) stmNode.getStatement();
+                    FunctionNode fnode = Environment.lookup(e,cnode.getId()).getNode();
+                    return Utilities.fixPointMethod(e, fnode, cnode);
+                }
+            }
             for(Node node : thenStatement){
                 e1 = node.checkEffects(e1);
             }
             return Environment.max(e,e1);
         }else{
+            ArrayList<Node> aggregateStm = new ArrayList<Node>();
+            aggregateStm.addAll(thenStatement);
+            aggregateStm.addAll(elseStatement);
+
+            for(Node node : aggregateStm) {
+                StatementNode nodeStatement = (StatementNode) node;
+                if (nodeStatement.getStatement() instanceof CallNode) {
+                    CallNode cnode = (CallNode)nodeStatement.getStatement();
+                    FunctionNode fnode = Environment.lookup(e,cnode.getId()).getNode();
+                    return Utilities.fixPointMethod(e, fnode, cnode);
+                }
+            }
+
+
             for(Node node : thenStatement){
                 e1 = node.checkEffects(e1);
             }

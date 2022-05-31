@@ -6,6 +6,7 @@ import ast.function.AdecNode;
 import ast.function.DecpNode;
 import ast.function.FunctionNode;
 import ast.function.StatementNode;
+import ast.statement.CallNode;
 import ast.typeNode.AssetTypeNode;
 import ast.typeNode.IntTypeNode;
 import utils.*;

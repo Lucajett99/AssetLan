@@ -125,7 +125,7 @@ public class CallNode implements Node {
         ArrayList<StatementNode> stmList= st.getNode().getStatement();
         if(stmList != null){
             for(StatementNode stm : stmList){
-                if(stm.getStatement() instanceof CallNode && ((CallNode) stm.getStatement()).id == this.id) {
+                if((stm.getStatement() instanceof CallNode && ((CallNode) stm.getStatement()).id == this.id) ) {
                     return Utilities.fixPointMethod(e, st.getNode(), this);
                 }
             }
@@ -149,7 +149,6 @@ public class CallNode implements Node {
         if(stmList != null){
             for(StatementNode stm : stmList)
                   e = stm.checkEffects(e);
-
         }
 
         for(int i = 0; i< formalParameter.size();i++){
