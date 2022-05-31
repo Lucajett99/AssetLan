@@ -1,5 +1,5 @@
 // Generated from C:/Users/dino9/Desktop/UNI/MAGISTRALE/COMPILATORI E INTERPRETI/Progetto/AssetLan/src/interpreter\SVM.g4 by ANTLR 4.9.2
-package interpreter;
+package gen.interpreter;
 
 import java.util.HashMap;
 
