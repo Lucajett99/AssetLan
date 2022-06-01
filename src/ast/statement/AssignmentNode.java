@@ -39,13 +39,14 @@ public class AssignmentNode implements Node {
         String assignmentCode = "";
         assignmentCode += exp.codGeneration()
                        + id.codGeneration()
-                       + "sw $a0 0($al)";
+                       + "sw $a0 0($al)\n";
         return assignmentCode;
     }
 
     @Override
     public ArrayList<SemanticError> checkSemantics(Environment e) {
         ArrayList<SemanticError> res = new ArrayList<SemanticError>();
+        id.checkSemantics(e);
         if(e.isDeclared(id.getId())== EnvError.NO_DECLARE){
             res.add(new SemanticError(id.getId()+": is not declared"));
         }else{

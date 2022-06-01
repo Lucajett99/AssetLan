@@ -93,8 +93,8 @@ public class FunctionNode implements Node {
 
     @Override
     public String codGeneration() {
-        int adecSize = adec.getId().size();
-        int decpSize = decp.getDecp().getListId().size();
+        int adecSize = adec != null ? adec.getId().size() : 0;
+        int decpSize = decp != null ? decp.getDecp().getListId().size() : 0;
         String funCode = funLabel + ":\n"  //label of the function
                        + "mv $fp $sp\n"
                        + "push $ra\n";
@@ -106,8 +106,7 @@ public class FunctionNode implements Node {
             funCode += "pop \n";
         funCode += "lw $fp 0($sp)\n" //$fp <-top
                 + "pop \n"
-                + "jr $ra";
-
+                + "jr $ra \n"; //Jump at address in $ra
         return funCode;
     }
 

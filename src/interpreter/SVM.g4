@@ -62,7 +62,7 @@ instruction:
  * LEXER RULES
  *------------------------------------------------------------------*/
 
-REGISTER    : '$'((('a'|'r')('0'..'9'))|('sp'|'fp'|'hp'|'bsp'|'al'|'ra'));
+REGISTER    : '$'((('a'|'r')('0'..'9'))|('sp'|'fp'|'b'|'al'|'ra'));
 
 PUSH     : 'push' ;
 ADDRESS  : 'address' ;

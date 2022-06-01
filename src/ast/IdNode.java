@@ -1,5 +1,6 @@
 package ast;
 
+import utils.EnvError;
 import utils.Environment;
 import utils.STentry;
 import utils.SemanticError;
@@ -31,11 +32,12 @@ public class IdNode implements Node{
 
     public String emptyValueCodGeneration(){
         //this function will be used in move and Transfer node to empty the register
-        return  "li " + sTentry.getOffset() + "($al) 0";
+        return  "li $a1 0\n" +
+                "sw $a1 " + sTentry.getOffset() + "($al)\n";
     }
     public String updateValueCodGeneration(){
         //this function will be used in move and Transfer node to empty the register
-        return  "sw $a0" + sTentry.getOffset() + "($al)";
+        return  "sw $a0" + sTentry.getOffset() + "($al)\n";
     }
 
 
@@ -56,6 +58,9 @@ public class IdNode implements Node{
     @Override
     public ArrayList<SemanticError> checkSemantics(Environment e) {
         ArrayList<SemanticError> res = new ArrayList<>();
+        if(e.isDeclared(this.id)== EnvError.NO_DECLARE) {
+            res.add(new SemanticError((this.id) + ": is not declared [transfer]"));
+        }
         this.type = Environment.lookup(e, id).getType().typeCheck();
         this.sTentry = Environment.lookup(e, id);
         this.nestingLevel = e.getNestingLevel();

@@ -84,21 +84,23 @@ public class InitCallNode implements Node{
     public String codGeneration() {
         String initCallCode = "push $fp \n";
         //I add the assets in inverse order
-        for(int i = bexp.size(); i > 0 ; i--)
-            initCallCode += bexp.get(i).codGeneration()
+        int bexpSize = bexp != null ? bexp.size() : 0;
+        int paramsSize = params != null ? params.size() : 0;
+        for(int i = bexpSize; i > 0 ; i--)
+            initCallCode += bexp.get(i - 1).codGeneration()
                     + "push $a0 \n";
         //I add the parameters in inverse order
-        for(int i = params.size(); i > 0 ; i--)
-            initCallCode += params.get(i).codGeneration()
+        for(int i = paramsSize; i > 0 ; i--)
+            initCallCode += params.get(i - 1).codGeneration()
                     + "push $a0 \n";
         //Now i will set the access link
         initCallCode += "lw $al 0($fp) \n";
         for(int i = 0; i < nestingLevel - stEntry.getNestingLevel(); i++)
             initCallCode += "lw $al 0($al) \n";
-        initCallCode += "push $al";
+        initCallCode += "push $al\n";
         String label = stEntry.getNode().getFunLabel();
-        initCallCode += "jal " + label; //jump at label and store the next instruction in ra
-        return initCallCode + "print $b \n";
+        initCallCode += "jal " + label + "\n"; //jump at label and store the next instruction in ra
+        return initCallCode +"\n";
     }
 
     @Override

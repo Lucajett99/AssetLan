@@ -39,18 +39,20 @@ public class TransferNode implements Node {
         // I suppose to have a register $b (balance) in which i will store the aggregate sum of all transfers in the program
         String transferCode = id.codGeneration()
                             + id.emptyValueCodGeneration()
-                            + "move $b $a0";
+                            + "add $b $b $a0\n";
         return transferCode;
     }
 
     @Override
     public ArrayList<SemanticError> checkSemantics(Environment e) {
         ArrayList<SemanticError> res = new ArrayList<SemanticError>();
-        if(e.isDeclared(id.getId())== EnvError.NO_DECLARE){
+        /*if(e.isDeclared(id.getId())== EnvError.NO_DECLARE){
                 res.add(new SemanticError((id.getId())+": is not declared [transfer]"));
         }
-        type = Environment.lookup(e,id.getId()).getType();
+        type = Environment.lookup(e,id.getId()).getType();*/
+        res = id.checkSemantics(e);
 
+        type = Environment.lookup(e,id.getId()).getType();
         return res;
     }
     @Override
