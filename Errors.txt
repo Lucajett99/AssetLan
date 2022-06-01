@@ -1,7 +1,6 @@
 --------LEXICAL ERRORS----------
 
 --------SYNTAX ERRORS----------
-<<<<<<< HEAD
 Error: token recognition error at: '$b ' at line 1
 Error: missing REGISTER at '0' at line 1
 Error: token recognition error at: '$b ' at line 12
@@ -13,7 +12,4 @@ Error: mismatched input 'push' expecting '(' at line 31
 Error: mismatched input 'lw' expecting '(' at line 35
 Error: token recognition error at: '$b ' at line 58
 Error: token recognition error at: '$b\n' at line 75
-=======
-Error: mismatched input ')' expecting '[' at line 6
->>>>>>> 5c0a93292be2ae45df566d01b5734d39eb05005a
 
