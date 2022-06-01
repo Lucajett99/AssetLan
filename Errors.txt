@@ -1,10 +1,15 @@
 --------LEXICAL ERRORS----------
 
 --------SYNTAX ERRORS----------
-<<<<<<< HEAD
-Error: extraneous input '-' expecting {'}', 'int', 'bool', 'print', 'transfer', 'return', 'if', ID} at line 3
-Error: no viable alternative at input 'a;' at line 3
-=======
-Error: extraneous input '5' expecting {']', ID} at line 5
->>>>>>> 287927f7b05027c961fb27e81717736169e9efbb
+Error: token recognition error at: '$b ' at line 1
+Error: missing REGISTER at '0' at line 1
+Error: token recognition error at: '$b ' at line 12
+Error: token recognition error at: '$b ' at line 12
+Error: extraneous input 'lw' expecting REGISTER at line 13
+Error: mismatched input '0' expecting REGISTER at line 13
+Error: mismatched input 'lw' expecting '(' at line 23
+Error: mismatched input 'push' expecting '(' at line 31
+Error: mismatched input 'lw' expecting '(' at line 35
+Error: token recognition error at: '$b ' at line 58
+Error: token recognition error at: '$b\n' at line 75
 

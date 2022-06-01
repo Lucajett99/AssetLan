@@ -4,7 +4,7 @@ import java.util.HashMap;
 
 public class SVMVisitorImpl extends SVMBaseVisitor {
 
-    public Instruction[] code = new Instruction[ExecuteVM.CODESIZE];
+    private Instruction[] code = new Instruction[ExecuteVM.CODESIZE];
     private int i = 0;
     private HashMap<String,Integer> labelAdd = new HashMap<String,Integer>();
     private HashMap<Integer,String> labelRef = new HashMap<Integer,String>();

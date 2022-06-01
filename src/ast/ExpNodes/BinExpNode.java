@@ -67,33 +67,45 @@ public class BinExpNode implements Node {
         binExpCode += left.codGeneration() + "\n"
                    + "push $a0 \n"
                    + right.codGeneration() + "\n"
-                   + "lw $t1 0($sp)"; // load the left operand in $t1
+                   + "lw $a1 0($sp)\n"; // load the left operand in $t1
         switch (op){
             case "+":
-                binExpCode += "add $a0 $t1 $a0 \n";
+                binExpCode += "add $a0 $a1 $a0 \n";
+                break;
             case "-":
-                binExpCode += "sub $a0 $t1 $a0 \n";
+                binExpCode += "sub $a0 $a1 $a0 \n";
+                break;
             case "*":
-                binExpCode += "mult $a0 $t1 $a0 \n";
+                binExpCode += "mult $a0 $a1 $a0 \n";
+                break;
             case "/":
-                binExpCode += "div $a0 $t1 $a0 \n";
+                binExpCode += "div $a0 $a1 $a0 \n";
+                break;
             case "<":
-                binExpCode += "lt $a0 $t1 $a0 \n";
+                binExpCode += "lt $a0 $a1 $a0 \n";
+                break;
             case "<=":
-                binExpCode += "le $a0 $t1 $a0 \n";
+                binExpCode += "le $a0 $a1 $a0 \n";
+                break;
             case ">":
-                binExpCode += "gt $a0 $t1 $a0 \n";
+                binExpCode += "gt $a0 $a1 $a0 \n";
+                break;
             case ">=":
-                binExpCode += "ge $a0 $t1 $a0 \n";
+                binExpCode += "ge $a0 $a1 $a0 \n";
+                break;
             case "==":
-                binExpCode += "eq $a0 $t1 $a0 \n";
+                binExpCode += "eq $a0 $a1 $a0 \n";
+                break;
             case "!=":
-                binExpCode += "eq $a0 $t1 $a0 \n";
+                binExpCode += "eq $a0 $a1 $a0 \n";
                 binExpCode += "not $a0 $a0 \n";
+                break;
             case "&&":
-                binExpCode += "and $a0 $t1 $a0 \n";
+                binExpCode += "and $a0 $a1 $a0 \n";
+                break;
             case "||":
-                binExpCode += "or $a0 $t1 $a0 \n";
+                binExpCode += "or $a0 $a1 $a0 \n";
+                break;
         }
         binExpCode += "pop \n";
         return binExpCode;

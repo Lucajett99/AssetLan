@@ -31,7 +31,7 @@ public class DerExpNode implements Node {
 
     @Override
     public String codGeneration() {
-        String derExpCode = "lw $al 0($fp)";
+        String derExpCode = "lw $al 0($fp)\n";
 
         //Used for management of the access link
         for (int i = 0; i < nestingLevel - sTentry.getNestingLevel(); i++)

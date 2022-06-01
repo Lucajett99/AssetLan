@@ -4,19 +4,20 @@ import ast.AssetLanVisitorImpl;
 import ast.Node;
 import gen.AssetLanLexer;
 import gen.AssetLanParser;
-import gen.interpreter.SVMLexer;
-import gen.interpreter.SVMParser;
-import gen.interpreter.SVMVisitor;
+import gen.interpreter.*;
 import org.antlr.v4.runtime.*;
 import utils.Environment;
 import utils.SemanticError;
 
+import java.io.BufferedWriter;
+import java.io.FileInputStream;
+import java.io.FileWriter;
 import java.util.ArrayList;
 
 public class Main {
 
     public static void main(String[] args) throws Exception {
-        String fileName = "Assetlan/src/codeExamples/example1.assetlan";
+        String fileName = "src/codeExamples/example1.assetlan";
         CharStream charStreams = CharStreams.fromFileName(fileName);
         AssetLanLexer lexer = new AssetLanLexer(charStreams);
         CommonTokenStream tokens = new CommonTokenStream(lexer);
@@ -43,15 +44,31 @@ public class Main {
                 Node type = ast.typeCheck();
                 Environment envEffects = ast.checkEffects(new Environment());
 
-                /*CharStream codGeneration = ast.codGeneration() //generate an asm file
-                SVMLexer svmLexer = new SVMLexer(codGeneration);
-                CommonTokenStream svmTokens = new CommonTokenStream(svmLexer);
-                SVMParser svmParser = new SVMParser(svmTokens);
+                String code = ast.codGeneration();
+                BufferedWriter out = new BufferedWriter(new FileWriter(fileName + ".asm"));
+                out.write(code);
+                out.close();
+                System.out.println("Code generated! Assembling and running generated code.");
 
-                svmLexer.addErrorListener(errorListener);
-                svmParser.addErrorListener(errorListener);*/
+                CharStream SVMcharStream = CharStreams.fromFileName(fileName + ".asm");
+                SVMLexer svmLexer = new SVMLexer(SVMcharStream);
+                CommonTokenStream tokensASM = new CommonTokenStream(svmLexer);
+                SVMParser svmParser = new SVMParser(tokensASM);
+
+                SyntaxErrorListener svmErrorListener = new SyntaxErrorListener();
+                svmLexer.addErrorListener(svmErrorListener);
+                svmParser.addErrorListener(svmErrorListener);
+
+                SVMVisitorImpl svmVisitor = new SVMVisitorImpl();
+                svmVisitor.visit(svmParser.assembly());
+                if (errorListener.getSyntaxErrors().size() == 0) {
+                    System.out.println("Starting Virtual Machine...");
+                    ExecuteVM vm = new ExecuteVM(svmVisitor.getCode());
+                    vm.cpu();
+                } else {
+                    System.out.println("Error Starting VM");
+                }
             }
-
         }
     }
 }

@@ -29,7 +29,7 @@ public class AssetNode implements Node {
 
     @Override
     public String codGeneration() {
-        return null;
+        return "";
     }
 
     @Override

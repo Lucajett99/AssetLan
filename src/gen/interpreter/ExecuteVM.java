@@ -7,7 +7,7 @@ public class ExecuteVM {
     public static final int CODESIZE = 10000;
     public static final int MEMSIZE = 10000;
     private Instruction[] code;
-    private int[] memory = new int[MEMSIZE];
+    private int[] memory = new int[MEMSIZE]; //I just need an array of integer
 
     private int ip = 0;         //Instruction Pointer
     private int sp = MEMSIZE;   //Stack Pointer
@@ -15,8 +15,9 @@ public class ExecuteVM {
     private int ra;             //Return Address
     private int al;             //Access link
 
-    private int t;              //General Purpose Register
+    private int b = 0;              //Balance register for the transfer
 
+    private final int[] a = new int[10];
     public ExecuteVM(Instruction[] code) {
         this.code = code;
     }
@@ -87,7 +88,7 @@ public class ExecuteVM {
                         case SVMParser.STOREW:
                             offset = Integer.parseInt(arg2);
                             int addressStoreWord = offset + regRead(arg3);
-                            memory.write(addressStoreWord, regRead(arg1));
+                            memory[addressStoreWord] = regRead(arg1);
                             break;
                         case SVMParser.LOAD:
                             value = Integer.parseInt(arg2);
@@ -96,7 +97,7 @@ public class ExecuteVM {
                         case SVMParser.LOADW:
                             offset = Integer.parseInt(arg2);
                             address = offset + regRead(arg3);
-                            regStore(arg1, memory.read(address));
+                            regStore(arg1, memory[address]);
                             break;
                         case SVMParser.MOVE:
                             value = regRead(arg1);
@@ -152,7 +153,7 @@ public class ExecuteVM {
 
                         case SVMParser.PRINT:
                             if (arg1==null)
-                                System.out.println((sp < MEMSIZE) ? memory.read(sp) : "Empty stack!");
+                                System.out.println((sp < MEMSIZE) ? memory[sp] : "Empty stack!");
                             else{
                                 System.out.println( "Print: "+ regRead(arg1));
                             }
@@ -167,31 +168,7 @@ public class ExecuteVM {
                     }
                 } catch (Exception e) {
                     System.out.println("Program stopped at program counter: " + ip);
-                    /*
-                    String toPrint = "";
-                    int cont = 0;
-                    for (Instruction ins:code){
-                        if(ins == null)
-                            break;
-                        if(cont > ip -10){
-                            String literalName = SVMParser._LITERAL_NAMES[ins.getCode()];
-                            String str = literalName +" "+(ins.getArg1()!=null?ins.getArg1():"") +" "+(ins.getArg2()!=null?ins.getArg2():"")+" "+(ins.getArg3()!=null?ins.getArg3():"");
-                            toPrint += cont+": "+ str +"\n";
-                            //break;
-                        }
-                        else if(cont == ip){
-                            String literalName = SVMParser._LITERAL_NAMES[ins.getCode()];
-                            String str = literalName +" "+(ins.getArg1()!=null?ins.getArg1():"") +" "+(ins.getArg2()!=null?ins.getArg2():"")+" "+(ins.getArg3()!=null?ins.getArg3():"");
-                            toPrint += cont+": "+ str +"\n";
-                            break;
-                        }
-                        cont++;
-
-                    }
-                    */
-
                     e.printStackTrace();
-                    //printStack(30);
                     return;
                 }
             }
@@ -204,11 +181,11 @@ public class ExecuteVM {
     }
 
     private void push(int v) throws Exception {
-        regStore("$sp",sp-1);
-        memory.write(sp, v);
+        regStore("$sp",sp - 1); // -1 because SP starts from the MEMSIZE
+        memory[sp] = v;
     }
     private Integer pop() throws Exception {
-        Integer val = memory.read(sp);
+        Integer val = memory[sp];
         regStore("$sp",sp+1);
 
         return val;
@@ -242,14 +219,14 @@ public class ExecuteVM {
                 return sp;
             case "$ra":
                 return ra;
-
+            case "&b":
+                return b;
             default:
                 switch (reg.charAt(1)) {
                     case 'r':
                         // return r[Integer.parseInt(reg.substring(2))];
                     case 'a':
                         return a[Integer.parseInt(reg.substring(2))];
-
                 }
                 break;
         }
@@ -260,23 +237,23 @@ public class ExecuteVM {
             case "$fp":
                 fp = v;
                 break;
-            case "$bsp":
-                bsp = v;
-                break;
             case "$al":
                 al = v;
                 break;
             case "$sp":
-                if (v > sp) {
+                /* if (v > sp) {
                     memory.cleanMemory(sp, v);
-                }
+                }*/
                 sp = v;
-                if (sp <= hp) {
+                if (sp <= 0) {
                     throw new Exception("Stack overflow!");
                 }
                 break;
             case "$ra":
                 ra = v;
+                break;
+            case "$b":
+                b = v;
                 break;
             default:
                 switch (reg.charAt(1)) {
@@ -291,8 +268,5 @@ public class ExecuteVM {
                 break;
         }
 
-    }
-            }
-        }
     }
 }

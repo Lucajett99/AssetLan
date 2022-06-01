@@ -44,8 +44,8 @@ public class MoveNode implements Node {
                          + id1.emptyValueCodGeneration() //the value of id1 is saved in $a0 I empty the register
                          + "push $a0 \n"
                          + id2.codGeneration() //now $al is setted to the value of
-                         + "lw $t 0($sp) \n"
-                         + "add $a0 $a0 $t \n" //now $a0 contains the sum of id1 and id2, I have to load id2
+                         + "lw $a1 0($sp) \n"
+                         + "add $a0 $a0 $a1 \n" //now $a0 contains the sum of id1 and id2, I have to load id2
                          + id2.updateValueCodGeneration();
         return moveCode;
     }
@@ -53,6 +53,8 @@ public class MoveNode implements Node {
     @Override
     public ArrayList<SemanticError> checkSemantics(Environment e) {
         ArrayList<SemanticError> res = new ArrayList<SemanticError>();
+        id1.checkSemantics(e);
+        id2.checkSemantics(e);
         if(e.isDeclared(id1.getId()) == EnvError.NO_DECLARE){
             res.add(new SemanticError((id1.getId())+": is not declared [Move]"));
         }
