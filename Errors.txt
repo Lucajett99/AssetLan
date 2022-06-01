@@ -1,6 +1,5 @@
 --------LEXICAL ERRORS----------
 
 --------SYNTAX ERRORS----------
-Error: mismatched input ',' expecting ';' at line 1
-Error: mismatched input ';' expecting '(' at line 1
+Error: mismatched input ')' expecting '[' at line 6
 

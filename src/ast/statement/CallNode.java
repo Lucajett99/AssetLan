@@ -147,7 +147,7 @@ public class CallNode implements Node {
         if(stmList != null){
             for(StatementNode stm : stmList){
                 if((stm.getStatement() instanceof CallNode && ((CallNode) stm.getStatement()).id == this.id) ) {
-                    return Utilities.fixPointMethod(e, st.getNode(), this);
+                    return LiquidityUtils.fixPointMethod(e, st.getNode(), this);
                 }
             }
         }

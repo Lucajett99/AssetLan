@@ -7,6 +7,7 @@ import ast.function.StatementNode;
 import ast.typeNode.BoolTypeNode;
 import ast.typeNode.VoidTypeNode;
 import utils.Environment;
+import utils.LiquidityUtils;
 import utils.SemanticError;
 import utils.Utilities;
 
@@ -108,7 +109,7 @@ public class IteNode implements Node {
                 if (stmNode.getStatement() instanceof CallNode) {
                     CallNode cnode = (CallNode) stmNode.getStatement();
                     FunctionNode fnode = Environment.lookup(e,cnode.getId()).getNode();
-                    return Utilities.fixPointMethod(e, fnode, cnode);
+                    return LiquidityUtils.fixPointMethod(e, fnode, cnode);
                 }
             }
             for(Node node : thenStatement){
@@ -125,7 +126,7 @@ public class IteNode implements Node {
                 if (nodeStatement.getStatement() instanceof CallNode) {
                     CallNode cnode = (CallNode)nodeStatement.getStatement();
                     FunctionNode fnode = Environment.lookup(e,cnode.getId()).getNode();
-                    return Utilities.fixPointMethod(e, fnode, cnode);
+                    return LiquidityUtils.fixPointMethod(e, fnode, cnode);
                 }
             }
 
