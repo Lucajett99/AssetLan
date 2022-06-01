@@ -16,7 +16,9 @@ import java.util.ArrayList;
 public class Main {
 
     public static void main(String[] args) throws Exception {
-        String fileName = "Assetlan/src/codeExamples/example1.assetlan";
+        for(int i = 1; i< 6;i++){
+            System.out.println("Program example"+i+".assetlan : ");
+        String fileName = "src/codeExamples/example"+i+".assetlan";
         CharStream charStreams = CharStreams.fromFileName(fileName);
         AssetLanLexer lexer = new AssetLanLexer(charStreams);
         CommonTokenStream tokens = new CommonTokenStream(lexer);
@@ -30,8 +32,8 @@ public class Main {
         Node ast = visitor.visit(parser.program());
 
         if (errorListener.getSyntaxErrors().size() == 0) {
-            System.out.println("Visualizing AST...");
-            System.out.println(ast.toPrint(""));
+            //System.out.println("Visualizing AST...");
+            //System.out.println(ast.toPrint(""));
 
             Environment env = new Environment();
             ArrayList<SemanticError> err = ast.checkSemantics(env);
@@ -54,4 +56,6 @@ public class Main {
 
         }
     }
+    }
+
 }

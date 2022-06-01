@@ -87,7 +87,7 @@ public class ExecuteVM {
                         case SVMParser.STOREW:
                             offset = Integer.parseInt(arg2);
                             int addressStoreWord = offset + regRead(arg3);
-                            memory.write(addressStoreWord, regRead(arg1));
+                           // memory.write(addressStoreWord, regRead(arg1));
                             break;
                         case SVMParser.LOAD:
                             value = Integer.parseInt(arg2);
@@ -96,7 +96,7 @@ public class ExecuteVM {
                         case SVMParser.LOADW:
                             offset = Integer.parseInt(arg2);
                             address = offset + regRead(arg3);
-                            regStore(arg1, memory.read(address));
+                           // regStore(arg1, memory.read(address));
                             break;
                         case SVMParser.MOVE:
                             value = regRead(arg1);
@@ -151,11 +151,11 @@ public class ExecuteVM {
                             break;
 
                         case SVMParser.PRINT:
-                            if (arg1==null)
+                            /*if (arg1==null)
                                 System.out.println((sp < MEMSIZE) ? memory.read(sp) : "Empty stack!");
                             else{
                                 System.out.println( "Print: "+ regRead(arg1));
-                            }
+                            }*/
                             break;
 
                         case SVMParser.HALT:
@@ -205,13 +205,13 @@ public class ExecuteVM {
 
     private void push(int v) throws Exception {
         regStore("$sp",sp-1);
-        memory.write(sp, v);
+        //memory.write(sp, v);
     }
     private Integer pop() throws Exception {
-        Integer val = memory.read(sp);
+        //Integer val = memory.read(sp);
         regStore("$sp",sp+1);
 
-        return val;
+        return 0;
     }
 
     void sum(String lhs, int first, int second) throws Exception {
@@ -248,7 +248,7 @@ public class ExecuteVM {
                     case 'r':
                         // return r[Integer.parseInt(reg.substring(2))];
                     case 'a':
-                        return a[Integer.parseInt(reg.substring(2))];
+                      //  return a[Integer.parseInt(reg.substring(2))];
 
                 }
                 break;
@@ -256,7 +256,7 @@ public class ExecuteVM {
         return 0;
     }
     private void regStore(String reg, int v) throws Exception {
-        switch (reg) {
+       /* switch (reg) {
             case "$fp":
                 fp = v;
                 break;
@@ -284,15 +284,14 @@ public class ExecuteVM {
                         // r[Integer.parseInt(reg.substring(2))] = v;
                         break;
                     case 'a':
-                        a[Integer.parseInt(reg.substring(2))] = v;
+                        //a[Integer.parseInt(reg.substring(2))] = v;
 
                         break;
                 }
                 break;
         }
 
-    }
+    }*/
             }
         }
-    }
-}
+

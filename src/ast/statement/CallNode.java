@@ -164,12 +164,13 @@ public class CallNode implements Node {
             STentry entryA = Environment.lookup(e, actualParameter.get(i).getId());
             //STentry entryF = Environment.lookup(e,formalParameter.get(i).getId());
             Environment.addDeclaration(e, formalParameter.get(i).getId(), entryA.getLiquidity());
-            entryA.setLiquidity(0);
+            if(entryA.getLiquidity()> 0)
+                entryA.setLiquidity(0); //gli asset passati per parametro vengono azzerati
         }
 
         if(stmList != null){
             for(StatementNode stm : stmList)
-                  e = stm.checkEffects(e);
+                  e = stm.checkEffects(e);//Avvio l'analisi degli effetti su gli statement
         }
 
         for(int i = 0; i< formalParameter.size();i++){
@@ -178,7 +179,7 @@ public class CallNode implements Node {
             STentry entryF = Environment.lookup(e,formalParameter.get(i).getId());
             if(entryF.getLiquidity() != 0){
                 System.out.println("funzione "+id.getId()+" non é liquida!");
-                System.exit(0);
+                //System.exit(0);
             }
         }
         e = Environment.exitScope(e);

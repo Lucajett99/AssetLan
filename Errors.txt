@@ -1,10 +1,6 @@
 --------LEXICAL ERRORS----------
 
 --------SYNTAX ERRORS----------
-<<<<<<< HEAD
-Error: extraneous input '-' expecting {'}', 'int', 'bool', 'print', 'transfer', 'return', 'if', ID} at line 3
-Error: no viable alternative at input 'a;' at line 3
-=======
-Error: extraneous input '5' expecting {']', ID} at line 5
->>>>>>> 287927f7b05027c961fb27e81717736169e9efbb
+Error: mismatched input ',' expecting ';' at line 1
+Error: mismatched input ';' expecting '(' at line 1
 
