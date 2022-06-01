@@ -128,13 +128,14 @@ public class InitCallNode implements Node{
 
     @Override
     public Environment checkEffects(Environment e) {
+        //get Function ST Entry
         STentry st = Environment.lookup(e,id.getId());
         e = Environment.newScope(e);
         if(st.getNode().getADec() != null){
             int index = 0;
             int number = 0;
             if(bexp.size() > 0){
-                for( IdNode node : st.getNode().getADec().getId()) {
+                for( IdNode node : st.getNode().getADec().getId()) { //evaluate valExp in initCall
                     number = bexp.get(index).evaluateExp();
                     if (number != 0) {
                         e = Environment.addDeclaration(e, node.getId(), 1);
@@ -151,11 +152,11 @@ public class InitCallNode implements Node{
                 e = stm.checkEffects(e);
             }
         }
-        if(st.getNode().getADec() != null){
+        if(st.getNode().getADec() != null){//check liquidity in initcall Function
             for( IdNode node : st.getNode().getADec().getId()){
-                if(Environment.lookup(e,node.getId()).getLiquidity()!=0){
+                if(Environment.lookup(e,node.getId()).getLiquidity()>0){
                     System.out.println("La funzione "+id.getId()+ " non é liquida!");
-                    System.exit(0);
+                    //System.exit(0)
                 };
             }
         }

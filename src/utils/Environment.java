@@ -11,7 +11,7 @@ import java.util.HashMap;
 import java.util.Objects;
 
 
-public class Environment {
+public class Environment extends LiquidityUtils{
     private final ArrayList<HashMap<String, STentry>> symTable;
     private int nestingLevel;
     private int offset;
@@ -190,53 +190,6 @@ public class Environment {
         env.offset = minimumOffset;
         }
         return env;
-    }
-
-    /*--------------------Liquidity Analysis---------------------------------------------------------------------------*/
-
-    public static Environment max(Environment e1,Environment e2){
-        ArrayList<HashMap<String,STentry>> stNew = new ArrayList<HashMap<String,STentry>>();
-        ArrayList<HashMap<String,STentry>> st = e1.getSymTable();
-
-        for(int i = 0; i< st.size();i++){
-            HashMap<String, STentry> newHM =new HashMap<String, STentry>();
-            for(String id : st.get(i).keySet()){
-                STentry entry2 = lookup(e2,id);
-                STentry entry1 = lookup(e1,id);
-                if( lookup(e2,id) != null && entry1.getLiquidity()!= -1){
-                    newHM.put(id,entry2);
-                    newHM.get(id).setLiquidity(Math.max(entry2.getLiquidity(),entry1.getLiquidity()));
-                }else{
-                    newHM.put(id,entry1);
-                }
-            }
-            stNew.add(newHM);
-        }
-        return new Environment(stNew,e1.nestingLevel,e1.offset);//to call in IteNote.checkEffects()
-    }
-
-    public static int checkGlobalLiquidity(Environment e){
-        //return number of the global asset that are not empty
-        ArrayList<HashMap<String,STentry>> nestingEnv = e.getSymTable();
-        int counter = 0;
-        for(HashMap<String,STentry> env : nestingEnv){
-            //cicla solo una volta all'interno del for
-            //per completezza cicla su tutti gli ambienti annidati
-            // per definizione pero si potrebbe chiamare solo il primo ambiente dell'array list
-            for(String id : env.keySet()){
-                // controlla per ogni chiave appartenente all'ambiente
-                //se la STEntry contiene un identificatore di tipo asset
-                STentry entry = Environment.lookup(e,id);
-                if(Utilities.isSubtype(entry.getType(),new AssetTypeNode())){
-                    if(entry.getLiquidity() != 0){
-                        if(entry.getLiquidity() != 0  ){
-                            counter++;
-                        }
-                    }
-                }
-            }
-        }
-        return counter;
     }
 
 
