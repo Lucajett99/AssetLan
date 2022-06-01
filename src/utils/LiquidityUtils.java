@@ -70,6 +70,16 @@ public abstract class LiquidityUtils {
         ArrayList<IdNode> formalParameter = funNode.getADec() != null ? funNode.getADec().getId() : new ArrayList<>();
 
         int iteration = 0;
+
+        /*for(int i = 0; i< formalParameter.size();i++) {
+            //check that function has liquid
+            //=> all formal parameter are empty
+            STentry entryF = Environment.lookup(e_start, formalParameter.get(i).getId());
+            if (entryF.getLiquidity() > 0) {
+                System.out.println("funzione " + callNode.getId() + " non é liquida!");
+                //System.exit(0);
+            }
+        }*/
         do{
             e_end = e_start.clone();
             iteration++;
@@ -109,6 +119,15 @@ public abstract class LiquidityUtils {
             }
         }while(!(e_start.equals(e_end)) && iteration <MAXITER );
 
+        for(int i = 0; i< formalParameter.size();i++){
+            //check that function has liquid
+            //=> all formal parameter are empty
+            STentry entryF = Environment.lookup(e_end,formalParameter.get(i).getId());
+            if(entryF.getLiquidity() != 0){
+                System.out.println("funzione "+funNode.getId()+" non é liquida!");
+                //System.exit(0);
+            }
+        }
         return e_end;
 
     }

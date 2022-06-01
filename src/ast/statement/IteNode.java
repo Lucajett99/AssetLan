@@ -106,14 +106,14 @@ public class IteNode implements Node {
         if(elseStatement == null){
             for(Node node : thenStatement) {
                 StatementNode stmNode = (StatementNode) node;
+
                 if (stmNode.getStatement() instanceof CallNode) {
                     CallNode cnode = (CallNode) stmNode.getStatement();
-                    FunctionNode fnode = Environment.lookup(e,cnode.getId()).getNode();
-                    return LiquidityUtils.fixPointMethod(e, fnode, cnode);
+                    FunctionNode fnode = Environment.lookup(e1,cnode.getId()).getNode();
+                    return LiquidityUtils.fixPointMethod(e1, fnode, cnode);
+                }else{
+                    e1 = node.checkEffects(e1);
                 }
-            }
-            for(Node node : thenStatement){
-                e1 = node.checkEffects(e1);
             }
             return Environment.max(e,e1);
         }else{
@@ -129,7 +129,6 @@ public class IteNode implements Node {
                     return LiquidityUtils.fixPointMethod(e, fnode, cnode);
                 }
             }
-
 
             for(Node node : thenStatement){
                 e1 = node.checkEffects(e1);
