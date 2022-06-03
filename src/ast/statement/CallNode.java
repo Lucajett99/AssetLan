@@ -92,23 +92,23 @@ public class CallNode implements Node {
 
     @Override
     public String codGeneration() {
-        String initCode = "push $fp \n";
+        String callCode = "push $fp \n";
         //I add the assets in inverse order
         for(int i = exp.size(); i > 0 ; i--)
-            initCode += exp.get(i).codGeneration()
+            callCode += exp.get(i - 1).codGeneration()
                     + "push $a0 \n";
         //I add the parameters in inverse order
         for(int i = listId.size(); i > 0 ; i--)
-            initCode += listId.get(i).codGeneration()
+            callCode += listId.get(i - 1).accessCodGeneration()
                     + "push $a0 \n";
         //Now i will set the access link
-        initCode += "lw $al 0($fp) \n";
+        callCode += "mv $fp $al \n";
         for(int i = 0; i < nestingLevel - stEntry.getNestingLevel(); i++)
-            initCode += "lw $al 0($al) \n";
-        initCode += "push $al\n";
+            callCode += "lw $al 0($al) \n";
+        callCode += "push $al\n";
         String label = stEntry.getNode().getFunLabel();
-        initCode += "jal " + label + "\n"; //jump at label and store the next instruction in ra
-        return initCode + "print $b \n";
+        callCode += "jal " + label + "\n"; //jump at label and store the next instruction in ra
+        return callCode + "\n";
 
 
     }

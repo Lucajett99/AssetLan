@@ -94,7 +94,7 @@ public class InitCallNode implements Node{
             initCallCode += params.get(i - 1).codGeneration()
                     + "push $a0 \n";
         //Now i will set the access link
-        initCallCode += "lw $al 0($fp) \n";
+        initCallCode += "mv $fp $al \n";
         for(int i = 0; i < nestingLevel - stEntry.getNestingLevel(); i++)
             initCallCode += "lw $al 0($al) \n";
         initCallCode += "push $al\n";

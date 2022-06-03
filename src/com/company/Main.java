@@ -4,13 +4,15 @@ import ast.AssetLanVisitorImpl;
 import ast.Node;
 import gen.AssetLanLexer;
 import gen.AssetLanParser;
-import gen.interpreter.*;
+import gen.interpreter.ExecuteVM;
+import interpreter.SVMLexer;
+import interpreter.SVMParser;
+import gen.interpreter.SVMVisitorImpl;
 import org.antlr.v4.runtime.*;
 import utils.Environment;
 import utils.SemanticError;
 
 import java.io.BufferedWriter;
-import java.io.FileInputStream;
 import java.io.FileWriter;
 import java.util.ArrayList;
 
@@ -31,8 +33,8 @@ public class Main {
         Node ast = visitor.visit(parser.program());
 
         if (errorListener.getSyntaxErrors().size() == 0) {
-            System.out.println("Visualizing AST...");
-            System.out.println(ast.toPrint(""));
+            /*System.out.println("Visualizing AST...");
+            System.out.println(ast.toPrint(""));*/
 
             Environment env = new Environment();
             ArrayList<SemanticError> err = ast.checkSemantics(env);

@@ -2,6 +2,8 @@ package gen.interpreter;
 
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+import interpreter.Instruction;
+import interpreter.SVMParser;
 
 public class ExecuteVM {
     public static final int CODESIZE = 10000;
@@ -11,7 +13,7 @@ public class ExecuteVM {
 
     private int ip = 0;         //Instruction Pointer
     private int sp = MEMSIZE;   //Stack Pointer
-    private int fp = MEMSIZE;   //Frame pointer
+    private int fp = MEMSIZE - 1;   //Frame pointer
     private int ra;             //Return Address
     private int al;             //Access link
 
@@ -24,7 +26,10 @@ public class ExecuteVM {
 
     public void cpu() {
         while (true) {
-            if ( 0 <= sp) {      //Check if I am out of memory
+            //System.out.println(memory[9999]);
+            //System.out.println(memory[9998]);
+            //System.out.println(memory[9997]);
+            if ( sp <= 0) {      //Check if I am out of memory
                 System.out.println("\nError: Out of memory");
                 return;
             } else {
@@ -85,7 +90,7 @@ public class ExecuteVM {
                             division(arg1,regRead(arg2),value);
                             break;
 
-                        case SVMParser.STOREW:
+                        case interpreter.SVMParser.STOREW:
                             offset = Integer.parseInt(arg2);
                             int addressStoreWord = offset + regRead(arg3);
                             memory[addressStoreWord] = regRead(arg1);

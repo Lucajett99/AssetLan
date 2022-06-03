@@ -37,7 +37,7 @@ public class TransferNode implements Node {
 
     public String codGeneration() {
         // I suppose to have a register $b (balance) in which i will store the aggregate sum of all transfers in the program
-        String transferCode = id.codGeneration()
+        String transferCode = id.accessCodGeneration()
                             + id.emptyValueCodGeneration()
                             + "add $b $b $a0\n";
         return transferCode;

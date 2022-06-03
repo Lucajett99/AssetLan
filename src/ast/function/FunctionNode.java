@@ -18,6 +18,7 @@ public class FunctionNode implements Node {
     private ArrayList<StatementNode> statement;
 
     private String funLabel;
+    private String endLabel;
 
     public FunctionNode(TypeNode type, IdNode id, DecpNode decp, ArrayList<DecNode> dec, AdecNode adec, ArrayList<StatementNode> statement) {
         this.type = type;
@@ -27,6 +28,7 @@ public class FunctionNode implements Node {
         this.adec = adec;
         this.statement = statement;
         this.funLabel = Utilities.freshLabel();
+        this.endLabel = Utilities.freshLabel();
     }
 
     public IdNode getId() {
@@ -95,18 +97,23 @@ public class FunctionNode implements Node {
     public String codGeneration() {
         int adecSize = adec != null ? adec.getId().size() : 0;
         int decpSize = decp != null ? decp.getDecp().getListId().size() : 0;
-        String funCode = funLabel + ":\n"  //label of the function
-                       + "mv $fp $sp\n"
+        int paramSize = adecSize + decpSize;
+        int decSize = dec != null ? dec.size() : 0;
+        String funCode = funLabel + ": //Label of function " + this.id.getId() + "\n"  //label of the function
+                       + "mv $sp $fp\n"
                        + "push $ra\n";
+        //TODO: void function
         for (Node statement : this.statement)
             funCode += statement.codGeneration();
+        funCode += endLabel + ": //End Label of function " + this.id.getId() +  "\n";
         funCode += "lw $ra 0($sp)\n" //$ra <- top
                 + "pop \n";
-        for (int i = 0; i < adecSize + decpSize; i++)
-            funCode += "pop \n";
+        funCode += "addi $sp $sp " + paramSize + " //pop decp & pop adec\n";
+        funCode += "addi $sp $sp " + decSize  + " //pop dec \n";
+        funCode += "pop //pop the old fp \n";
         funCode += "lw $fp 0($sp)\n" //$fp <-top
                 + "pop \n"
-                + "jr $ra \n"; //Jump at address in $ra
+                + "jr $ra \n //END OF FUNCTION " + this.id.getId() + "\n"; //Jump at address in $ra
         return funCode;
     }
 

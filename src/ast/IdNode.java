@@ -35,11 +35,6 @@ public class IdNode implements Node{
         return  "li $a1 0\n" +
                 "sw $a1 " + sTentry.getOffset() + "($al)\n";
     }
-    public String updateValueCodGeneration(){
-        //this function will be used in move and Transfer node to empty the register
-        return  "sw $a0" + sTentry.getOffset() + "($al)\n";
-    }
-
 
     @Override
     public Node typeCheck() {
@@ -48,10 +43,23 @@ public class IdNode implements Node{
 
     @Override
     public String codGeneration() {
-        String idCode = "lw $al 0($fp) \n";
+        return null;
+    }
+
+
+    public String storeCodGeneration() {
+        String idCode = "mv $fp $al \n";
         for(int i = 0; i < nestingLevel - sTentry.getNestingLevel(); i++)
             idCode += "lw $al 0($al) \n";
         idCode += "sw $a0 " + sTentry.getOffset() + "($al) \n";
+        return idCode;
+    }
+
+    public String accessCodGeneration(){
+        String idCode = "mv $fp $al \n";
+        for(int i = 0; i < nestingLevel - sTentry.getNestingLevel(); i++)
+            idCode += "lw $al 0($al) \n";
+        idCode += "lw $a0 " + sTentry.getOffset() + "($al) \n";
         return idCode;
     }
 

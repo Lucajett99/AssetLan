@@ -9,7 +9,10 @@
 \usepackage{subfiles}
 \usepackage{listings}
 \usepackage{multicol}
+\usepackage{dsfont}
 \usepackage[toc,page]{appendix}
+\usepackage{proof}
+\usepackage{amsmath,amssymb,amsthm,textcomp}
 
 \usepackage{listings, xcolor}
 \lstset{
@@ -207,4 +210,42 @@ E gli errori che vengono generati:
 f: id already declared [function]
 y: is not declared [Move]
 \end{lstlisting}
+
+\chapter{Controllo dei tipi}
+Il controllo dei tipi viene effettuato tramite la funzione \emph{Type Check.} I tipi presenti nel nostro linguaggio sono:
+\begin{itemize}
+    \item \emph{int:} rappresenta un tipo intero;
+    \item \emph{bool:} rappresenta il tipo booleano, può assumere quindi valori \emph{true} o \emph{false};
+    \item \emph{asset:} rappresenta i parametri asset delle funzioni, che andranno tra parentesi quadre e rappresentano delle risorse generiche.
+    \item \emph{void:} rappresenta il tipo vuoto, utile per le funzioni che non hanno un valore di ritorno. 
+\end{itemize}
+\section{Regole di inferenza utilizzate}
+Il nostro ambiente, $\Gamma$, sarà una funzione così fatta:
+\begin{center}
+    $\Gamma : ID \rightarrow T \times L \times$ off
+\end{center}
+Associerà quindi un nome ad un tipo, ad un valore di una liquidity e ad un offset. Gli insiemi T ed L sono così definiti: 
+\begin{center}
+    $T$ = \{void, asset, bool, int\}\\
+    $L$ = \{$\bot, \emptyset,  \mathds{1}$\}
+\end{center}
+L'ordinamento parziale per i simboli dell'insieme $L$ per il controllo della liquidity è: 
+\begin{center}
+    $\bot \leq \emptyset \leq  \mathds{1}$
+\end{center} 
+Dove $\bot$ rappresenta le variabili non asset, $\emptyset$ rappresenta un asset vuoto e $ \mathds{1}$ rappresenta un asset pieno. 
+Definiamo inoltre una funzione \emph{proj$_i$} che ci permetterà di ritornare l' \emph{i-esimo} elemento di $\Gamma$(id).
+
+La prima regola che andremo ad analizzare è la regola del program. Questa regola verrà valutata nell'ambiente vuoto (poichè stiamo iniziando a controllare ora il programma) e avrà un offset pari a 0. L'offset è infatti una variabile globale all'interno della classe Environment che parte da zero e diminuirà ogni volta che viene effettuata una nuova dichiarazione. \\
+\begin{center}
+    
+    [prog]\infer{ \emptyset, 0 \vdash \mbox{field asset function initcall} : max(proj_2(\Gamma''))}
+    {\emptyset, 0 \vdash field: \Gamma \; \Gamma \vdash asset: \Gamma' \;\Gamma'\vdash function : \Gamma'' \; \Gamma'' \vdash initcall : T} 
+\end{center}
+Successivamente, si va a valutare la regola field, che non è altro che una dichiarazione di variabili con o senza dichiarazione. Abbiamo così definito due regole di inferenza, una con ed una senza la dichiarazione.
+\\
+    \infer{\Gamma, n \vdash \mbox{ T x;} : \Gamma[x \rightarrow T \times \bot \times \mbox{off} ], n = n-1}{ x \notin (top(\Gamma)) \;\mbox{ off = n}}
+\\
+\infer{\Gamma, n \vdash \mbox{ T x = e;} : \Gamma[x \rightarrow T \times \bot \times \mbox{off} ], n = n-1}{ x \notin (top(\Gamma)) \; \Gamma \vdash \mbox{e = T'} \; \mbox{T = T'} \; \mbox{off = n}}
+
 \end{document}

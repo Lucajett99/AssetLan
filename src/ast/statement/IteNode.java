@@ -68,18 +68,23 @@ public class IteNode implements Node {
 
     @Override
     public String codGeneration() {
-    /*    String iteCode = "";
+        String iteCode = "";
         String trueLabel = Utilities.freshLabel();
         String endIfLabel = Utilities.freshLabel();
         iteCode += exp.codGeneration()
-                + "beq $a0 1 " + trueLabel + "\n"  //TODO: CHECK IF CAN I DO THIS
-                + elseStatement.codGeneration()
-                + "b" + endIfLabel + " \n"
-                + trueLabel + ": \n"
-                + thenStatement.codGeneration()
-                + endIfLabel + ": \n";
-        return iteCode;*/
-        return null;
+                + "li $a1 1"
+                + "push $a1"
+                + "bc $a0 " + trueLabel + "\n // START ELSE BRANCH IF STATEMENT \n";
+        if (elseStatement != null)
+            for(Node node : elseStatement)
+                    iteCode += node.codGeneration();
+        iteCode   += "b " + endIfLabel + " \n"
+                + trueLabel + ": \n  // START THEN BRANCH IF STATEMENT \n";
+        for(Node node : thenStatement)
+            iteCode += node.codGeneration();
+        iteCode += endIfLabel + ": \n //END IF\n pop \n";
+        return iteCode;
+
     }
 
     @Override

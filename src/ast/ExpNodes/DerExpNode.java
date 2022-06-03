@@ -36,7 +36,7 @@ public class DerExpNode implements Node {
         //Used for management of the access link
         for (int i = 0; i < nestingLevel - sTentry.getNestingLevel(); i++)
             derExpCode+= "lw $al 0($al) \n";
-        derExpCode += "lw $al" + sTentry.getNestingLevel() +"\n";
+        derExpCode += "lw $a0 " + sTentry.getOffset()+"($al)\n";
         return derExpCode;
     }
 

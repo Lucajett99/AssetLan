@@ -38,8 +38,7 @@ public class AssignmentNode implements Node {
     public String codGeneration() {
         String assignmentCode = "";
         assignmentCode += exp.codGeneration()
-                       + id.codGeneration()
-                       + "sw $a0 0($al)\n";
+                       + id.storeCodGeneration();
         return assignmentCode;
     }
 

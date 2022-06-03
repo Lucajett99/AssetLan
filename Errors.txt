@@ -1,15 +1,6 @@
 --------LEXICAL ERRORS----------
 
 --------SYNTAX ERRORS----------
-Error: token recognition error at: '$b ' at line 1
-Error: missing REGISTER at '0' at line 1
-Error: token recognition error at: '$b ' at line 12
-Error: token recognition error at: '$b ' at line 12
-Error: extraneous input 'lw' expecting REGISTER at line 13
-Error: mismatched input '0' expecting REGISTER at line 13
-Error: mismatched input 'lw' expecting '(' at line 23
-Error: mismatched input 'push' expecting '(' at line 31
-Error: mismatched input 'lw' expecting '(' at line 35
-Error: token recognition error at: '$b ' at line 58
-Error: token recognition error at: '$b\n' at line 75
+Error: mismatched input '$a0' expecting ':' at line 21
+Error: missing ':' at 'mv' at line 23
 

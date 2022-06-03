@@ -1,4 +1,4 @@
-package gen.interpreter;
+package interpreter;
 
 public class Instruction {
     private int code;
