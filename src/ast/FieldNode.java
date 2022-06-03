@@ -45,6 +45,8 @@ public class FieldNode implements Node {
         if (exp != null) {
             fieldCode += exp.codGeneration() +
                          "sw $a0 " + sTentry.getOffset()+"($fp) \n";
+        } else {
+            fieldCode += "subi $sp $sp 1 \n";
         }
         return fieldCode;
     }

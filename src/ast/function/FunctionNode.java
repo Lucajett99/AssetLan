@@ -100,7 +100,7 @@ public class FunctionNode implements Node {
         int paramSize = adecSize + decpSize;
         int decSize = dec != null ? dec.size() : 0;
         String funCode = funLabel + ": //Label of function " + this.id.getId() + "\n"  //label of the function
-                       + "mv $sp $fp\n"
+                       + "mv $sp $fp\n"  // fp <- sp
                        + "push $ra\n";
         //TODO: void function
         for (Node statement : this.statement)

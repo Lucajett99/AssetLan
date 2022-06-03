@@ -29,7 +29,7 @@ public class AssetNode implements Node {
 
     @Override
     public String codGeneration() {
-        return "";
+        return "subi $sp $sp 1\n";
     }
 
     @Override

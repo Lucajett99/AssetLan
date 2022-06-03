@@ -99,7 +99,7 @@ public class InitCallNode implements Node{
             initCallCode += "lw $al 0($al) \n";
         initCallCode += "push $al\n";
         String label = stEntry.getNode().getFunLabel();
-        initCallCode += "jal " + label + "\n"; //jump at label and store the next instruction in ra
+        initCallCode += " jal " + label + "\n"; //jump at label and store the next instruction in ra
         return initCallCode +"\n";
     }
 
@@ -112,7 +112,7 @@ public class InitCallNode implements Node{
             stEntry = Environment.lookup(e,id.getId());
             nestingLevel = e.getNestingLevel();
         }
-        if(bexp!= null){
+        if(bexp != null){
             for (Node node:bexp) {
                 res.addAll(node.checkSemantics(e));
             }

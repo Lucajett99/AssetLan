@@ -26,9 +26,6 @@ public class ExecuteVM {
 
     public void cpu() {
         while (true) {
-            //System.out.println(memory[9999]);
-            //System.out.println(memory[9998]);
-            //System.out.println(memory[9997]);
             if ( sp <= 0) {      //Check if I am out of memory
                 System.out.println("\nError: Out of memory");
                 return;
