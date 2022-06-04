@@ -56,8 +56,8 @@ public class AdecNode implements Node {
                 if (e.isMultipleDeclared(idAss.getId()) == EnvError.ALREADY_DECLARED) {
                     res.add(new SemanticError(idAss.getId() + " : already declared [adec]"));
                 } else {
-                    offset = e.setDecOffset();
-                    e = Environment.addDeclaration(e, e.setDecOffset(), idAss.getId(), new AssetNode(idAss));
+                    offset = e.setDecOffset(true);
+                    e = Environment.addDeclaration(e, offset, idAss.getId(), new AssetNode(idAss));
                     offsetList.add(offset);
                 }
             }

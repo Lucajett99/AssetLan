@@ -36,7 +36,7 @@ public class AssetNode implements Node {
     public ArrayList<SemanticError> checkSemantics(Environment e) {
         ArrayList<SemanticError> res = new ArrayList<SemanticError>();
         if(e.isMultipleDeclared(id.getId()) == EnvError.NO_DECLARE){
-            int offset = e.setDecOffset();
+            int offset = e.setDecOffset(false);
             Environment.addDeclaration(e, offset, id.getId(), this);
             this.offset = offset;
         }

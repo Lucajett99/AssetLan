@@ -30,11 +30,6 @@ public class IdNode implements Node{
         return indent + "ID " + id + "\n";
     }
 
-    public String emptyValueCodGeneration(){
-        //this function will be used in move and Transfer node to empty the register
-        return  "li $a1 0\n" +
-                "sw $a1 " + sTentry.getOffset() + "($al)\n";
-    }
 
     @Override
     public Node typeCheck() {
@@ -46,6 +41,11 @@ public class IdNode implements Node{
         return null;
     }
 
+    public String emptyValueCodGeneration(){
+        //this function will be used in move and Transfer node to empty the register
+        return  "li $a1 0\n" +
+                "sw $a1 " + sTentry.getOffset() + "($al)\n";
+    }
 
     public String storeCodGeneration() {
         String idCode = "mv $fp $al \n";

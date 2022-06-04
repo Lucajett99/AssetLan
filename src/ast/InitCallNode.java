@@ -80,9 +80,11 @@ public class InitCallNode implements Node{
         }
         return stEntry.getType().typeCheck();
     }
+    //TODO: CODE GEN FOR EMPTY THE ACTUAL PARAMETER ASSET
     @Override
     public String codGeneration() {
-        String initCallCode = "//starting codgen for fun "+id.getId()+"\npush $fp \n";
+        String initCallCode = "//Start codgen for  calling fun "+id.getId()
+                            +"\npush $fp \n";
         //I add the assets in inverse order
         int bexpSize = bexp != null ? bexp.size() : 0;
         int paramsSize = params != null ? params.size() : 0;

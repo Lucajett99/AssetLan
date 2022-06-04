@@ -65,8 +65,11 @@ public class Environment extends LiquidityUtils{
         return nestingLevel == that.nestingLevel && offset == that.offset;
     }
 
-    public int setDecOffset() {
-        this.offset--;
+    public int setDecOffset(boolean isInsideFunction) {
+         if(isInsideFunction)
+             this.offset++;
+         else
+             this.offset--;
         return offset;
     }
 

@@ -1,8 +1,10 @@
- asset x ;
-     void main(int n)[asset a]{
-     print a;
-     print n;
-	if(n>1){transfer a;}
-	n=n-1;
-	 }
-     main(3)[2] ;	// il contratto e` liquido
+int b = 5;
+void main(int n)[asset a]{
+ print n;
+ print b;
+ print a;
+ transfer a;
+ print a;
+}
+
+main(2)[3] ;	// il contratto e` liquido

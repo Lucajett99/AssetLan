@@ -1,10 +1,11 @@
 li $b 0 
-subi $sp $sp 1
-//starting codgen for fun main
-push $fp 
-li $a0 2 
+li $a0 5 
 push $a0 
+//Start codgen for  calling fun main
+push $fp 
 li $a0 3 
+push $a0 
+li $a0 2 
 push $a0 
 mv $fp $al 
 push $al
@@ -16,44 +17,23 @@ label0: //Label of function main
 mv $sp $fp
 push $ra
 mv $fp $al 
-lw $a0 -3($al) 
+lw $a0 1($al) 
 print $a0 
 mv $fp $al 
+lw $al 0($al) 
 lw $a0 -1($al) 
 print $a0 
 mv $fp $al 
-lw $a0 -1($al) 
-
-push $a0 
-li $a0 1 
-
-lw $a1 0($sp)
-gt $a0 $a1 $a0 
-pop 
-li $a1 0push $a1bc $a0 label2
- // START THEN BRANCH IF STATEMENT 
+lw $a0 2($al) 
+print $a0 
 mv $fp $al 
-lw $a0 -3($al) 
+lw $a0 2($al) 
 li $a1 0
-sw $a1 -3($al)
+sw $a1 2($al)
 add $b $b $a0
-b label3 
-label2: 
-  // START ELSE BRANCH IF STATEMENT 
-label3: 
- //END IF
- pop 
 mv $fp $al 
-lw $a0 -1($al) 
-
-push $a0 
-li $a0 1 
-
-lw $a1 0($sp)
-sub $a0 $a1 $a0 
-pop 
-mv $fp $al 
-sw $a0 -1($al) 
+lw $a0 2($al) 
+print $a0 
 label1: //End Label of function main
 lw $ra 0($sp)
 pop 

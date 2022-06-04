@@ -3,6 +3,7 @@ package ast.function;
 import ast.*;
 import ast.statement.ReturnNode;
 import ast.typeNode.VoidTypeNode;
+import utils.EnvError;
 import utils.Environment;
 import utils.SemanticError;
 import utils.Utilities;
@@ -125,7 +126,7 @@ public class FunctionNode implements Node {
     public ArrayList<SemanticError> checkSemantics(Environment env) {
         ArrayList<SemanticError> res = new ArrayList<SemanticError>();
         //We store for the asset only the number of the assets because we already know the type
-        env = Environment.addFunctionDeclaration(env, env.setDecOffset(), id.getId(), this.type, this); //Declaration of the function
+        env = Environment.addFunctionDeclaration(env, env.setDecOffset(false), id.getId(), this.type, this); //Declaration of the function
         if(env == null) //if function is already declared
             res.add(new SemanticError(this.id.getId()+": id already declared [function]"));
         else {
@@ -134,7 +135,14 @@ public class FunctionNode implements Node {
 
             /*Aggiungo parametri formali contenuti in Decp*/
             if (decp != null) {
-                res.addAll(decp.checkSemantics(env));
+                for (int j = 0; j < decp.getDecp().getListId().size(); j++) {
+                    String id_tmp = decp.getDecp().getListId().get(j).getId();
+                    if (env.isMultipleDeclared(id_tmp) == EnvError.ALREADY_DECLARED)//verifica se l'identificatore id.get(i) é gia presente
+                        //in caso é presente un errore dichiarazione multipla
+                        res.add(new SemanticError(id_tmp + " already declared [DecNode]"));
+                    else
+                        env = Environment.addDeclaration(env, env.setDecOffset(true), id_tmp, new TypeNode(decp.getDecp().getListType().get(j).getStringType()));
+                }
             }
 
             /*Aggiungo parametri formali Asset*/
@@ -145,7 +153,14 @@ public class FunctionNode implements Node {
             /*Aggiungo dichiarazioni in Dec*/
             if (dec != null) {
                 for (DecNode decNode : dec) {
-                    res.addAll(decNode.checkSemantics(env));
+                    for (int j = 0; j < decNode.getListId().size(); j++) {
+                        String id_tmp = decNode.getListId().get(j).getId();
+                        if (env.isMultipleDeclared(id_tmp) == EnvError.ALREADY_DECLARED)//verifica se l'identificatore id.get(i) é gia presente
+                            //in caso é presente un errore dichiarazione multipla
+                            res.add(new SemanticError(id_tmp + " already declared [DecNode]"));
+                        else
+                            env = Environment.addDeclaration(env, env.setDecOffset(true), id_tmp, new TypeNode(decNode.getListType().get(j).getStringType()));
+                    }
                 }
             }
 
@@ -165,7 +180,7 @@ public class FunctionNode implements Node {
 
     @Override
     public Environment checkEffects(Environment e) {
-        e = Environment.addFunctionDeclaration(e, e.setDecOffset() ,id.getId(), this.type,this);
+        e = Environment.addFunctionDeclaration(e, e.setDecOffset(false) ,id.getId(), this.type,this);
         return e;
     }
 }

@@ -44,7 +44,8 @@ public class FieldNode implements Node {
         // I will only use the STentry  because I declare and inizialize variable at same time
         if (exp != null) {
             fieldCode += exp.codGeneration() +
-                         "sw $a0 " + sTentry.getOffset()+"($fp) \n";
+                         //"sw $a0 " + sTentry.getOffset()+"($fp) \n";
+                        "push $a0 \n"; //TODO: remember to change
         } else {
             fieldCode += "subi $sp $sp 1 \n";
         }
@@ -56,7 +57,7 @@ public class FieldNode implements Node {
         ArrayList<SemanticError> res = new ArrayList<SemanticError>();
 
         if(e.isMultipleDeclared(id.getId())!= EnvError.ALREADY_DECLARED){
-            e = Environment.addDeclaration(e, e.setDecOffset(), id.getId(), type);
+            e = Environment.addDeclaration(e, e.setDecOffset(false), id.getId(), type);
             sTentry = e.lookup(e, id.getId());
         } else {
             res.add(new SemanticError(id.getId()+": already declared [field]"));
