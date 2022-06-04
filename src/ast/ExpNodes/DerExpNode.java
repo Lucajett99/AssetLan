@@ -31,12 +31,11 @@ public class DerExpNode implements Node {
 
     @Override
     public String codGeneration() {
-        String derExpCode = "lw $al 0($fp)\n";
-
-        //Used for management of the access link
-        for (int i = 0; i < nestingLevel - sTentry.getNestingLevel(); i++)
-            derExpCode+= "lw $al 0($al) \n";
-        derExpCode += "lw $a0 " + sTentry.getOffset()+"($al)\n";
+        //allow only access to derexp node(id)
+        String derExpCode = "mv $fp $al \n";
+        for(int i = 0; i < nestingLevel - sTentry.getNestingLevel(); i++)
+            derExpCode += "lw $al 0($al) \n";
+        derExpCode += "lw $a0 " + sTentry.getOffset() + "($al) \n";
         return derExpCode;
     }
 

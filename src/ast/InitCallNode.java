@@ -82,7 +82,7 @@ public class InitCallNode implements Node{
     }
     @Override
     public String codGeneration() {
-        String initCallCode = "push $fp \n";
+        String initCallCode = "//starting codgen for fun "+id.getId()+"\npush $fp \n";
         //I add the assets in inverse order
         int bexpSize = bexp != null ? bexp.size() : 0;
         int paramsSize = params != null ? params.size() : 0;

@@ -31,6 +31,10 @@ public class FunctionNode implements Node {
         this.endLabel = Utilities.freshLabel();
     }
 
+    public String getEndLabel() {
+        return endLabel;
+    }
+
     public IdNode getId() {
         return id;
     }
@@ -73,7 +77,7 @@ public class FunctionNode implements Node {
 
     @Override
     public Node typeCheck() {
-     for(Node node: statement){
+     for(Node node: statement){//TODO: control typecheck return
          StatementNode ns = (StatementNode) node;
          if(ns.getStatement() instanceof ReturnNode){
              if(Utilities.isSubtype(type.typeCheck(),new VoidTypeNode())){
@@ -146,8 +150,11 @@ public class FunctionNode implements Node {
             }
 
             if (statement != null) {
-                for (Node st : statement) {
+                for (StatementNode st : statement) {
                     res.addAll(st.checkSemantics(env));
+                    if(st.getStatement() instanceof ReturnNode){
+                        ((ReturnNode) st.getStatement()).setEntry(Environment.lookup(env,id.getId()));
+                    }
                 }
             }
 

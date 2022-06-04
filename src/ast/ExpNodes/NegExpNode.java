@@ -29,7 +29,7 @@ public class NegExpNode extends BaseExpNode {
     public String codGeneration() {
         String negCode = "";
         negCode += exp.codGeneration()
-                + "mult $a0 $a0 -1 \n";
+                + "multi $a0 $a0 -1 \n";
         return  negCode;
 
     }

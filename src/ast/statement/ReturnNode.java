@@ -3,15 +3,28 @@ package ast.statement;
 import ast.Node;
 import ast.typeNode.VoidTypeNode;
 import utils.Environment;
+import utils.STentry;
 import utils.SemanticError;
 
 import java.util.ArrayList;
 
 public class ReturnNode implements Node {
     private Node exp;
+    private STentry entry;
+    private int nestingLevel;
 
     public ReturnNode(Node exp) {
         this.exp = exp;
+        this.entry = null;
+        this.nestingLevel = -1;
+    }
+
+    public STentry getEntry() {
+        return entry;
+    }
+
+    public void setEntry(STentry entry) {
+        this.entry = entry;
     }
 
     @Override
@@ -28,12 +41,23 @@ public class ReturnNode implements Node {
 
     @Override
     public String codGeneration() {
-        return null;
-    } //TODO: return code
+        String retCode = "";
+        if(exp != null)
+            retCode += exp.codGeneration();
+        for(int i = 0; i< nestingLevel - entry.getNestingLevel();i++)
+            retCode += "lw $fp 0($fp)\n";
+
+        retCode += "subi $sp $fp 1 //Restore stack pointer as before block creation in return \n"
+                +"lw $fp 0($fp) //Load old $fp pushed \n"
+                +"b "+entry.getNode().getEndLabel()+" \n";
+
+        return retCode;
+    }
 
     @Override
     public ArrayList<SemanticError> checkSemantics(Environment e) {
         ArrayList<SemanticError> res = new ArrayList<SemanticError>();
+        nestingLevel = e.getNestingLevel();
         if(exp != null)
             return exp.checkSemantics(e);
         else

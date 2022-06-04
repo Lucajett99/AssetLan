@@ -45,8 +45,9 @@ public class MoveNode implements Node {
                          + "push $a0 \n"
                          + id2.accessCodGeneration() //I have the value of id2 in $a0
                          + "lw $a1 0($fp)\n" //a1 <- top
+                         + "pop\n"
                          + "add $a0 $a0 $a1\n"  //sum the value of id1 and id2
-                         + id2.accessCodGeneration();  //store in id2 the sum of id1 and id2
+                         + id2.storeCodGeneration();  //store in id2 the sum of id1 and id2
         return moveCode;
     }
 

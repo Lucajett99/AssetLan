@@ -67,7 +67,8 @@ public class BinExpNode implements Node {
         binExpCode += left.codGeneration() + "\n"
                    + "push $a0 \n"
                    + right.codGeneration() + "\n"
-                   + "lw $a1 0($sp)\n"; // load the left operand in $t1
+                //a1 <- top
+                   + "lw $a1 0($sp)\n";
         switch (op){
             case "+":
                 binExpCode += "add $a0 $a1 $a0 \n";

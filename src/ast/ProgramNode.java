@@ -67,7 +67,7 @@ public class ProgramNode implements Node {
 
         initcallCode = initcall.codGeneration();
         //I presume I have a register $b (balance) in which i will store the aggregate sum of all the transfer in the program
-        return  "li $b 0 \n" + fieldCode + assetCode +  initcallCode + functionCode + "print $b\n" + "halt";
+        return  "li $b 0 \n" + fieldCode + assetCode +  initcallCode + "print $b\n" + "halt\n"+ functionCode ;
     }
 
     @Override
