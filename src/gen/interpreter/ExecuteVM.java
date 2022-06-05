@@ -6,8 +6,8 @@ import interpreter.Instruction;
 import interpreter.SVMParser;
 
 public class ExecuteVM {
-    public static final int CODESIZE = 10000; //TODO: set to 10000
-    public static final int MEMSIZE = 10000;
+    public static final int CODESIZE = 100000; //TODO: set to 10000
+    public static final int MEMSIZE = 1000;
     private Instruction[] code;
     private int[] memory = new int[MEMSIZE]; //I just need an array of integer
 
@@ -110,11 +110,13 @@ public class ExecuteVM {
                             address = Integer.parseInt(code[ip].getArg1());
                             ip = address;
                             break;
-                        case SVMParser.BCOND:
-                            address = Integer.parseInt(code[ip].getArg1());
-                            ip++;
-                            value = regRead(bytecode.getArg1());
-                            if (value!=0) ip = address;
+                        case SVMParser.BEQ:
+                            //address = Integer.parseInt(code[ip].getArg1());
+                            //ip++;
+                            if(regRead(bytecode.getArg1()) == regRead(bytecode.getArg2()))
+                                 ip = Integer.parseInt(code[ip].getArg1());
+                            else
+                                ip++;
                             break;
 
                         case SVMParser.JAL:

@@ -82,7 +82,7 @@ STOREW	 : 'sw' ; 	// stores the value of a register at offset n from the address
 LOADW	 : 'lw' ;	// loads the value at offset n from the address in a register and stores it in a second register
 MOVE	 : 'mv' ;	// move value from first register to second register
 BRANCH	 : 'b' ;	// jump to label
-BEQ    : 'beq' ;	// jump to label if $r1 == $r2
+BEQ      : 'beq' ;	// jump to label if $r1 == $r2
 LE       : 'le' ;	// r1 = r2 <= r3
 LT       : 'lt' ;	//
 EQ       : 'eq' ;	//

@@ -101,8 +101,8 @@ public class SVMVisitorImpl extends SVMBaseVisitor {
                 code[i++] = new Instruction(SVMParser.BRANCH, ctx.l.getText());
                 labelRef.put(i++,(ctx.l!=null? ctx.l.getText():null));
                 break;
-            case SVMLexer.BCOND:
-                code[i++] = new Instruction(SVMParser.BCOND, ctx.r1.getText(), ctx.l.getText());
+            case SVMLexer.BEQ:
+                code[i++] = new Instruction(SVMParser.BEQ, ctx.r1.getText(), ctx.r2.getText(), ctx.l.getText());
                 labelRef.put(i++,(ctx.l!=null? ctx.l.getText():null));
                 break;
             case SVMLexer.EQ:
