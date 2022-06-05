@@ -51,13 +51,24 @@ public class AdecNode implements Node {
     public ArrayList<SemanticError> checkSemantics(Environment e) {
         ArrayList<SemanticError> res = new ArrayList<SemanticError>();
         int offset;
-        if(id != null) {
+       /* if(id != null) {
             for (IdNode idAss : id) {
                 if (e.isMultipleDeclared(idAss.getId()) == EnvError.ALREADY_DECLARED) {
                     res.add(new SemanticError(idAss.getId() + " : already declared [adec]"));
                 } else {
                     offset = e.setDecOffset(true);
                     e = Environment.addDeclaration(e, offset, idAss.getId(), new AssetNode(idAss));
+                    offsetList.add(offset);
+                }
+            }
+        }*/
+        if(id != null) {
+            for (int i = id.size() -1; i >= 0; i--){
+                if (e.isMultipleDeclared(id.get(i).getId()) == EnvError.ALREADY_DECLARED) {
+                    res.add(new SemanticError(id.get(i).getId() + " : already declared [adec]"));
+                } else {
+                    offset = e.setDecOffset(true);
+                    e = Environment.addDeclaration(e, offset, id.get(i).getId(), new AssetNode(id.get(i)));
                     offsetList.add(offset);
                 }
             }
