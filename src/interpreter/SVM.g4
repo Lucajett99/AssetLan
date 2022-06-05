@@ -32,7 +32,7 @@ instruction:
 	  | LOAD r1=REGISTER n=NUMBER
 	  | MOVE r1=REGISTER r2=REGISTER
 	  | BRANCH l=LABEL
-	  | BCOND r1=REGISTER l=LABEL
+	  | BEQ r1=REGISTER r2=REGISTER l=LABEL
 	  | EQ r1=REGISTER r2=REGISTER r3=REGISTER
 	  | LE r1=REGISTER r2=REGISTER r3=REGISTER
 	  | LT r1=REGISTER r2=REGISTER r3=REGISTER
@@ -82,7 +82,7 @@ STOREW	 : 'sw' ; 	// stores the value of a register at offset n from the address
 LOADW	 : 'lw' ;	// loads the value at offset n from the address in a register and stores it in a second register
 MOVE	 : 'mv' ;	// move value from first register to second register
 BRANCH	 : 'b' ;	// jump to label
-BCOND    : 'bc' ;	// jump to label if $r1 == top
+BEQ    : 'beq' ;	// jump to label if $r1 == $r2
 LE       : 'le' ;	// r1 = r2 <= r3
 LT       : 'lt' ;	//
 EQ       : 'eq' ;	//

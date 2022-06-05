@@ -1,10 +1,8 @@
-int b = 5;
-void main(int n)[asset a]{
- print n;
- print b;
- print a;
- transfer a;
- print a;
-}
-
-main(2)[3] ;	// il contratto e` liquido
+ asset x; asset y ;
+     void main(int n)[]{
+        if (n > 0)
+        { print n;}
+        else
+        { print 150;}
+     }
+main(10)[]

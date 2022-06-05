@@ -94,14 +94,14 @@ public class CallNode implements Node {
     public String codGeneration() {
         String callCode = "push $fp \n";
         //I add the assets in inverse order
+        for(int i = listId.size(); i > 0 ; i--)
+            callCode += listId.get(i - 1).accessCodGeneration() + listId.get(i - 1).emptyValueCodGeneration()
+                    + "push $a0 \n";
+        //I add the parameters in inverse order
         for(int i = exp.size(); i > 0 ; i--)
             callCode += exp.get(i - 1).codGeneration()
                     + "push $a0 \n";
-        //I add the parameters in inverse order
-        for(int i = listId.size(); i > 0 ; i--)
-            callCode += listId.get(i - 1).accessCodGeneration()
-                    + "push $a0 \n";
-        //Now i will set the access link
+                //Now i will set the access link
         callCode += "mv $fp $al \n";
         for(int i = 0; i < nestingLevel - stEntry.getNestingLevel(); i++)
             callCode += "lw $al 0($al) \n";

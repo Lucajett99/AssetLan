@@ -1,6 +1,6 @@
 --------LEXICAL ERRORS----------
 
 --------SYNTAX ERRORS----------
-Error: mismatched input '$a0' expecting ':' at line 21
-Error: missing ':' at 'mv' at line 23
+Error: mismatched input 'u' expecting {'asset', ']'} at line 2
+Error: mismatched input ',' expecting '(' at line 2
 

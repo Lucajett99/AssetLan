@@ -73,8 +73,7 @@ public class IteNode implements Node {
         String endIfLabel = Utilities.freshLabel();
         iteCode += exp.codGeneration()
                 + "li $a1 0\n"
-                + "push $a1\n"
-                + "bc $a0 " + falseLabel + "\n // START THEN BRANCH IF STATEMENT \n";
+                + "beq $a0 $a1" + falseLabel + "\n // START THEN BRANCH IF STATEMENT \n";
         for(Node node : thenStatement)
             iteCode += node.codGeneration();
         iteCode   += "b " + endIfLabel + " \n"
