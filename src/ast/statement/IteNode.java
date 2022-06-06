@@ -115,7 +115,7 @@ public class IteNode implements Node {
                 if (stmNode.getStatement() instanceof CallNode) {
                     CallNode cnode = (CallNode) stmNode.getStatement();
                     FunctionNode fnode = Environment.lookup(e1,cnode.getId()).getNode();
-                    e1 = LiquidityUtils.fixPointMethod(e1, fnode, cnode);
+                    e1 = LiquidityUtils.fixPointMethod(e, fnode, cnode);
                 }else{
                     e1 = node.checkEffects(e1);
                 }

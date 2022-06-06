@@ -102,7 +102,6 @@ public class ProgramNode implements Node {
                 e = node.checkEffects(e);
             }
         }
-        Environment assetGlobal = e;
         if(functions != null){
             for(Node fun : functions){
                 e = fun.checkEffects(e);

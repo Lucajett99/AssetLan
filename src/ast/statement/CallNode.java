@@ -10,6 +10,7 @@ import ast.typeNode.AssetTypeNode;
 import ast.typeNode.IntTypeNode;
 import utils.*;
 
+import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 
 public class CallNode implements Node {
@@ -181,7 +182,7 @@ public class CallNode implements Node {
             //=> all formal parameter are empty
             STentry entryF = Environment.lookup(e,formalParameter.get(i).getId());
             if(entryF.getLiquidity() != 0){
-                System.out.println("funzione "+id.getId()+" non é liquida!");
+                System.out.println("funzione "+id.getId()+" non e' liquida!");
                 //System.exit(0);
             }
         }

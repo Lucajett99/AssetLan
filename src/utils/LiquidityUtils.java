@@ -141,7 +141,7 @@ public abstract class LiquidityUtils {
             //=> all formal parameter are empty
             STentry entryF = Environment.lookup(e_end,formalParameter.get(i).getId());
             if(entryF.getLiquidity() != 0 && !actualParameter.contains(formalParameter.get(i))){
-                System.out.println("funzione "+funNode.getId()+" non é liquida!");
+                System.out.println("funzione "+funNode.getId().getId() +" non e' liquida!");
                 //System.exit(0);
             }
         }
