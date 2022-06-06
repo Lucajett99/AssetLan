@@ -1,12 +1,9 @@
-int a ;
-     asset x ;
-     void f(int n)[asset u, asset v, asset w]{
-      if(n != 0){
-        u -o x ;
-	    f(n-1)[v,w,u] ; }
+int f(int n)[]{
+          return n + 2;
      }
-     void main()[asset a, asset b, asset c]{
-	    f(4)[a,b,c] ;
-	    transfer x ;
+     void main()[]{
+        int x
+	   x = f(5)[];
+	   print x;
      }
-     main()[1,2,3] ;	// il contratto e` liquidoliquido
+     main()[] ;	// il contratto e` liquido

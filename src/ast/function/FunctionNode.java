@@ -20,7 +20,7 @@ public class FunctionNode implements Node {
 
     private String funLabel;
     private String endLabel;
-
+    //TODO: function whit return && CHECK SEMANTICS
     public FunctionNode(TypeNode type, IdNode id, DecpNode decp, ArrayList<DecNode> dec, AdecNode adec, ArrayList<StatementNode> statement) {
         this.type = type;
         this.decp = (decp);

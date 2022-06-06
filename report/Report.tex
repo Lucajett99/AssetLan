@@ -248,4 +248,7 @@ Successivamente, si va a valutare la regola field, che non è altro che una dich
 \\
 \infer{\Gamma, n \vdash \mbox{ T x = e;} : \Gamma[x \rightarrow T \times \bot \times \mbox{off} ], n = n-1}{ x \notin (top(\Gamma)) \; \Gamma \vdash \mbox{e = T'} \; \mbox{T = T'} \; \mbox{off = n}}
 
+
+\chapter{Generazione di codice}
+L'ultima fase di questo progetto si occupava di andare a generare il codice bytecode per il codice assetlan preso in input e di costruire l'interprete per l'esecuzione del bytecode generato. Siamo così andati in ogni nodo dell'albero a scrivere la funzione \emph{codGeneration()}. Ogni nodo restituirà una stringa e l'insieme di tutte queste stringhe, sarà il nostro codice bytecode da eseguire tramite l'interprete. Abbiamo definito una classe instruction che conterrà un intero, il codice del token rappresentante l'istruzione da eseguire, e tre stringhe che rappresentano i tre possibili argomenti che quell'istruzione prende in input. Se un argomento non c'è (poichè esistono istruzioni che hanno meno di tre argomenti o addirittura nessuno come la \emph{pop}) questo verrà settato a \emph{null}. 
 \end{document}

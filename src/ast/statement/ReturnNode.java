@@ -47,9 +47,8 @@ public class ReturnNode implements Node {
         for(int i = 0; i< nestingLevel - entry.getNestingLevel();i++)
             retCode += "lw $fp 0($fp)\n";
 
-        retCode += "subi $sp $fp 1 //Restore stack pointer as before block creation in return \n"
-                +"lw $fp 0($fp) //Load old $fp pushed \n"
-                +"b "+entry.getNode().getEndLabel()+" \n";
+        retCode += "lw $fp 0($fp) //Load old $fp pushed \n"
+                 +"b "+entry.getNode().getEndLabel()+" \n";
 
         return retCode;
     }
