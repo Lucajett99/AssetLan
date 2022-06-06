@@ -41,7 +41,7 @@ public class Environment extends LiquidityUtils{
         for(int i =0; i< symTable.size();i++){
             HashMap<String,STentry> HM = new HashMap<String,STentry>();
             for(String id : symTable.get(i).keySet()){
-                STentry entry =lookup(this,id);
+                STentry entry =symTable.get(i).get(id);
                 HM.put(id,new STentry(entry.getType(),entry.getOffset(),entry.getNestingLevel(),entry.getNode(),entry.getLiquidity()));
             }
             newST.add(HM);

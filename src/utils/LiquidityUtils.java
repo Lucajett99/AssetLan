@@ -10,6 +10,7 @@ import ast.typeNode.AssetTypeNode;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Objects;
 
 import static utils.Environment.lookup;
 
@@ -23,8 +24,8 @@ public abstract class LiquidityUtils {
         for(int i = 0; i< st.size();i++){
             HashMap<String, STentry> newHM =new HashMap<String, STentry>();
             for(String id : st.get(i).keySet()){
-                STentry entry2 = lookup(e2,id);
-                STentry entry1 = lookup(e1,id);
+                STentry entry2 = e2.getSymTable().get(i).get(id);
+                STentry entry1 = e1.getSymTable().get(i).get(id);
                 if( lookup(e2,id) != null && entry1.getLiquidity()!= -1){
                     newHM.put(id,entry2);
                     newHM.get(id).setLiquidity(Math.max(entry2.getLiquidity(),entry1.getLiquidity()));
@@ -117,13 +118,29 @@ public abstract class LiquidityUtils {
                     e_start = Environment.max(e1, e2);
                 }
             }
+
+            for(int i = 0; i< formalParameter.size();i++){
+                //check that function has liquid
+                //=> all formal parameter are empty
+                STentry entryF = Environment.lookup(e_end,formalParameter.get(i).getId());
+                boolean PassedToActual = false;
+                for (IdNode id:actualParameter) {
+                    if(Objects.equals(id.getId(), formalParameter.get(i).getId())){
+                        PassedToActual = true;
+                    }
+                };
+                if(entryF.getLiquidity() != 0 && !PassedToActual){
+                    System.out.println("funzione "+funNode.getId().getId()+" non é liquida!");
+                    System.exit(0);
+                }
+            }
         }while(!(e_start.equals(e_end)) && iteration <MAXITER );
 
         for(int i = 0; i< formalParameter.size();i++){
             //check that function has liquid
             //=> all formal parameter are empty
             STentry entryF = Environment.lookup(e_end,formalParameter.get(i).getId());
-            if(entryF.getLiquidity() != 0){
+            if(entryF.getLiquidity() != 0 && !actualParameter.contains(formalParameter.get(i))){
                 System.out.println("funzione "+funNode.getId()+" non é liquida!");
                 //System.exit(0);
             }

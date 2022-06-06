@@ -19,7 +19,7 @@ import java.util.ArrayList;
 public class Main {
 
     public static void main(String[] args) throws Exception {
-        String fileName = "src/codeExamples/example1.assetlan";
+        String fileName = "src/codeExamples/example3.assetlan";
         CharStream charStreams = CharStreams.fromFileName(fileName);
         AssetLanLexer lexer = new AssetLanLexer(charStreams);
         CommonTokenStream tokens = new CommonTokenStream(lexer);
