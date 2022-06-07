@@ -113,9 +113,7 @@ public class CallNode implements Node {
         String label = stEntry.getNode().getFunLabel();
         callCode += "jal " + label + "\n"; //jump at label and store the next instruction in ra
         return callCode + "\n";
-
-
-    }
+   }
 
     @Override
     public ArrayList<SemanticError> checkSemantics(Environment e) {
