@@ -113,11 +113,12 @@ public class IteNode implements Node {
         if(elseStatement == null){
             for(Node node : thenStatement) {
                 StatementNode stmNode = (StatementNode) node;
-
-                if (stmNode.getStatement() instanceof CallNode) {
+                if (stmNode.getStatement() instanceof CallNode
+                        && stmNode.getFunNode()!= null &&
+                        stmNode.getFunNode().getId().getId().equals(((CallNode) stmNode.getStatement()).getId())) {
                     CallNode cnode = (CallNode) stmNode.getStatement();
                     FunctionNode fnode = Environment.lookup(e1,cnode.getId()).getNode();
-                    e1 = LiquidityUtils.fixPointMethod(e, fnode, cnode);
+                    e1= LiquidityUtils.fixPointMethod(e, fnode, cnode);
                 }else{
                     e1 = node.checkEffects(e1);
                 }
@@ -130,7 +131,9 @@ public class IteNode implements Node {
 
             for(Node node : aggregateStm) {
                 StatementNode nodeStatement = (StatementNode) node;
-                if (nodeStatement.getStatement() instanceof CallNode) {
+                if (nodeStatement.getStatement() instanceof CallNode
+                        && nodeStatement.getFunNode()!= null &&
+                        nodeStatement.getFunNode().getId().getId().equals(((CallNode) nodeStatement.getStatement()).getId())) {
                     CallNode cnode = (CallNode)nodeStatement.getStatement();
                     FunctionNode fnode = Environment.lookup(e,cnode.getId()).getNode();
                     return LiquidityUtils.fixPointMethod(e, fnode, cnode);

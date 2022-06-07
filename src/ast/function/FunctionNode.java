@@ -168,6 +168,7 @@ public class FunctionNode implements Node {
 
             if (statement != null) {
                 for (StatementNode st : statement) {
+                    st.setFunNode(this);
                     res.addAll(st.checkSemantics(env));
                     setReturnNode(env,st);
                 }
@@ -181,6 +182,9 @@ public class FunctionNode implements Node {
     @Override
     public Environment checkEffects(Environment e) {
         e = Environment.addFunctionDeclaration(e, e.setDecOffset(false) ,id.getId(), this.type,this);
+        for(StatementNode stm: statement){
+            stm.setFunNode(this);
+        }
         return e;
     }
 

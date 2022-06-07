@@ -8,6 +8,7 @@ import ast.statement.CallNode;
 import ast.statement.IteNode;
 import ast.typeNode.AssetTypeNode;
 
+import javax.swing.plaf.nimbus.State;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Objects;
@@ -107,12 +108,23 @@ public abstract class LiquidityUtils {
                         StatementNode stmNode = (StatementNode) node;
                         if (!(stmNode.getStatement() instanceof CallNode) && !(stmNode.getStatement() instanceof IteNode))
                             e1 = node.checkEffects(e1);
+                        else if( stmNode.getStatement() instanceof CallNode  && !(((CallNode) stmNode.getStatement()).getId().equals(funName))){
+                            STentry stEntry = Environment.lookup(e_start,((CallNode) stmNode.getStatement()).getId());
+                            for(StatementNode st : stEntry.getNode().getStatement()){
+                                e1 = st.checkEffects(e1);
+                            }
+                        }
                     }
                     if (ite.getElseStatement() != null) {
                         for (Node node : ite.getElseStatement()) {
                             StatementNode stmNode = (StatementNode) node;
                             if (!(stmNode.getStatement() instanceof CallNode) && !(stmNode.getStatement() instanceof IteNode)) {
                                 e2 = stmNode.checkEffects(e2);
+                            }else if( stmNode.getStatement() instanceof CallNode  && !(((CallNode) stmNode.getStatement()).getId().equals(funName))){
+                                STentry stEntry = Environment.lookup(e_start,((CallNode) stmNode.getStatement()).getId());
+                                for(StatementNode st : stEntry.getNode().getStatement()){
+                                    e2 = st.checkEffects(e2);
+                                }
                             }
                         }
                     }

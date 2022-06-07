@@ -1,16 +1,41 @@
 package ast.function;
 
 import ast.Node;
+import ast.statement.IteNode;
 import utils.Environment;
 import utils.SemanticError;
 
+import javax.swing.plaf.nimbus.State;
 import java.util.ArrayList;
 
 public class StatementNode implements Node {
     private Node statement;
+    private FunctionNode funNode; //save FN of the ancestor
+
+    public FunctionNode getFunNode() {
+        return funNode;
+    }
+
+    public void setFunNode(FunctionNode funNode) {
+        this.funNode = funNode;
+        if(statement instanceof IteNode ite){
+            for(Node node: ite.getThenStatement()){
+                StatementNode stm = (StatementNode) node;
+                stm.setFunNode(funNode);
+            }
+            if(ite.getElseStatement()!= null){
+                for(Node node: ite.getElseStatement()){
+                    StatementNode stm = (StatementNode) node;
+                    stm.setFunNode(funNode);
+                }
+            }
+        }
+
+    }
 
     public StatementNode(Node statement) {
         this.statement = statement;
+        funNode =null;
     }
 
     @Override
