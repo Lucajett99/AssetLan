@@ -88,8 +88,8 @@ public class InitCallNode implements Node{
         //I add the assets in inverse order
         int bexpSize = bexp != null ? bexp.size() : 0;
         int paramsSize = params != null ? params.size() : 0;
-        for(int i = bexpSize; i > 0 ; i--)
-            initCallCode += bexp.get(i - 1).codGeneration()
+        for(int i = 0; i< bexpSize; i ++)
+            initCallCode += bexp.get(i).codGeneration()
                     + "push $a0 \n";
         //I add the parameters in inverse order
         for(int i = paramsSize; i > 0 ; i--)

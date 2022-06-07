@@ -19,7 +19,7 @@ import java.util.ArrayList;
 public class Main {
 
     public static void main(String[] args) throws Exception {
-        String fileName = "src/codeExamples/example4.assetlan";
+        String fileName = "src/codeExamples/example1.assetlan";
         CharStream charStreams = CharStreams.fromFileName(fileName);
         AssetLanLexer lexer = new AssetLanLexer(charStreams);
         CommonTokenStream tokens = new CommonTokenStream(lexer);
@@ -44,7 +44,7 @@ public class Main {
                 }
             } else {
                 Node type = ast.typeCheck();
-                Environment envEffects = ast.checkEffects(new Environment());
+               // Environment envEffects = ast.checkEffects(new Environment());
 
                 String code = ast.codGeneration();
                 BufferedWriter out = new BufferedWriter(new FileWriter(fileName + ".asm"));

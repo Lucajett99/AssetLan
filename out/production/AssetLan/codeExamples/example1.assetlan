@@ -1,12 +1,16 @@
-void f(int n)[]{
-          if(n>0)
-            {return n + 2;}
-          else
-            {return 5;}
-          }
-     void main()[]{
-        int x
-	   x = f(5)[];
-	   print x;
-     }
-     main()[] ;	// il contratto e` liquido
+asset x ;
+void f(int n)[asset u, asset v, asset w]{
+   print u;
+   print v;
+   print w;
+   u -o x ;
+   if(n != 0)
+    {
+    f(n-1)[x,w,u] ;
+    transfer v;}
+    }
+void main()[asset a, asset b, asset c]{
+f(4)[a,b,c] ;
+transfer x ;
+}
+main()[1,2,3] ;
