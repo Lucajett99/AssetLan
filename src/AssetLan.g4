@@ -10,9 +10,10 @@ field       : type ID ('=' exp)? ';' ;
 asset       : 'asset' ID ';' ;
 
 function    : (type | 'void') ID '(' (decp)? ')' '[' (adec)? ']'
-	      '{' dec* statement* '}' ;
+	      '{' (dec';')*  statement* '}' ;
 
 decp        : dec;
+
 dec         : type ID (',' type ID)* ;
 
 adec 	    : 'asset' ID (',' 'asset' ID)*;

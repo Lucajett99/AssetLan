@@ -1,4 +1,5 @@
-package gen;// Generated from C:/Users/simon/Desktop/AssetLan/AssetLan/src\AssetLan.g4 by ANTLR 4.9.2
+// Generated from C:/Users/simon/Desktop/AssetLan/src\AssetLan.g4 by ANTLR 4.9.2
+package gen;
 import org.antlr.v4.runtime.tree.ParseTreeVisitor;
 
 /**
