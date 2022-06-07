@@ -44,7 +44,7 @@ public class ReturnNode implements Node {
         String retCode = "";
         if(exp != null)
             retCode += exp.codGeneration();
-        for(int i = 0; i< nestingLevel - entry.getNestingLevel();i++)
+        for(int i = 0; i< nestingLevel - entry.getNestingLevel(); i++)
             retCode += "lw $fp 0($fp)\n";
 
         retCode += "lw $fp 0($fp) //Load old $fp pushed \n"
