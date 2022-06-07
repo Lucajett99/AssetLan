@@ -126,7 +126,8 @@ public class BinExpNode implements Node {
 
     @Override
     public Environment checkEffects(Environment e) {
-        return null;
+        Environment e1 = left.checkEffects(e);
+        return right.checkEffects(e1);
     }
 
     @Override

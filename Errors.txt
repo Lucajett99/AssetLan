@@ -1,5 +1,6 @@
 --------LEXICAL ERRORS----------
 
 --------SYNTAX ERRORS----------
-Error: extraneous input ';' expecting {'}', 'int', 'bool', 'print', 'transfer', 'return', 'if', ID} at line 6
+Error: missing '{' at 'u' at line 7
+Error: extraneous input 'else' expecting {'}', 'print', 'transfer', 'return', 'if', ID} at line 8
 

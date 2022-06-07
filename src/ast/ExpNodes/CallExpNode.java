@@ -35,6 +35,6 @@ public class CallExpNode implements Node {
 
     @Override
     public Environment checkEffects(Environment e) {
-        return null;
+        return call.checkEffects(e);
     }
 }

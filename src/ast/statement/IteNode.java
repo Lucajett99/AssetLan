@@ -33,6 +33,7 @@ public class IteNode implements Node {
         return this.elseStatement;
     }
 
+    public Node getExp(){return exp;}
     @Override
     public String toPrint(String indent) {
         String s1 = "";//to print then Statement
@@ -105,6 +106,7 @@ public class IteNode implements Node {
     @Override
     public Environment checkEffects(Environment e) {
         //Definire operatore Max(Environment e, Environment e1)
+        e = exp.checkEffects(e);
 
         Environment e1 = e.clone();
         Environment e2 = e.clone();

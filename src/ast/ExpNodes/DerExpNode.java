@@ -54,6 +54,6 @@ public class DerExpNode implements Node {
 
     @Override
     public Environment checkEffects(Environment e) {
-        return null;
+        return e;
     }
 }

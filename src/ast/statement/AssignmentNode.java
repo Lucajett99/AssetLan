@@ -60,6 +60,6 @@ public class AssignmentNode implements Node {
 
     @Override
     public Environment checkEffects(Environment e) {
-        return e;
+        return exp.checkEffects(e);
     }
 }

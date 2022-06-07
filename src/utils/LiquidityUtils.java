@@ -97,11 +97,12 @@ public abstract class LiquidityUtils {
                 //da porre particolare attenzione in caso sia contenuto uno stm ITE
                 if (!(stm.getStatement() instanceof CallNode) && !(stm.getStatement() instanceof IteNode)) {
                     e_start = stm.checkEffects(e_start);
-                } else if (stm.getStatement() instanceof IteNode) {
+                } else if (stm.getStatement() instanceof IteNode ite) {
+                    e_start = ite.getExp().checkEffects(e_start);
+
                     Environment e1 = e_start.clone();
                     Environment e2 = e_start.clone();
 
-                    IteNode ite = (IteNode) stm.getStatement();
                     for (Node node : ite.getThenStatement()) {
                         StatementNode stmNode = (StatementNode) node;
                         if (!(stmNode.getStatement() instanceof CallNode) && !(stmNode.getStatement() instanceof IteNode))

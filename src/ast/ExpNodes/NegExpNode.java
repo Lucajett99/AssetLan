@@ -36,7 +36,7 @@ public class NegExpNode extends BaseExpNode {
 
     @Override
     public Environment checkEffects(Environment e) {
-        return null;
+        return e;
     }
 
     @Override

@@ -35,7 +35,7 @@ public class BaseExpNode implements Node {
 
     @Override
     public Environment checkEffects(Environment e) {
-        return null;
+        return exp.checkEffects(e);
     }
 
     @Override
