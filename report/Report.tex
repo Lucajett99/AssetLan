@@ -238,17 +238,30 @@ Dove $\bot$ rappresenta le variabili non asset, $\emptyset$ rappresenta un asset
 Definiamo inoltre una funzione \emph{proj$_i$} che ci permetterà di ritornare l' \emph{i-esimo} elemento di $\Gamma$(id).
 
 La prima regola che andremo ad analizzare è la regola del program. Questa regola verrà valutata nell'ambiente vuoto (poichè stiamo iniziando a controllare ora il programma) e avrà un offset pari a 0. L'offset è infatti una variabile globale all'interno della classe Environment che parte da zero e diminuirà ogni volta che viene effettuata una nuova dichiarazione. \\
-\begin{center}
     
-    [prog]\infer{ \emptyset, 0 \vdash \mbox{field asset function initcall} : max(proj_2(\Gamma''))}
-    {\emptyset, 0 \vdash field: \Gamma \; \Gamma \vdash asset: \Gamma' \;\Gamma'\vdash function : \Gamma'' \; \Gamma'' \vdash initcall : T} 
-\end{center}
+    \infer{ \emptyset, 0 \vdash \mbox{field asset function initcall} : max(proj_2(\Gamma''))}
+    {\emptyset, 0 \vdash field: \Gamma \; \Gamma \vdash asset: \Gamma' \;\Gamma'\vdash function : \Gamma'' \; \Gamma'' \vdash initcall : T}
+
 Successivamente, si va a valutare la regola field, che non è altro che una dichiarazione di variabili con o senza dichiarazione. Abbiamo così definito due regole di inferenza, una con ed una senza la dichiarazione.
 \\
-    \infer{\Gamma, n \vdash \mbox{ T x;} : \Gamma[x \rightarrow T \times \bot \times \mbox{off} ], n = n-1}{ x \notin (top(\Gamma)) \;\mbox{ off = n}}
+    \infer{\Gamma, n \vdash \mbox{ T x;} : \Gamma[x \rightarrow T \times \bot \times \mbox{off} ], n = n-1}{ x \notin (top(\Gamma)) \;\mbox{ off = n}} 
 \\
-\infer{\Gamma, n \vdash \mbox{ T x = e;} : \Gamma[x \rightarrow T \times \bot \times \mbox{off} ], n = n-1}{ x \notin (top(\Gamma)) \; \Gamma \vdash \mbox{e = T'} \; \mbox{T = T'} \; \mbox{off = n}}
-
+    \infer{\Gamma, n \vdash \mbox{ T x = e;} : \Gamma[x \rightarrow T \times \bot \times \mbox{off} ], n = n-1}{ x \notin (top(\Gamma)) \; \Gamma \vdash \mbox{e = T'} \; \mbox{T = T'} \; \mbox{off = n}}
+\\
+    \infer{\Gamma, n \vdash \mbox{asset x;} : \Gamma[x \rightarrow T \times \bot \times off], \mbox{n-1}}{x \notin dom(top(\Gamma)) \;\mbox{ off = n}}
+\\
+Bisogna poi definire la regola per la valutazione di una sequenza di dichiarazioni field ed una sequenza di dichiarazioni asset.\\ 
+\infer{\Gamma, n \vdash \mbox{f; F;} : \Gamma'', n''}
+{\Gamma, n \vdash f: \Gamma',n' \; \Gamma', n' \vdash F; : \Gamma'', n'' }\\
+Una regola speculare viene usata per la sequenza di dichiarazioni asset.\\
+\infer{\Gamma, n \vdash \mbox{a; A;} : \Gamma'', n''}
+{\Gamma, n \vdash a: \Gamma',n' \;\;\;\;\;\; \Gamma', n' \vdash A; : \Gamma'', n'' }\\
+La regola per la dichiarazione (valida sia per dec che per decp). \\
+\infer{\Gamma, n \vdash \mbox{ T x;} : \Gamma[x \rightarrow T \times \bot \times \mbox{off} ], n = n +1}{ x \notin (top(\Gamma)) \;\;\; \mbox{off = n}}
+\\
+Serve ora una regola per la sequenda di dichiarazioni.\\ 
+\infer{\Gamma, n \vdash \mbox{d, D; :} \;\;\; \Gamma'', n''}{\Gamma, n \vdash d: \Gamma',n' \;\;\;\;\;\; \Gamma', n' \vdash D; \; : \Gamma'', n'' }\\
+La regola di inferenza per l'assegnamento è: 
 
 \chapter{Generazione di codice}
 L'ultima fase di questo progetto si occupava di andare a generare il codice bytecode per il codice assetlan preso in input e di costruire l'interprete per l'esecuzione del bytecode generato. Siamo così andati in ogni nodo dell'albero a scrivere la funzione \emph{codGeneration()}. Ogni nodo restituirà una stringa e l'insieme di tutte queste stringhe, sarà il nostro codice bytecode da eseguire tramite l'interprete. Abbiamo definito una classe \emph{Instruction} che conterrà un intero, il codice del token rappresentante l'istruzione da eseguire, e tre stringhe che rappresentano i tre possibili argomenti che quell'istruzione prende in input. Se un argomento non c'è (poichè esistono istruzioni che hanno meno di tre argomenti o addirittura nessuno come la \emph{pop}) questo verrà settato a \emph{null}.\\
@@ -282,4 +295,9 @@ Al momento dell'esecuzione viene chiamato il metodo \emph{cpu()} della classe \e
     \item \emph{Halt del programma:} se si raggiunge un'istruzione di halt che fa terminare il programma.
 \end{itemize}
 
+\begin{wrapfigure}{r}{0.3\textwidth}
+    \includegraphics[width=0.9\linewidth]{RdA.png}
+    \centering
+\end{wrapfigure}
+Durante l'esecuzione del programma a seguito delle chiamate a funzione si vengono a creare dei \emph{Record di attivazione}. La struttura del nostro record di attivazione sarà quella visibile in figura. I record di attivazione cresceranno dal basso verso l'altro, quindi il vecchio frame pointer si troverà ad indirizzi di memoria più alti del return address. Dopo aver caricato il vecchio frame pointer caricheremo prima tutti gli asset in ordine, da 1 a n. Il caricamento degli asset avviene in ordine poichè la loro dichiarazione (per mantenere coerenza con gli offset per l'accesso alle variabili nel record di attivazione) avviene al contrario. In questo modo possiamo caricare gli asset da 1 a n e conseguentemente svuotarli per mantenere la semantica di f()[a,a], in cui il primo parametro attuale sarà passato al primo formale e poi svuotato ed il secondo parametro formale riceverà un asset vuoto.  Successivamente carichiamo i parametri della funzione al contrario da m a 1 e poi il vecchio access link ed il vecchio \emph{\$ra}.
 \end{document}
