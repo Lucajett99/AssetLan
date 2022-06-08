@@ -3,6 +3,7 @@ package ast.statement;
 import ast.Node;
 import ast.typeNode.VoidTypeNode;
 import utils.Environment;
+import utils.STEntryFun;
 import utils.STentry;
 import utils.SemanticError;
 
@@ -10,7 +11,7 @@ import java.util.ArrayList;
 
 public class ReturnNode implements Node {
     private Node exp;
-    private STentry entry;
+    private STEntryFun entry;
     private int nestingLevel;
 
     public ReturnNode(Node exp) {
@@ -19,11 +20,11 @@ public class ReturnNode implements Node {
         this.nestingLevel = -1;
     }
 
-    public STentry getEntry() {
+    public STEntryFun getEntry() {
         return entry;
     }
 
-    public void setEntry(STentry entry) {
+    public void setEntry(STEntryFun entry) {
         this.entry = entry;
     }
 

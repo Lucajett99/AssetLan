@@ -6,10 +6,7 @@ import ast.function.FunctionNode;
 import ast.function.StatementNode;
 import ast.typeNode.BoolTypeNode;
 import ast.typeNode.VoidTypeNode;
-import utils.Environment;
-import utils.LiquidityUtils;
-import utils.SemanticError;
-import utils.Utilities;
+import utils.*;
 
 import java.sql.Array;
 import java.util.ArrayList;
@@ -117,7 +114,7 @@ public class IteNode implements Node {
                         && stmNode.getFunNode()!= null &&
                         stmNode.getFunNode().getId().getId().equals(((CallNode) stmNode.getStatement()).getId())) {
                     CallNode cnode = (CallNode) stmNode.getStatement();
-                    FunctionNode fnode = Environment.lookup(e1,cnode.getId()).getNode();
+                    FunctionNode fnode = ((STEntryFun)Environment.lookup(e1,cnode.getId())).getNode();
                     e1= LiquidityUtils.fixPointMethod(e, fnode, cnode);
                 }else{
                     e1 = node.checkEffects(e1);
@@ -135,7 +132,7 @@ public class IteNode implements Node {
                         && nodeStatement.getFunNode()!= null &&
                         nodeStatement.getFunNode().getId().getId().equals(((CallNode) nodeStatement.getStatement()).getId())) {
                     CallNode cnode = (CallNode)nodeStatement.getStatement();
-                    FunctionNode fnode = Environment.lookup(e,cnode.getId()).getNode();
+                    FunctionNode fnode = ((STEntryFun)Environment.lookup(e,cnode.getId())).getNode();
                     return LiquidityUtils.fixPointMethod(e, fnode, cnode);
                 }
             }

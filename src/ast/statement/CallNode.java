@@ -17,13 +17,14 @@ public class CallNode implements Node {
     private IdNode id;
     private ArrayList<Node> exp;
     private ArrayList<IdNode> listId;
-    private STentry stEntry;
+    private STEntryFun stEntry;
 
     private int nestingLevel;
 
     public String getId(){
         return id.getId();
     }
+
     public CallNode(IdNode id, ArrayList<Node> exp, ArrayList<IdNode> listId) {
         this.id = id;
         this.exp = exp; //actualDecParams
@@ -122,7 +123,8 @@ public class CallNode implements Node {
         if(e.isDeclared(id.getId())== EnvError.NO_DECLARE){
             res.add(new SemanticError(id.getId()+": function is not declared [Call]"));
         }else{
-            stEntry = Environment.lookup(e,id.getId());
+            STentry entry = Environment.lookup(e,id.getId());
+            if(entry instanceof STEntryFun){stEntry = (STEntryFun) entry;}
             nestingLevel = e.getNestingLevel();
         }
         if(listId!= null) {
@@ -144,48 +146,52 @@ public class CallNode implements Node {
 
     @Override
     public Environment checkEffects(Environment e) {
-        STentry st = Environment.lookup(e,id.getId());
-        ArrayList<StatementNode> stmList= st.getNode().getStatement();
-        if(stmList != null){
-            for(StatementNode stm : stmList){
-                if((stm.getStatement() instanceof CallNode && ((CallNode) stm.getStatement()).id == this.id) ) {
-                    return LiquidityUtils.fixPointMethod(e, st.getNode(), this);
+        STentry stentry = Environment.lookup(e,id.getId());
+        if(stentry instanceof STEntryFun){
+            STEntryFun st = (STEntryFun) stentry;
+            ArrayList<StatementNode> stmList= ((STEntryFun) st).getNode().getStatement();
+            if(stmList != null){
+                for(StatementNode stm : stmList){
+                    if((stm.getStatement() instanceof CallNode && ((CallNode) stm.getStatement()).id == this.id) ) {
+                        return LiquidityUtils.fixPointMethod(e,  st.getNode(), this);
+                    }
                 }
             }
-        }
-        e = Environment.newScope(e);
+            e = Environment.newScope(e);
 
-        //Identificatori Asset
+            //Identificatori Asset
 
-        //Sappiamo per definizione che size dei parametri formali == size parametri attuali
-        ArrayList<IdNode> actualParameter = listId != null ? listId : new ArrayList<>();
-        ArrayList<IdNode> formalParameter = st.getNode().getADec() != null ? st.getNode().getADec().getId() : new ArrayList<>();
+            //Sappiamo per definizione che size dei parametri formali == size parametri attuali
+            ArrayList<IdNode> actualParameter = listId != null ? listId : new ArrayList<>();
+            ArrayList<IdNode> formalParameter = st.getNode().getADec() != null ? st.getNode().getADec().getId() : new ArrayList<>();
 
-        for (int i = 0; i < actualParameter.size(); i++) {
-            //aggiorno l'attuale in base al formale
-            STentry entryA = Environment.lookup(e, actualParameter.get(i).getId());
-            //STentry entryF = Environment.lookup(e,formalParameter.get(i).getId());
-            Environment.addDeclaration(e, formalParameter.get(i).getId(), entryA.getLiquidity());
-            if(entryA.getLiquidity()> 0)
-                entryA.setLiquidity(0); //gli asset passati per parametro vengono azzerati
-        }
-
-        if(stmList != null){
-            for(StatementNode stm : stmList)
-                  e = stm.checkEffects(e);//Avvio l'analisi degli effetti su gli statement
-        }
-
-        for(int i = 0; i< formalParameter.size();i++){
-            //check that function has liquid
-            //=> all formal parameter are empty
-            STentry entryF = Environment.lookup(e,formalParameter.get(i).getId());
-            if(entryF.getLiquidity() != 0){
-                System.out.println("funzione "+id.getId()+" non e' liquida!");
-                //System.exit(0);
+            for (int i = 0; i < actualParameter.size(); i++) {
+                //aggiorno l'attuale in base al formale
+                STentry entryA = Environment.lookup(e, actualParameter.get(i).getId());
+                //STentry entryF = Environment.lookup(e,formalParameter.get(i).getId());
+                Environment.addDeclaration(e, formalParameter.get(i).getId(), ((STEntryAsset)entryA).getLiquidity());
+                if(((STEntryAsset)entryA).getLiquidity()> 0)
+                    ((STEntryAsset)entryA).setLiquidity(0); //gli asset passati per parametro vengono azzerati
             }
-        }
-        e = Environment.exitScope(e);
 
+            if(stmList != null){
+                for(StatementNode stm : stmList)
+                      e = stm.checkEffects(e);//Avvio l'analisi degli effetti su gli statement
+            }
+
+            for(int i = 0; i< formalParameter.size();i++){
+                //check that function has liquid
+                //=> all formal parameter are empty
+                STentry entryF = Environment.lookup(e,formalParameter.get(i).getId());
+                if(entryF instanceof STEntryAsset && ((STEntryAsset) entryF).getLiquidity() != 0){
+                    System.out.println("funzione "+id.getId()+" non e' liquida!");
+                    //System.exit(0);
+                }
+            }
+            e = Environment.exitScope(e);
+
+
+        }
         return e;
     }
 }

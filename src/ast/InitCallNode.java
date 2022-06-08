@@ -18,7 +18,7 @@ public class InitCallNode implements Node{
     private IdNode id;
     private ArrayList<Node> params;
     private ArrayList<Node> bexp;
-    private STentry stEntry;
+    private STEntryFun stEntry;
 
     private int nestingLevel;
     public InitCallNode(IdNode id, ArrayList<Node> params, ArrayList<Node> bexp) {
@@ -111,7 +111,7 @@ public class InitCallNode implements Node{
         if(e.isDeclared(id.getId())== EnvError.NO_DECLARE){
             res.add(new SemanticError(id.getId()+": init function is not declared"));
         }else{
-            stEntry = Environment.lookup(e,id.getId());
+            stEntry = (STEntryFun) Environment.lookup(e,id.getId());
             nestingLevel = e.getNestingLevel();
         }
         if(bexp != null){
@@ -131,7 +131,7 @@ public class InitCallNode implements Node{
     @Override
     public Environment checkEffects(Environment e) {
         //get Function ST Entry
-        STentry st = Environment.lookup(e,id.getId());
+        STEntryFun st = (STEntryFun) Environment.lookup(e,id.getId());
         e = Environment.newScope(e);
         if(st.getNode().getADec() != null){
             int index = 0;
@@ -156,7 +156,7 @@ public class InitCallNode implements Node{
         }
         if(st.getNode().getADec() != null){//check liquidity in initcall Function
             for( IdNode node : st.getNode().getADec().getId()){
-                if(Environment.lookup(e,node.getId()).getLiquidity()>0){
+                if(((STEntryAsset)Environment.lookup(e,node.getId())).getLiquidity()>0){
                     System.out.println("La funzione "+id.getId()+ " non é liquida!");
                     //System.exit(0)
                 };

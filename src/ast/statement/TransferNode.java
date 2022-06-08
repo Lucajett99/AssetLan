@@ -57,7 +57,9 @@ public class TransferNode implements Node {
     }
     @Override
     public Environment checkEffects(Environment e) {
-        Environment.lookup(e,id.getId()).setLiquidity(0);
+        STentry st =Environment.lookup(e,id.getId());
+        if(st instanceof STEntryAsset){
+            ((STEntryAsset) st).setLiquidity(0);}
         return e;
     }
 }

@@ -14,6 +14,18 @@ mv $fp $al
 lw $a0 1($al) 
 
 push $a0 
+li $a0 0 
+
+lw $a1 0($sp)
+gt $a0 $a1 $a0 
+pop 
+li $a1 0
+beq $a0 $a1 label4
+ // START THEN BRANCH IF STATEMENT 
+mv $fp $al 
+lw $a0 1($al) 
+
+push $a0 
 li $a0 2 
 
 lw $a1 0($sp)
@@ -22,6 +34,14 @@ pop
 lw $fp 0($fp)
 lw $fp 0($fp) //Load old $fp pushed 
 b label1 
+b label5 
+label4: 
+  // START ELSE BRANCH IF STATEMENT 
+li $a0 5 
+lw $fp 0($fp)
+lw $fp 0($fp) //Load old $fp pushed 
+b label1 
+label5: //END IF 
 label1: //End Label of function f
 lw $ra 0($sp)
 pop 

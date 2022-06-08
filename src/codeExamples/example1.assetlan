@@ -1,4 +1,4 @@
-void f(int n)[]{
+int f(int n)[]{
           if(n>0)
             {return n + 2;}
           else
@@ -6,7 +6,7 @@ void f(int n)[]{
 }
 
 void main()[]{
-        int x
+        int x;
 	   x = f(5)[];
 	   print x;
 }
