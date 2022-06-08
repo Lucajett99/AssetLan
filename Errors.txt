@@ -1,5 +1,5 @@
 --------LEXICAL ERRORS----------
 
 --------SYNTAX ERRORS----------
-Error: missing ';' at 'x' at line 10
+Error: no viable alternative at input 'retunr;' at line 4
 

@@ -2,10 +2,7 @@ package ast.statement;
 
 import ast.Node;
 import ast.typeNode.VoidTypeNode;
-import utils.Environment;
-import utils.STEntryFun;
-import utils.STentry;
-import utils.SemanticError;
+import utils.*;
 
 import java.util.ArrayList;
 
@@ -35,7 +32,14 @@ public class ReturnNode implements Node {
 
     @Override
     public Node typeCheck() {
-        if(exp != null)
+        if(entry != null){
+            if((exp == null && !Utilities.isSubtype(new VoidTypeNode(),getEntry().getType().typeCheck())) ||
+                    (exp != null && !Utilities.isSubtype(exp.typeCheck(),entry.getType().typeCheck()))){
+                System.out.println("Incompatible type of declaration method: must be a return "+ entry.getType().toPrint(""));
+                System.exit(0);
+            }
+        }
+        if(exp != null )
             return exp.typeCheck();
         else return new VoidTypeNode();
     }

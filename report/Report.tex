@@ -261,7 +261,48 @@ La regola per la dichiarazione (valida sia per dec che per decp). \\
 \\
 Serve ora una regola per la sequenda di dichiarazioni.\\ 
 \infer{\Gamma, n \vdash \mbox{d, D; :} \;\;\; \Gamma'', n''}{\Gamma, n \vdash d: \Gamma',n' \;\;\;\;\;\; \Gamma', n' \vdash D; \; : \Gamma'', n'' }\\
-La regola di inferenza per l'assegnamento è: 
+La regola di inferenza per l'assegnamento è: \\
+\infer{\Gamma \vdash \mbox{x = e :} void}{x \in dom(\Gamma) \;\;\; proj_1(\Gamma(x))=T \;\;\; \Gamma \vdash e= T' \;\;\;\; T'\leq T \;\;\; T,T' \neq void }\\
+La regola per la print è:\\
+\infer{\Gamma \vdash \mbox{print e :} void}{\Gamma \vdash e: T}\\
+La regola per la move è:\\
+\infer{\Gamma \vdash a_1\mbox{ -o }a_2 \;: \;\;\; \Gamma[a_1 \rhd \emptyset,  a2 \rhd max(proj_2(\Gamma(a_1)), proj_2(\Gamma(a_1)))]}{a_1 \in dom(\Gamma) \;\;\; a_2 \in dom(\Gamma) \;\;\;proj_1(\Gamma(a_1)) = T \;\;\; proj_1(\Gamma(a_2)) = T' \;\;\; T=T'=asset}\\
+Regola per la transfer:\\
+\infer{\Gamma \vdash \mbox{transfer x :} \Gamma[x \rhd \emptyset]}{x \in dom(\Gamma) \;\;\; prog_1(\Gamma(x))=T \;\;\; T=asset}\\
+Regola per la return:\\
+\infer{\Gamma \vdash \mbox{return e :} void}{\Gamma \vdash e: T}\\
+Regola per la return senza exp:\\
+\infer{\Gamma \vdash \mbox{return e :} void}{\Gamma \vdash e: T}\\
+\section{Espressioni}
+Tutte le espressioni ritorneranno un tipo. La prima regola è quella per la \emph{baseExp}.\\
+\[\infer{\Gamma \vdash (exp) \;\; : \;\; T}{\Gamma \vdash exp \;\;  : \;\; T }\]\\
+La regola di inferenza per la \emph{negExp} è:\\
+\[\infer{\Gamma \vdash -exp \;\; : \;\; T}{\Gamma \vdash exp \;\;  : \;\; T }\]\\
+La regola di inferenza per la \emph{notExp} è:\\
+\[\infer{\Gamma \vdash !exp \;\; : \;\; T}{\Gamma \vdash exp \;\;  : \;\; T }\]\\
+La regola di inferenza per la \emph{derExp} è:\\
+\[\infer{\Gamma \vdash x \;\; : \;\; T}{x \in dom(\Gamma) \;\;\; prog_1(\Gamma(x)) = T \;\; }\]\\
+La regola di inferenza per la \emph{binExp} cambia a seconda dell'operatore utilizzato. La regole per la somma, sottrazione, moltiplicazione e divisione sono:
+\[ \infer{\Gamma \vdash e_1 + e2 \;\; : int}{\Gamma \vdash e_1 :T \;\;\; \Gamma \vdash e_2 \; : T' \;\;\; T=T'=int} \]
+\[ \infer{\Gamma \vdash e_1 - e2 \;\; : int}{\Gamma \vdash e_1 :T \;\;\; \Gamma \vdash e_2 \; : T' \;\;\; T=T'=int} \]
+\[ \infer{\Gamma \vdash e_1 * e2 \;\; : int}{\Gamma \vdash e_1 :T \;\;\; \Gamma \vdash e_2 \; : T' \;\;\; T=T'=int} \]
+\[ \infer{\Gamma \vdash e_1 / e2 \;\; : int}{\Gamma \vdash e_1 :T \;\;\; \Gamma \vdash e_2 \; : T' \;\;\; T=T'=int} \]
+Le regole per il maggiore, minore, maggiore uguale e minore uguale sono, bisogna ricontrollare però nel progetto come abbiamo fatto per gli asset e i sottotipi e aggiungere porco cane:
+\[ \infer{\Gamma \vdash e_1 > e2 \;\; : bool}{\Gamma \vdash e_1 :T \;\;\; \Gamma \vdash e_2 \; : T' \;\;\; T=T'=int} \]
+\[ \infer{\Gamma \vdash e_1 < e2 \;\; : bool}{\Gamma \vdash e_1 :T \;\;\; \Gamma \vdash e_2 \; : T' \;\;\; T=T'=int} \]
+\[ \infer{\Gamma \vdash e_1 >= e2 \;\; : bool}{\Gamma \vdash e_1 :T \;\;\; \Gamma \vdash e_2 \; : T' \;\;\; T=T'=int} \]
+\[ \infer{\Gamma \vdash e_1 <= e2 \;\; : bool}{\Gamma \vdash e_1 :T \;\;\; \Gamma \vdash e_2 \; : T' \;\;\; T=T'=int} \]
+Le regole per l'uguaglianza e la disuguaglianza sono:
+\[ \infer{\Gamma \vdash e_1 == e2 \;\; : bool}{\Gamma \vdash e_1 :T \;\;\; \Gamma \vdash e_2 \; : T' \;\;\; T=T'} \]
+\[ \infer{\Gamma \vdash e_1 \; != e2 \;\; : bool}{\Gamma \vdash e_1 :T \;\;\; \Gamma \vdash e_2 \; : T' \;\;\; T=T'} \]
+Le regole per l'and e l'or logico sono invece:
+\[ \infer{\Gamma \vdash e_1\;\; \&\&\;\; e2 \;\; : bool}{\Gamma \vdash e_1 :T \;\;\; \Gamma \vdash e_2 \; : T' \;\;\; T=T'=bool} \]
+\[ \infer{\Gamma \vdash e_1 \;\; ||\;\; e2 \;\; : bool}{\Gamma \vdash e_1 :T \;\;\; \Gamma \vdash e_2 \; : T' \;\;\; T=T'=bool} \]
+Per quanto riguarda la regola per la \emph{CallExp}, rimandiamo alla regola dello statement call, poichè anche nel codice la \emph{TypeCheck} di CallExp si limita a richiamare ricorsivamente la TypeCheck sul CallNode.\\
+Per quanto riguarda invece \emph{boolExp} e \emph{valExp} le due regole di inferenza sono degli assiomi e sono:
+\[ \infer{\Gamma \vdash boolean \;\; : \;\; bool}{} \]
+\[ \infer{\Gamma \vdash integer \;\; : \;\; int}{} \]
+
 
 \chapter{Generazione di codice}
 L'ultima fase di questo progetto si occupava di andare a generare il codice bytecode per il codice assetlan preso in input e di costruire l'interprete per l'esecuzione del bytecode generato. Siamo così andati in ogni nodo dell'albero a scrivere la funzione \emph{codGeneration()}. Ogni nodo restituirà una stringa e l'insieme di tutte queste stringhe, sarà il nostro codice bytecode da eseguire tramite l'interprete. Abbiamo definito una classe \emph{Instruction} che conterrà un intero, il codice del token rappresentante l'istruzione da eseguire, e tre stringhe che rappresentano i tre possibili argomenti che quell'istruzione prende in input. Se un argomento non c'è (poichè esistono istruzioni che hanno meno di tre argomenti o addirittura nessuno come la \emph{pop}) questo verrà settato a \emph{null}.\\
@@ -274,9 +315,8 @@ I registri utilizzati sono:
     \item \textbf{Accumulatore (\$a0):} registro utilizzato per salvare il valore calcolato da alcune espressioni
     \item \textbf{Registro generico (\$a1):} utilizzabile liberamente all’interno del programma
     \item \textbf{Return address (\$ra):} registro utilizzato per salvare l’indirizzo di ritorno una volta usciti da un
-    frame
-    \item \textbf{Balance (\$b):} registro utilizzato per tenere traccia della s\\
-    La somma delle transfer effettuate durante tutto il programma 
+    record di attivazione.
+    \item \textbf{Balance (\$b):} registro utilizzato per tenere traccia della somma delle transfer effettuate durante tutto il programma 
 \end{itemize}
 
 \begin{wrapfigure}{r}{0.3\textwidth}

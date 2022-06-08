@@ -77,22 +77,25 @@ public class FunctionNode implements Node {
 
     @Override
     public Node typeCheck() {
+        IteNode ite = null;
      for(Node node: statement){//TODO: control typecheck return
          StatementNode ns = (StatementNode) node;
          if(ns.getStatement() instanceof ReturnNode){
-             if(Utilities.isSubtype(type.typeCheck(),new VoidTypeNode())){
+            /* if(Utilities.isSubtype(type.typeCheck(),new VoidTypeNode())){
                  System.out.println("Declation function as Void type: mustn't be a return stm");
                  System.exit(0);
              }
-             else{
+             else{*/
                  ReturnNode rn = (ReturnNode) ns.getStatement();
                 if(!Utilities.isSubtype(rn.typeCheck(),type.typeCheck())){  //Errore quando viene fatta la "return;"
                     System.out.println("Incompatible type of declaration method: must be a return "+ type.getStringType());
                     System.exit(0);
-                };
-             }
+                }
+            //tr }
+
          }
-         else node.typeCheck();
+
+          node.typeCheck();
      }
         return null; //TODO: controllare che effettivamente torni null
     }

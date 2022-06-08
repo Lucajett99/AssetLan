@@ -1,14 +1,8 @@
-int f(int n)[]{
-          if(n>0)
-            {return n + 2;}
-          else
-            {return 5;}
+void main(int n)[]{
+    if(n==0)
+        {print 5;
+        return;}
+    print 10;
+    return;
 }
-
-void main()[]{
-        int x;
-	   x = f(5)[];
-	   print x;
-}
-
-main()[] ;	// il contratto e` liquido
+main(0)[] ;	// il contratto e` liquido
