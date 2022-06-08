@@ -156,8 +156,8 @@ public class InitCallNode implements Node{
         }
         if(st.getNode().getADec() != null){//check liquidity in initcall Function
             for( IdNode node : st.getNode().getADec().getId()){
-                if(((STEntryAsset)Environment.lookup(e,node.getId())).getLiquidity()>0){
-                    System.out.println("La funzione "+id.getId()+ " non é liquida!");
+                if(((STEntryAsset)Environment.lookup(e,node.getId())).getLiquidity ()> 0){
+                    System.out.println("La funzione "+id.getId()+ " non e' liquida! [initcall]");
                     //System.exit(0)
                 };
             }

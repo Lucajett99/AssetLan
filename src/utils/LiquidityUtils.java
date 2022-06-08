@@ -87,10 +87,16 @@ public abstract class LiquidityUtils {
                 //System.exit(0);
             }
         }*/
+
+        //setto la liquidity a 1 per l'inizio del punto fisso
+        for (int i = 0; i < formalParameter.size(); i++) {
+            STEntryAsset entryF = (STEntryAsset) Environment.lookup(e_start, formalParameter.get(i).getId());
+            entryF.setLiquidity(1);
+        }
+
         do{
             e_end = e_start.clone();
             iteration++;
-            System.out.println("iter: "+iteration);
             for (int i = 0; i < actualParameter.size(); i++) {
                 //aggiorno l'attuale in base al formale
                 STEntryAsset entryA = (STEntryAsset) Environment.lookup(e_end, actualParameter.get(i).getId());
@@ -148,19 +154,20 @@ public abstract class LiquidityUtils {
                     }
                 };
                 if(entryF.getLiquidity() != 0 && !PassedToActual){
-                    System.out.println("funzione "+funNode.getId().getId()+" non é liquida!");
+                    System.out.println("La funzione "+funNode.getId().getId()+" non e' liquida! [liquidity]");
                     System.exit(0);
                 }
             }
         }while(!(e_start.equals(e_end)) && iteration <MAXITER );
+        System.out.println("Number of iterations: " + iteration);
 
         for(int i = 0; i< formalParameter.size();i++){
             //check that function has liquid
             //=> all formal parameter are empty
             STEntryAsset entryF =(STEntryAsset) Environment.lookup(e_end,formalParameter.get(i).getId());
             if(entryF.getLiquidity() != 0 && !actualParameter.contains(formalParameter.get(i))){
-                System.out.println("funzione "+funNode.getId().getId() +" non e' liquida!");
-                //System.exit(0);
+                System.out.println("La funzione "+funNode.getId().getId() +" non e' liquida! [liquidity 2]");
+                System.exit(0);
             }
         }
         return e_end;

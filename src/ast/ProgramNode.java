@@ -109,7 +109,14 @@ public class ProgramNode implements Node {
         }
         e = initcall.checkEffects(e);
 
-        System.out.println(Environment.checkGlobalLiquidity(e));
+        if(Environment.checkGlobalLiquidity(e) > 0) {
+            System.out.println("\nIl programma non e' liquido: " + Environment.checkGlobalLiquidity(e) + " asset globali non sono stati svuotati\n");
+            System.exit(0);
+        }
+        else {
+            System.out.println("\nIl programma e' liquido!\n");
+        }
+
         Environment.exitScope(e);
         return e;
 

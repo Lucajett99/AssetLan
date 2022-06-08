@@ -1,11 +1,7 @@
-int a = 5;
-asset x;asset y;
-void main()[asset u, asset v]{
-    //if(a < 10){
-    u -o y;
-    main()[x,x];
-    u -o x;
-    //}
-
+asset y ;
+void main()[asset u,asset v]{
+    u -o v;
+    main()[v,u];
+    transfer v;
 }
-main()[2,3];
+main()[2,3]

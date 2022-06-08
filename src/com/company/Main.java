@@ -44,7 +44,7 @@ public class Main {
                 }
             } else {
                 Node type = ast.typeCheck();
-               // Environment envEffects = ast.checkEffects(new Environment());
+                Environment envEffects = ast.checkEffects(new Environment());
 
                 String code = ast.codGeneration();
                 BufferedWriter out = new BufferedWriter(new FileWriter(fileName + ".asm"));
