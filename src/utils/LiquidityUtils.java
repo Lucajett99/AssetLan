@@ -98,6 +98,7 @@ public abstract class LiquidityUtils {
             e_end = e_start.clone();
             iteration++;
             for (int i = 0; i < actualParameter.size(); i++) {
+                String id = formalParameter.get(i).getId();
                 //aggiorno l'attuale in base al formale
                 STEntryAsset entryA = (STEntryAsset) Environment.lookup(e_end, actualParameter.get(i).getId());
                 //STentry entryF = Environment.lookup(e,formalParameter.get(i).getId());

@@ -153,7 +153,7 @@ public class IteNode implements Node {
                 if (nodeStatement.getStatement() instanceof CallNode
                         && nodeStatement.getFunNode()!= null &&
                         nodeStatement.getFunNode().getId().getId().equals(((CallNode) nodeStatement.getStatement()).getId())) {
-                    CallNode cnode = (CallNode)nodeStatement.getStatement();
+                    CallNode cnode = (CallNode) nodeStatement.getStatement();
                     FunctionNode fnode = ((STEntryFun)Environment.lookup(e,cnode.getId())).getNode();
                     return LiquidityUtils.fixPointMethod(e, fnode, cnode);
                 }

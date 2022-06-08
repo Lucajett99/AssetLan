@@ -153,8 +153,7 @@ public class CallNode implements Node {
             ArrayList<StatementNode> stmList= ((STEntryFun) st).getNode().getStatement();
             if(stmList != null) {
                 for(StatementNode stm : stmList){
-                    if((stm.getStatement() instanceof CallNode && ((CallNode) stm.getStatement()).id == this.id) ) {
-                        //setto gli asset a 1 per partire con il punto fisso
+                    if((stm.getStatement() instanceof CallNode && st.getNode().getIsRecursive()) ) {
                         return LiquidityUtils.fixPointMethod(e, st.getNode(), this);
                     }
                 }
