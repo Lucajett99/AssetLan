@@ -1,5 +1,6 @@
 package utils;
 
+import ast.AssetNode;
 import ast.function.FunctionNode;
 import ast.Node;
 import ast.typeNode.AssetTypeNode;
@@ -40,9 +41,15 @@ public class Environment extends LiquidityUtils{
         ArrayList<HashMap<String, STentry>> newST = new ArrayList<HashMap<String,STentry>>();
         for(int i =0; i< symTable.size();i++){
             HashMap<String,STentry> HM = new HashMap<String,STentry>();
-            for(String id : symTable.get(i).keySet()){
-                STentry entry =symTable.get(i).get(id);
-                HM.put(id,new STentry(entry.getType(),entry.getOffset(),entry.getNestingLevel(),entry.getNode(),entry.getLiquidity()));
+            for(String id : symTable.get(i).keySet()) {
+                STentry entry = symTable.get(i).get(id);
+                if (entry instanceof STEntryAsset){
+                    HM.put(id, new STEntryAsset(entry.getType(), entry.getOffset(), entry.getNestingLevel(),((STEntryAsset) entry).getLiquidity()));
+                }else if(entry instanceof STEntryVar){
+                    HM.put(id, new STEntryVar(entry.getType(), entry.getOffset(), entry.getNestingLevel()));
+                }else if(entry instanceof STEntryFun){
+                    HM.put(id, new STEntryFun(entry.getType(), entry.getOffset(), entry.getNestingLevel(), ((STEntryFun) entry).getNode()));
+                }
             }
             newST.add(HM);
         }
@@ -118,11 +125,11 @@ public class Environment extends LiquidityUtils{
     * @return Environment with a new entry
     * */
     public static Environment addFunctionDeclaration(Environment env, int offset, String key, Node type, FunctionNode funNode){
-        STentry entry = new STentry(type, offset, env.nestingLevel,funNode );
+        STEntryFun entry = new STEntryFun(type, offset, env.nestingLevel,funNode );
         HashMap<String,STentry> recentST = env.getHead();
         if(env.isMultipleDeclared(key) == EnvError.ALREADY_DECLARED){ return null; }    //MULTIPLE_DECLARATION
         else {
-            entry.addType(type);
+            entry.setType(type);
             recentST.put(key, entry); //env.getHead().put(key, entry);
             env.symTable.remove(env.nestingLevel);
             env.getSymTable().add(env.getNestingLevel(), recentST);
@@ -130,13 +137,18 @@ public class Environment extends LiquidityUtils{
         }
     }
     public static Environment addDeclaration(Environment env, int offset, String key, Node type) {
-        STentry entry = new STentry(type, offset, env.nestingLevel);
+        STEntryVar entry;
+        if(type instanceof AssetTypeNode){
+            entry = new STEntryAsset(type,offset, env.nestingLevel, 0);
+        }else{
+            entry = new STEntryVar(type,offset,env.nestingLevel);
+        }
         HashMap<String, STentry> recentST = env.getHead();
         if (env.isMultipleDeclared(key) == EnvError.ALREADY_DECLARED) {
             return null;
         }    //MULTIPLE_DECLARATION
         else {
-            entry.addType(type);
+            entry.setType(type);
             recentST.put(key, entry); //env.getHead().put(key, entry);
             env.symTable.remove(env.nestingLevel);
             env.getSymTable().add(env.getNestingLevel(), recentST);
@@ -145,8 +157,7 @@ public class Environment extends LiquidityUtils{
     }
 
     public static Environment addDeclaration(Environment env, String key, int liquidity) {
-        STentry entry = new STentry(null, 0, env.nestingLevel);
-        entry.setLiquidity(liquidity);
+        STEntryAsset entry = new STEntryAsset(null, 0, env.nestingLevel,liquidity);
         HashMap<String, STentry> recentST = env.getHead();
         if (env.isMultipleDeclared(key) == EnvError.ALREADY_DECLARED) {
             return null;
@@ -188,9 +199,12 @@ public class Environment extends LiquidityUtils{
         if(env.getNestingLevel() > -1){
             int minimumOffset = 0;
             HashMap<String,STentry> lastEnv = env.getSymTable().get(env.nestingLevel);
-            for(String id : lastEnv.keySet())
-                minimumOffset = Math.min(lastEnv.get(id).getOffset(), minimumOffset);
-        env.offset = minimumOffset;
+            if(lastEnv.isEmpty()) {
+                for (String id : lastEnv.keySet())
+                    minimumOffset = Math.min(lastEnv.get(id).getOffset(), minimumOffset);
+            }
+            env.offset = minimumOffset;
+
         }
         return env;
     }

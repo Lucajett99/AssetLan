@@ -3,84 +3,12 @@ package utils;
 import ast.function.FunctionNode;
 import ast.Node;
 
-import java.util.Objects;
+public interface STentry {
+    public int getOffset();
+    public int getNestingLevel();
+    public Node getType();
 
-public class STentry {
-    private Node type;
-
-    private int offset;
-    private int nestingLevel;
-    private FunctionNode node;
-    private int liquidity;
-
-    public STentry(Node type,int offset, int nestingLevel,FunctionNode node) {
-        this.type = type;
-        this.offset = offset;
-        this.nestingLevel = nestingLevel;
-        this.node = node;
-        this.liquidity = -1;
-    }
-    public STentry(Node type,int offset, int nestingLevel,FunctionNode node, int liquidity) {
-        this.type = type;
-        this.offset = offset;
-        this.nestingLevel = nestingLevel;
-        this.node = node;
-        this.liquidity = liquidity;
-    }
-
-    public STentry(Node type, int offset, int nestingLevel){
-        this.type = type;
-        this.offset = offset;
-        this.nestingLevel = nestingLevel;
-        this.node = null;
-        this.liquidity = 0;
-    }
-    public STentry(int liquidity){
-        this.type = type;
-        this.offset = offset;
-        this.nestingLevel = nestingLevel;
-        this.liquidity = liquidity;
-    }
-
-    public FunctionNode getNode() {
-        return node;
-    }
-
-    public void setNode(FunctionNode node) {
-        this.node = node;
-    }
-
-    public int getOffset() {
-        return offset;
-    }
-
-    public int getNestingLevel() {
-        return nestingLevel;
-    }
-
-    public int getLiquidity() {
-        return liquidity;
-    }
-
-    public void setLiquidity(int liquidity) {
-        this.liquidity = liquidity;
-    }
+    public boolean equals(Object o);
 
 
-    public Node getType() {
-        return type;
-    }
-
-    public void addType(Node node){
-        this.type = node;
-    }
-
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-        STentry sTentry = (STentry) o;
-
-        return offset == sTentry.offset && nestingLevel == sTentry.nestingLevel && this.liquidity == sTentry.liquidity;
-    }
 }

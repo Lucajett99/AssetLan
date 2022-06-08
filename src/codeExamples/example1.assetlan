@@ -1,0 +1,14 @@
+int f(int n)[]{
+          if(n>0)
+            {return n + 2;}
+          else
+            {return 5;}
+}
+
+void main()[]{
+        int x;
+	   x = f(5)[];
+	   print x;
+}
+
+main()[] ;	// il contratto e` liquido

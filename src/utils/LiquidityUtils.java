@@ -25,11 +25,16 @@ public abstract class LiquidityUtils {
         for(int i = 0; i< st.size();i++){
             HashMap<String, STentry> newHM =new HashMap<String, STentry>();
             for(String id : st.get(i).keySet()){
-                STentry entry2 = e2.getSymTable().get(i).get(id);
-                STentry entry1 = e1.getSymTable().get(i).get(id);
-                if( lookup(e2,id) != null && entry1.getLiquidity()!= -1){
+                STEntryAsset entry1 = null;
+                STEntryAsset entry2 = null;
+
+                STentry entry = e2.getSymTable().get(i).get(id);
+                if(entry instanceof STEntryAsset){entry2 = (STEntryAsset) entry; }
+                entry = e1.getSymTable().get(i).get(id);
+                if(entry instanceof STEntryAsset){entry1 = (STEntryAsset) entry; }
+                if( entry2 != null && entry1== null){
+                    entry2.setLiquidity(Math.max(entry2.getLiquidity(),entry1.getLiquidity()));
                     newHM.put(id,entry2);
-                    newHM.get(id).setLiquidity(Math.max(entry2.getLiquidity(),entry1.getLiquidity()));
                 }else{
                     newHM.put(id,entry1);
                 }
@@ -51,8 +56,8 @@ public abstract class LiquidityUtils {
                 // controlla per ogni chiave appartenente all'ambiente
                 //se la STEntry contiene un identificatore di tipo asset
                 STentry entry = lookup(e,id);
-                if(Utilities.isSubtype(entry.getType(),new AssetTypeNode())){
-                    if(entry.getLiquidity() != 0)counter++;
+                if(entry instanceof STEntryAsset){
+                    if(((STEntryAsset) entry).getLiquidity() != 0)counter++;
                 }
             }
         }
@@ -88,9 +93,9 @@ public abstract class LiquidityUtils {
             System.out.println("iter: "+iteration);
             for (int i = 0; i < actualParameter.size(); i++) {
                 //aggiorno l'attuale in base al formale
-                STentry entryA = Environment.lookup(e_end, actualParameter.get(i).getId());
+                STEntryAsset entryA = (STEntryAsset) Environment.lookup(e_end, actualParameter.get(i).getId());
                 //STentry entryF = Environment.lookup(e,formalParameter.get(i).getId());
-                STentry entryF = Environment.lookup(e_start, formalParameter.get(i).getId());
+                STEntryAsset entryF = (STEntryAsset) Environment.lookup(e_start, formalParameter.get(i).getId());
                 entryF.setLiquidity(entryA.getLiquidity());
             }
 
@@ -109,7 +114,7 @@ public abstract class LiquidityUtils {
                         if (!(stmNode.getStatement() instanceof CallNode) && !(stmNode.getStatement() instanceof IteNode))
                             e1 = node.checkEffects(e1);
                         else if( stmNode.getStatement() instanceof CallNode  && !(((CallNode) stmNode.getStatement()).getId().equals(funName))){
-                            STentry stEntry = Environment.lookup(e_start,((CallNode) stmNode.getStatement()).getId());
+                            STEntryFun stEntry = (STEntryFun) Environment.lookup(e_start,((CallNode) stmNode.getStatement()).getId());
                             for(StatementNode st : stEntry.getNode().getStatement()){
                                 e1 = st.checkEffects(e1);
                             }
@@ -121,7 +126,7 @@ public abstract class LiquidityUtils {
                             if (!(stmNode.getStatement() instanceof CallNode) && !(stmNode.getStatement() instanceof IteNode)) {
                                 e2 = stmNode.checkEffects(e2);
                             }else if( stmNode.getStatement() instanceof CallNode  && !(((CallNode) stmNode.getStatement()).getId().equals(funName))){
-                                STentry stEntry = Environment.lookup(e_start,((CallNode) stmNode.getStatement()).getId());
+                                STEntryFun stEntry = (STEntryFun) Environment.lookup(e_start,((CallNode) stmNode.getStatement()).getId());
                                 for(StatementNode st : stEntry.getNode().getStatement()){
                                     e2 = st.checkEffects(e2);
                                 }
@@ -135,7 +140,7 @@ public abstract class LiquidityUtils {
             for(int i = 0; i< formalParameter.size();i++){
                 //check that function has liquid
                 //=> all formal parameter are empty
-                STentry entryF = Environment.lookup(e_end,formalParameter.get(i).getId());
+                STEntryAsset entryF = (STEntryAsset) Environment.lookup(e_end,formalParameter.get(i).getId());
                 boolean PassedToActual = false;
                 for (IdNode id:actualParameter) {
                     if(Objects.equals(id.getId(), formalParameter.get(i).getId())){
@@ -152,7 +157,7 @@ public abstract class LiquidityUtils {
         for(int i = 0; i< formalParameter.size();i++){
             //check that function has liquid
             //=> all formal parameter are empty
-            STentry entryF = Environment.lookup(e_end,formalParameter.get(i).getId());
+            STEntryAsset entryF =(STEntryAsset) Environment.lookup(e_end,formalParameter.get(i).getId());
             if(entryF.getLiquidity() != 0 && !actualParameter.contains(formalParameter.get(i))){
                 System.out.println("funzione "+funNode.getId().getId() +" non e' liquida!");
                 //System.exit(0);

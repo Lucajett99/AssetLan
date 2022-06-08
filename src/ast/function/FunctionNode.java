@@ -4,10 +4,7 @@ import ast.*;
 import ast.statement.IteNode;
 import ast.statement.ReturnNode;
 import ast.typeNode.VoidTypeNode;
-import utils.EnvError;
-import utils.Environment;
-import utils.SemanticError;
-import utils.Utilities;
+import utils.*;
 
 import javax.swing.plaf.nimbus.State;
 import java.util.ArrayList;
@@ -171,6 +168,7 @@ public class FunctionNode implements Node {
                     st.setFunNode(this);
                     res.addAll(st.checkSemantics(env));
                     setReturnNode(env,st);
+
                 }
             }
 
@@ -191,19 +189,19 @@ public class FunctionNode implements Node {
 
     private void setReturnNode(Environment e,StatementNode st) {
         if (st.getStatement() instanceof ReturnNode) {
-            ((ReturnNode) st.getStatement()).setEntry(Environment.lookup(e, id.getId()));
+            ((ReturnNode) st.getStatement()).setEntry((STEntryFun)Environment.lookup(e, id.getId()));
         } else if (st.getStatement() instanceof IteNode itenode) {
             for (Node stm : itenode.getThenStatement()) {
                 StatementNode stmNode = (StatementNode) stm;
                 if (stmNode.getStatement() instanceof ReturnNode rn) {
-                    rn.setEntry(Environment.lookup(e, id.getId()));
+                    rn.setEntry((STEntryFun) Environment.lookup(e, id.getId()));
                 }
             }
             if (itenode.getElseStatement() != null) {
                 for (Node stm : itenode.getElseStatement()) {
                     StatementNode stmNode = (StatementNode) stm;
                     if (stmNode.getStatement() instanceof ReturnNode rn) {
-                        rn.setEntry(Environment.lookup(e, id.getId()));
+                        rn.setEntry((STEntryFun)Environment.lookup(e, id.getId()));
                     }
                 }
             }
