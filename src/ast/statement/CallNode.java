@@ -10,7 +10,6 @@ import ast.typeNode.AssetTypeNode;
 import ast.typeNode.IntTypeNode;
 import utils.*;
 
-import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 
 public class CallNode implements Node {
@@ -151,13 +150,7 @@ public class CallNode implements Node {
         if(stentry instanceof STEntryFun){
             STEntryFun st = (STEntryFun) stentry;
             ArrayList<StatementNode> stmList= ((STEntryFun) st).getNode().getStatement();
-            if(stmList != null) {
-                for(StatementNode stm : stmList){
-                    if((stm.getStatement() instanceof CallNode && st.getNode().getIsRecursive()) ) {
-                        return LiquidityUtils.fixPointMethod(e, st.getNode(), this);
-                    }
-                }
-            }
+
             e = Environment.newScope(e);
 
             //Identificatori Asset
@@ -175,6 +168,13 @@ public class CallNode implements Node {
                     ((STEntryAsset)entryA).setLiquidity(0); //gli asset passati per parametro vengono azzerati
             }
 
+            if(stmList != null) {
+                for(StatementNode stm : stmList){
+                    if((stm.getStatement() instanceof CallNode && st.getNode().isRecursive()) ) {
+                        return LiquidityUtils.fixPointMethod(e, st.getNode(), this);
+                    }
+                }
+            }
             if(stmList != null){
                 for(StatementNode stm : stmList)
                       e = stm.checkEffects(e);//Avvio l'analisi degli effetti su gli statement

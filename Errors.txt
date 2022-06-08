@@ -1,5 +1,6 @@
 --------LEXICAL ERRORS----------
 
 --------SYNTAX ERRORS----------
-Error: missing ';' at 'x' at line 10
+Error: mismatched input 'u' expecting {'asset', ']'} at line 2
+Error: mismatched input ',' expecting '(' at line 2
 

@@ -73,11 +73,12 @@ public abstract class LiquidityUtils {
 
         Environment e_end;
         //prende la lista dei parametri attuali e formali
-        ArrayList<IdNode> actualParameter = callNode.getListId() != null ? callNode.getListId() : new ArrayList<>();
+        ArrayList<IdNode> actualParameter = new ArrayList<>() ;//= callNode.getListId() != null ? callNode.getListId() : new ArrayList<>();
         ArrayList<IdNode> formalParameter = funNode.getADec() != null ? funNode.getADec().getId() : new ArrayList<>();
 
         int iteration = 0;
 
+        actualParameter = funNode.getCallRecursive().get(0).getListId();
         /*for(int i = 0; i< formalParameter.size();i++) {
             //check that function has liquid
             //=> all formal parameter are empty

@@ -157,7 +157,7 @@ public class Environment extends LiquidityUtils{
     }
 
     public static Environment addDeclaration(Environment env, String key, int liquidity) {
-        STEntryAsset entry = new STEntryAsset(null, 0, env.nestingLevel,liquidity);
+        STEntryAsset entry = new STEntryAsset(new AssetTypeNode(), 0, env.nestingLevel,liquidity);
         HashMap<String, STentry> recentST = env.getHead();
         if (env.isMultipleDeclared(key) == EnvError.ALREADY_DECLARED) {
             return null;

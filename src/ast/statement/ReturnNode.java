@@ -66,7 +66,7 @@ public class ReturnNode implements Node {
             if(entry != null) {
                 if (((CallExpNode) exp).getCall() instanceof CallNode callnode)
                     if (funNode.getId().getId().equals(callnode.getId())) {
-                        funNode.setIsRecursive(true);
+                        funNode.addRecursiveCall((CallNode) ((CallExpNode) exp).getCall());
                     }
             }
         }

@@ -1,8 +1,10 @@
 int a ;
 asset x ;
 void f()[asset u, asset v, asset w]{
+int n;
+if(n == 0 ){
 u -o x ;
-f()[v,w,u] ;
+f()[v,w,u] ;}
 }
 void main()[asset a, asset b, asset c]{
 f()[a,b,c] ;

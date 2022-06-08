@@ -3,11 +3,11 @@ subi $sp $sp 1
 subi $sp $sp 1
 //Start codgen for  calling fun main
 push $fp 
-li $a0 3 
+li $a0 1 
 push $a0 
 li $a0 2 
 push $a0 
-li $a0 1 
+li $a0 3 
 push $a0 
 mv $fp $al 
 push $al
@@ -57,7 +57,7 @@ label1: //End Label of function f
 lw $ra 0($sp)
 pop 
 addi $sp $sp 3 //pop decp & pop adec
-addi $sp $sp 0 //pop dec 
+addi $sp $sp 1 //pop dec 
 pop //pop the old fp 
 lw $fp 0($sp)
 pop 
