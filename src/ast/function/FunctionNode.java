@@ -1,6 +1,7 @@
 package ast.function;
 
 import ast.*;
+import ast.statement.CallNode;
 import ast.statement.IteNode;
 import ast.statement.ReturnNode;
 import ast.typeNode.VoidTypeNode;
@@ -16,11 +17,13 @@ public class FunctionNode implements Node {
     private ArrayList <DecNode> dec;
     private AdecNode adec;
     private ArrayList<StatementNode> statement;
-
+    private boolean isRecursive;
     private String funLabel;
     private String endLabel;
+
     //TODO: function whit return && CHECK SEMANTICS
     public FunctionNode(TypeNode type, IdNode id, DecpNode decp, ArrayList<DecNode> dec, AdecNode adec, ArrayList<StatementNode> statement) {
+        isRecursive = false;
         this.type = type;
         this.decp = (decp);
         this.id = id;
@@ -43,6 +46,12 @@ public class FunctionNode implements Node {
         return decp;
     }
 
+    public boolean getIsRecursive(){
+        return isRecursive;
+    }
+    public void setIsRecursive(boolean isRecursive){
+        this.isRecursive = isRecursive;
+    }
 
     public AdecNode getADec() {
         return adec;
@@ -166,9 +175,19 @@ public class FunctionNode implements Node {
             if (statement != null) {
                 for (StatementNode st : statement) {
                     st.setFunNode(this);
-                    res.addAll(st.checkSemantics(env));
                     setReturnNode(env,st);
+                    res.addAll(st.checkSemantics(env));
 
+                    if(!isRecursive
+                            && st.getStatement() instanceof CallNode
+                            && ((CallNode) st.getStatement()).getId().equals(id.getId()))
+                        isRecursive = true;
+                    if(!isRecursive && st.getStatement() instanceof IteNode ) {
+                        IteNode ite = (IteNode) st.getStatement();
+                        for(CallNode callNode : ite.checkCall()){
+                            if(!isRecursive && id.getId().equals(callNode.getId())){isRecursive = true;}
+                        }
+                    }
                 }
             }
 
@@ -179,6 +198,8 @@ public class FunctionNode implements Node {
 
     @Override
     public Environment checkEffects(Environment e) {
+        System.out.println(id.getId()+" - "+isRecursive);
+
         e = Environment.addFunctionDeclaration(e, e.setDecOffset(false) ,id.getId(), this.type,this);
         for(StatementNode stm: statement){
             stm.setFunNode(this);

@@ -1,6 +1,8 @@
 package ast.statement;
 
+import ast.ExpNodes.CallExpNode;
 import ast.Node;
+import ast.function.FunctionNode;
 import ast.typeNode.VoidTypeNode;
 import utils.Environment;
 import utils.STEntryFun;
@@ -23,6 +25,7 @@ public class ReturnNode implements Node {
     public STEntryFun getEntry() {
         return entry;
     }
+
 
     public void setEntry(STEntryFun entry) {
         this.entry = entry;
@@ -57,6 +60,16 @@ public class ReturnNode implements Node {
     @Override
     public ArrayList<SemanticError> checkSemantics(Environment e) {
         ArrayList<SemanticError> res = new ArrayList<SemanticError>();
+
+        if(exp instanceof CallExpNode){
+            FunctionNode funNode = entry.getNode();
+            if(entry != null) {
+                if (((CallExpNode) exp).getCall() instanceof CallNode callnode)
+                    if (funNode.getId().getId().equals(callnode.getId())) {
+                        funNode.setIsRecursive(true);
+                    }
+            }
+        }
         nestingLevel = e.getNestingLevel();
         if(exp != null)
             return exp.checkSemantics(e);

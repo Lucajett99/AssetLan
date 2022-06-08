@@ -33,6 +33,10 @@ public class CallExpNode implements Node {
         return new ArrayList<SemanticError>(call.checkSemantics(e));
     }
 
+    public Node getCall(){
+        return call;
+    }
+
     @Override
     public Environment checkEffects(Environment e) {
         return call.checkEffects(e);
