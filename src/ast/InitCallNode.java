@@ -80,7 +80,7 @@ public class InitCallNode implements Node{
         }
         return stEntry.getType().typeCheck();
     }
-    //TODO: CODE GEN FOR EMPTY THE ACTUAL PARAMETER ASSET
+
     @Override
     public String codGeneration() {
         String initCallCode = "//Start codgen for  calling fun "+id.getId()
