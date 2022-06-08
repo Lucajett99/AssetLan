@@ -8,6 +8,7 @@ import ast.typeNode.BoolTypeNode;
 import ast.typeNode.VoidTypeNode;
 import utils.*;
 
+import javax.swing.plaf.nimbus.State;
 import java.sql.Array;
 import java.util.ArrayList;
 
@@ -100,6 +101,27 @@ public class IteNode implements Node {
         return res;
     }
 
+    public ArrayList<CallNode> checkCall(){
+        ArrayList<CallNode> call = new ArrayList<CallNode>();
+
+        for(Node stm : thenStatement){
+            StatementNode statement = (StatementNode)stm;
+            if(statement .getStatement() instanceof CallNode){ call.add((CallNode) statement.getStatement());}
+            if(statement.getStatement() instanceof IteNode){
+                call.addAll(((IteNode) statement.getStatement()).checkCall());
+            }
+        }
+        if(elseStatement != null){
+            for(Node stm : elseStatement){
+                StatementNode statement = (StatementNode)stm;
+                if(statement .getStatement() instanceof CallNode){ call.add((CallNode) statement.getStatement());}
+                if(statement.getStatement() instanceof IteNode){
+                    call.addAll(((IteNode) statement.getStatement()).checkCall());
+                }
+            }
+        }
+        return call;
+    }
     @Override
     public Environment checkEffects(Environment e) {
         //Definire operatore Max(Environment e, Environment e1)
@@ -131,7 +153,7 @@ public class IteNode implements Node {
                 if (nodeStatement.getStatement() instanceof CallNode
                         && nodeStatement.getFunNode()!= null &&
                         nodeStatement.getFunNode().getId().getId().equals(((CallNode) nodeStatement.getStatement()).getId())) {
-                    CallNode cnode = (CallNode)nodeStatement.getStatement();
+                    CallNode cnode = (CallNode) nodeStatement.getStatement();
                     FunctionNode fnode = ((STEntryFun)Environment.lookup(e,cnode.getId())).getNode();
                     return LiquidityUtils.fixPointMethod(e, fnode, cnode);
                 }

@@ -10,7 +10,6 @@ public class STEntryFun implements STentry{
     private int nestingLevel;
     private int offset;
     private FunctionNode node;
-    private boolean isRecursive;
 
     public int getOffset() {
         return offset;
@@ -49,14 +48,6 @@ public class STEntryFun implements STentry{
         this.offset = offset;
         this.nestingLevel = nestingLevel;
         this.node = node;
-    }
-
-    public boolean isRecursive() {
-        return isRecursive;
-    }
-
-    public void setRecursive(boolean recursive) {
-        isRecursive = recursive;
     }
 
     @Override
