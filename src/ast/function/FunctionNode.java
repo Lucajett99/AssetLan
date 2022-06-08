@@ -168,6 +168,7 @@ public class FunctionNode implements Node {
                     st.setFunNode(this);
                     res.addAll(st.checkSemantics(env));
                     setReturnNode(env,st);
+
                 }
             }
 
