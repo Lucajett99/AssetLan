@@ -6,9 +6,10 @@ import ast.function.FunctionNode;
 import ast.function.StatementNode;
 import ast.statement.CallNode;
 import ast.statement.IteNode;
-import ast.typeNode.AssetTypeNode;
+import utils.StEntry.STEntryAsset;
+import utils.StEntry.STEntryFun;
+import utils.StEntry.STentry;
 
-import javax.swing.plaf.nimbus.State;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Objects;
@@ -19,7 +20,7 @@ public abstract class LiquidityUtils {
 
     private static final int MAXITER = 100;
     public static Environment max(Environment e1,Environment e2){
-        ArrayList<HashMap<String,STentry>> stNew = new ArrayList<HashMap<String,STentry>>();
+        ArrayList<HashMap<String, STentry>> stNew = new ArrayList<HashMap<String,STentry>>();
         ArrayList<HashMap<String,STentry>> st = e1.getSymTable();
 
         for(int i = 0; i< st.size();i++){
@@ -73,12 +74,12 @@ public abstract class LiquidityUtils {
 
         Environment e_end;
         //prende la lista dei parametri attuali e formali
-        ArrayList<IdNode> actualParameter = new ArrayList<>() ;//= callNode.getListId() != null ? callNode.getListId() : new ArrayList<>();
+        ArrayList<IdNode> actualParameter = callNode.getListId() != null ? callNode.getListId() : new ArrayList<>();
         ArrayList<IdNode> formalParameter = funNode.getADec() != null ? funNode.getADec().getId() : new ArrayList<>();
 
         int iteration = 0;
 
-        actualParameter = funNode.getCallRecursive().get(0).getListId();
+        //actualParameter = funNode.getCallRecursive().get(0).getListId();
         /*for(int i = 0; i< formalParameter.size();i++) {
             //check that function has liquid
             //=> all formal parameter are empty

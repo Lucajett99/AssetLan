@@ -1,14 +1,9 @@
 package ast;
 
-import ast.typeNode.AssetTypeNode;
-import org.stringtemplate.v4.ST;
 import utils.Environment;
-import utils.STentry;
 import utils.SemanticError;
-import utils.Utilities;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 
 public class ProgramNode implements Node {
     private ArrayList<Node> fields;

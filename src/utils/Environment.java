@@ -3,6 +3,10 @@ package utils;
 import ast.function.FunctionNode;
 import ast.Node;
 import ast.typeNode.AssetTypeNode;
+import utils.StEntry.STEntryAsset;
+import utils.StEntry.STEntryFun;
+import utils.StEntry.STEntryVar;
+import utils.StEntry.STentry;
 
 import java.util.ArrayList;
 import java.util.HashMap;

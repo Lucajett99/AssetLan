@@ -1,6 +1,7 @@
 package ast;
 
 import utils.*;
+import utils.StEntry.STEntryVar;
 
 import java.util.ArrayList;
 

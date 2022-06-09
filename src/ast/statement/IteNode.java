@@ -1,15 +1,13 @@
 package ast.statement;
 
-import ast.ExpNodes.BaseExpNode;
 import ast.Node;
 import ast.function.FunctionNode;
 import ast.function.StatementNode;
 import ast.typeNode.BoolTypeNode;
 import ast.typeNode.VoidTypeNode;
 import utils.*;
+import utils.StEntry.STEntryFun;
 
-import javax.swing.plaf.nimbus.State;
-import java.sql.Array;
 import java.util.ArrayList;
 
 public class IteNode implements Node {

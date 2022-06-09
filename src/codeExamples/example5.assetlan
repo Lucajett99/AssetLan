@@ -1,8 +1,6 @@
 asset x;
-void f()[asset u, asset v, asset w]{
-   u -o x ;
-   f()[x,w,u] ;
-   //transfer v
+int f()[asset u, asset v, asset w]{
+    f()[u,v,w];
 }
 
 void main()[asset a, asset b, asset c]{

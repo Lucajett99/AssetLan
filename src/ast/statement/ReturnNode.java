@@ -1,10 +1,9 @@
 package ast.statement;
 
-import ast.ExpNodes.CallExpNode;
 import ast.Node;
-import ast.function.FunctionNode;
 import ast.typeNode.VoidTypeNode;
 import utils.*;
+import utils.StEntry.STEntryFun;
 
 import java.util.ArrayList;
 
@@ -64,16 +63,6 @@ public class ReturnNode implements Node {
     @Override
     public ArrayList<SemanticError> checkSemantics(Environment e) {
         ArrayList<SemanticError> res = new ArrayList<SemanticError>();
-
-        if(exp instanceof CallExpNode){
-            FunctionNode funNode = entry.getNode();
-            if(entry != null) {
-                if (((CallExpNode) exp).getCall() instanceof CallNode callnode)
-                    if (funNode.getId().getId().equals(callnode.getId())) {
-                        funNode.addRecursiveCall((CallNode) ((CallExpNode) exp).getCall());
-                    }
-            }
-        }
         nestingLevel = e.getNestingLevel();
         if(exp != null)
             return exp.checkSemantics(e);

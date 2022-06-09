@@ -1,10 +1,10 @@
-package utils;
+package utils.StEntry;
 
 import ast.Node;
 
 import java.util.Objects;
 
-public class STEntryAsset extends STEntryVar{
+public class STEntryAsset extends STEntryVar {
     private int liquidity;
 
     public STEntryAsset(Node type, int offset, int nestingLevel, int liquidity) {

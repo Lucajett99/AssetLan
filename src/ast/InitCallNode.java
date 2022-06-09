@@ -1,15 +1,14 @@
 package ast;
 
-import ast.ExpNodes.BinExpNode;
-import ast.ExpNodes.ValExpNode;
 import ast.function.AdecNode;
 import ast.function.DecpNode;
 import ast.function.FunctionNode;
 import ast.function.StatementNode;
-import ast.statement.CallNode;
 import ast.typeNode.AssetTypeNode;
 import ast.typeNode.IntTypeNode;
 import utils.*;
+import utils.StEntry.STEntryAsset;
+import utils.StEntry.STEntryFun;
 
 import java.util.ArrayList;
 

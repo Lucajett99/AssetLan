@@ -1,4 +1,4 @@
-package utils;
+package utils.StEntry;
 
 import ast.function.FunctionNode;
 import ast.Node;

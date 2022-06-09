@@ -1,10 +1,9 @@
 package ast.ExpNodes;
 
 import ast.Node;
-import org.stringtemplate.v4.ST;
 import utils.EnvError;
 import utils.Environment;
-import utils.STentry;
+import utils.StEntry.STentry;
 import utils.SemanticError;
 
 import java.util.ArrayList;

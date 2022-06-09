@@ -19,6 +19,18 @@ label0: //Label of function f
 mv $sp $fp
 push $ra
 mv $fp $al 
+lw $a0 4($al) 
+
+push $a0 
+li $a0 0 
+
+lw $a1 0($sp)
+eq $a0 $a1 $a0 
+pop 
+li $a1 0
+beq $a0 $a1 label4
+ // START THEN BRANCH IF STATEMENT 
+mv $fp $al 
 lw $a0 3($al) 
 li $a1 0
 sw $a1 3($al)
@@ -53,6 +65,10 @@ lw $al 0($al)
 push $al
 jal label0
 
+b label5 
+label4: 
+  // START ELSE BRANCH IF STATEMENT 
+label5: //END IF 
 label1: //End Label of function f
 lw $ra 0($sp)
 pop 

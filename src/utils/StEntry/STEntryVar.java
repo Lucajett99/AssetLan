@@ -1,10 +1,10 @@
-package utils;
+package utils.StEntry;
 
 import ast.Node;
 
 import java.util.Objects;
 
-public class STEntryVar implements STentry{
+public class STEntryVar implements STentry {
     private Node type;
     private int offset;
     private int nestingLevel;

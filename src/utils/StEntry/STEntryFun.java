@@ -1,11 +1,11 @@
-package utils;
+package utils.StEntry;
 
 import ast.Node;
 import ast.function.FunctionNode;
 
 import java.util.Objects;
 
-public class STEntryFun implements STentry{
+public class STEntryFun implements STentry {
     private Node type;
     private int nestingLevel;
     private int offset;

@@ -3,8 +3,9 @@ package ast.statement;
 import ast.IdNode;
 import ast.Node;
 import ast.typeNode.AssetTypeNode;
-import ast.typeNode.VoidTypeNode;
 import utils.*;
+import utils.StEntry.STEntryAsset;
+import utils.StEntry.STentry;
 
 import java.util.ArrayList;
 
@@ -77,13 +78,13 @@ public class MoveNode implements Node {
 
     @Override
     public Environment checkEffects(Environment e) {
-        Environment e1 = e;                 //passaggio per riferimento?
+
         STEntryAsset entry1 = (STEntryAsset)Environment.lookup(e,id1.getId()); // /gamma'(x)
         STEntryAsset entry2 = (STEntryAsset)Environment.lookup(e,id2.getId()); // /gamma'(x)
         int liq1 = entry1.getLiquidity();
         int liq2 = entry2.getLiquidity();//  /gamma'(y)
         entry1.setLiquidity(0);         //  /gamma"[x -> 0 , y -> \gamma'(x) (+) \gamma'(y)]
         entry2.setLiquidity(Math.max(liq1,liq2));
-        return e1;
+        return e;
     }
 }

@@ -9,6 +9,9 @@ import ast.function.StatementNode;
 import ast.typeNode.AssetTypeNode;
 import ast.typeNode.IntTypeNode;
 import utils.*;
+import utils.StEntry.STEntryAsset;
+import utils.StEntry.STEntryFun;
+import utils.StEntry.STentry;
 
 import java.util.ArrayList;
 
@@ -170,7 +173,7 @@ public class CallNode implements Node {
 
             if(stmList != null) {
                 for(StatementNode stm : stmList){
-                    if((stm.getStatement() instanceof CallNode && st.getNode().isRecursive()) ) {
+                    if((stm.getStatement() instanceof CallNode && this.id == ((CallNode) stm.getStatement()).id) ) {
                         return LiquidityUtils.fixPointMethod(e, st.getNode(), this);
                     }
                 }
