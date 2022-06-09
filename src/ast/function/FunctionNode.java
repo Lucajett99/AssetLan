@@ -100,7 +100,8 @@ public class FunctionNode implements Node {
           node.typeCheck();
 //Controlla la presenza della return in caso di funzioni che ritornano interi o booleani
          if((((StatementNode) node).getStatement() instanceof IteNode
-                 && ((IteNode)((StatementNode) node).getStatement()).containsReturn())){
+                 && ((IteNode)((StatementNode) node).getStatement()).containsReturn())
+                 && ((IteNode)((StatementNode) node).getStatement()).getElseStatement() != null){
              rstm = true;
          }
      }
