@@ -17,6 +17,7 @@ public class Environment extends LiquidityUtils{
     private int nestingLevel;
     private int offset;
 
+
     public Environment(ArrayList<HashMap<String,STentry>> st, int nestingLevel, int offset) {
         this.symTable = st;
         this.nestingLevel = nestingLevel;
@@ -77,7 +78,7 @@ public class Environment extends LiquidityUtils{
              this.offset++;
          else
              this.offset--;
-        return offset;
+         return offset;
     }
 
     public int setFunOffset(){

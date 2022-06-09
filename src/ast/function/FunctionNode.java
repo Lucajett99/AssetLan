@@ -116,8 +116,9 @@ public class FunctionNode implements Node {
         String funCode = funLabel + ": //Label of function " + this.id.getId() + "\n";  //label of the function
         for(DecNode decNode : dec)
             funCode += decNode.codGeneration();
-            funCode += "mv $sp $fp\n"  // fp <- sp
-                    + "push $ra\n";
+
+        funCode += "\npush $al\nmv $sp $fp\n"  // fp <- sp
+                + "push $ra\n";
         for (Node statement : this.statement)
             funCode += statement.codGeneration();
         funCode += endLabel + ": //End Label of function " + this.id.getId() +  "\n";
@@ -143,6 +144,19 @@ public class FunctionNode implements Node {
             env = Environment.newScope(env);
             //to allow recursion
 
+            /*Aggiungo dichiarazioni in Dec*/
+            if (dec != null) {
+                for (DecNode decNode : dec) {
+                    for (int j = 0; j < decNode.getListId().size(); j++) {
+                        String id_tmp = decNode.getListId().get(j).getId();
+                        if (env.checkHeadEnv(id_tmp) == EnvError.ALREADY_DECLARED)//verifica se l'identificatore id.get(i) é gia presente
+                            //in caso é presente un errore dichiarazione multipla
+                            res.add(new SemanticError(id_tmp + " already declared [DecNode]"));
+                        else
+                            env = Environment.addDeclaration(env, env.setDecOffset(true), id_tmp, new TypeNode(decNode.getListType().get(j).getStringType()));
+                    }
+                }
+            }
             /*Aggiungo parametri formali contenuti in Decp*/
             if (decp != null) {
                 for (int j = 0; j < decp.getDecp().getListId().size(); j++) {
@@ -160,19 +174,6 @@ public class FunctionNode implements Node {
                 res.addAll(adec.checkSemantics(env));
             }
 
-            /*Aggiungo dichiarazioni in Dec*/
-            if (dec != null) {
-                for (DecNode decNode : dec) {
-                    for (int j = 0; j < decNode.getListId().size(); j++) {
-                        String id_tmp = decNode.getListId().get(j).getId();
-                        if (env.checkHeadEnv(id_tmp) == EnvError.ALREADY_DECLARED)//verifica se l'identificatore id.get(i) é gia presente
-                            //in caso é presente un errore dichiarazione multipla
-                            res.add(new SemanticError(id_tmp + " already declared [DecNode]"));
-                        else
-                            env = Environment.addDeclaration(env, env.setDecOffset(true), id_tmp, new TypeNode(decNode.getListType().get(j).getStringType()));
-                    }
-                }
-            }
 
             if (statement != null) {
                 for (StatementNode st : statement) {

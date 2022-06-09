@@ -1,15 +1,16 @@
 li $b 0 
 //Start codgen for  calling fun main
 push $fp 
-li $a0 0 
+li $a0 2 
 push $a0 
 mv $fp $al 
-push $al
  jal label0
 
 print $b
 halt
 label0: //Label of function main
+
+push $al
 mv $sp $fp
 push $ra
 mv $fp $al 

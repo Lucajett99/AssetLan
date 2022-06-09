@@ -1,5 +1,7 @@
 --------LEXICAL ERRORS----------
 
 --------SYNTAX ERRORS----------
-Error: missing {'int', 'bool'} at 'b' at line 2
+Error: missing {'int', 'bool'} at 'n' at line 5
+Error: mismatched input '=' expecting {';', ','} at line 5
+Error: mismatched input '==' expecting {';', ','} at line 6
 

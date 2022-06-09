@@ -1,8 +1,9 @@
 void main(int n)[]{
+int n;
     if(n==0)
         {print 5;
         return;}
     print 10;
     return;
 }
-main(0)[] ;	// il contratto e` liquido
+main(2)[] ;	// il contratto e` liquido
