@@ -17,6 +17,7 @@ public class StatementNode implements Node {
     }
 
     public void setFunNode(FunctionNode funNode) {
+        //assegna un nodo padre (nome funzione) la quale i singoli statement appartengono
         this.funNode = funNode;
         if(statement instanceof IteNode ite){
             for(Node node: ite.getThenStatement()){

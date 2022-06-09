@@ -20,7 +20,7 @@ public class FunctionNode implements Node {
     private String funLabel;
     private String endLabel;
 
-    //TODO: function whit return && CHECK SEMANTICS
+    //TODO: function with return && CHECK SEMANTICS
     public FunctionNode(TypeNode type, IdNode id, DecpNode decp, ArrayList<DecNode> dec, AdecNode adec, ArrayList<StatementNode> statement) {
         callRecursive = new ArrayList<>();
         this.type = type;
@@ -84,25 +84,29 @@ public class FunctionNode implements Node {
 
     @Override
     public Node typeCheck() {
-        IteNode ite = null;
-     for(Node node: statement){//TODO: control typecheck return
+    ArrayList<Node> statement = new ArrayList<Node>();
+    statement.addAll(this.statement);
+    boolean rstm = false; //verificare la presenza di almeno un return stm
+     for(Node node: statement){
          StatementNode ns = (StatementNode) node;
          if(ns.getStatement() instanceof ReturnNode){
-            /* if(Utilities.isSubtype(type.typeCheck(),new VoidTypeNode())){
-                 System.out.println("Declation function as Void type: mustn't be a return stm");
-                 System.exit(0);
-             }
-             else{*/
-                 ReturnNode rn = (ReturnNode) ns.getStatement();
-                if(!Utilities.isSubtype(rn.typeCheck(),type.typeCheck())){  //Errore quando viene fatta la "return;"
-                    System.out.println("Incompatible type of declaration method: must be a return "+ type.getStringType());
-                    System.exit(0);
-                }
-            //tr }
-
+             rstm = true;
+             ReturnNode rn = (ReturnNode) ns.getStatement();
+            if(!Utilities.isSubtype(rn.typeCheck(),type.typeCheck())){  //Errore quando viene fatta la "return;"
+                System.out.println("Incompatible type of declaration method: must be a return "+ type.getStringType());
+                System.exit(0);
+            }
          }
-
           node.typeCheck();
+//Controlla la presenza della return in caso di funzioni che ritornano interi o booleani
+         if((((StatementNode) node).getStatement() instanceof IteNode
+                 && ((IteNode)((StatementNode) node).getStatement()).containsReturn())){
+             rstm = true;
+         }
+     }
+     if(!rstm && !Utilities.isSubtype(new VoidTypeNode(),type.typeCheck())){
+         System.out.println("Incompatible type of declaration method: must be a return "+ type.getStringType());
+         System.exit(0);
      }
         return null; //TODO: controllare che effettivamente torni null
     }
@@ -146,7 +150,7 @@ public class FunctionNode implements Node {
             if (decp != null) {
                 for (int j = 0; j < decp.getDecp().getListId().size(); j++) {
                     String id_tmp = decp.getDecp().getListId().get(j).getId();
-                    if (env.isMultipleDeclared(id_tmp) == EnvError.ALREADY_DECLARED)//verifica se l'identificatore id.get(i) é gia presente
+                    if (env.checkHeadEnv(id_tmp) == EnvError.ALREADY_DECLARED)//verifica se l'identificatore id.get(i) é gia presente
                         //in caso é presente un errore dichiarazione multipla
                         res.add(new SemanticError(id_tmp + " already declared [DecNode]"));
                     else
@@ -164,7 +168,7 @@ public class FunctionNode implements Node {
                 for (DecNode decNode : dec) {
                     for (int j = 0; j < decNode.getListId().size(); j++) {
                         String id_tmp = decNode.getListId().get(j).getId();
-                        if (env.isMultipleDeclared(id_tmp) == EnvError.ALREADY_DECLARED)//verifica se l'identificatore id.get(i) é gia presente
+                        if (env.checkHeadEnv(id_tmp) == EnvError.ALREADY_DECLARED)//verifica se l'identificatore id.get(i) é gia presente
                             //in caso é presente un errore dichiarazione multipla
                             res.add(new SemanticError(id_tmp + " already declared [DecNode]"));
                         else

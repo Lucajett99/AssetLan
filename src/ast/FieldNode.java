@@ -2,7 +2,6 @@ package ast;
 
 import utils.*;
 
-import java.lang.reflect.Array;
 import java.util.ArrayList;
 
 public class FieldNode implements Node {
@@ -10,7 +9,7 @@ public class FieldNode implements Node {
     private IdNode id;
     private Node exp;
 
-    private STentry sTentry;
+    private STEntryVar sTentry;
 
 
     public FieldNode(Node type, IdNode id, Node exp) {
@@ -56,9 +55,9 @@ public class FieldNode implements Node {
     public ArrayList<SemanticError> checkSemantics(Environment e) {
         ArrayList<SemanticError> res = new ArrayList<SemanticError>();
 
-        if(e.isMultipleDeclared(id.getId())!= EnvError.ALREADY_DECLARED){
-            e = Environment.addDeclaration(e, e.setDecOffset(false), id.getId(), type);
-            sTentry = e.lookup(e, id.getId());
+        if(e.checkHeadEnv(id.getId())!= EnvError.ALREADY_DECLARED){
+            e = Environment.addDeclaration(e, e.setDecOffset(false), id.getId(), type.typeCheck());
+            sTentry = (STEntryVar) Environment.lookup(e, id.getId());
         } else {
             res.add(new SemanticError(id.getId()+": already declared [field]"));
         }

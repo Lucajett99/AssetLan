@@ -64,7 +64,7 @@ public class AdecNode implements Node {
         }*/
         if(id != null) {
             for (int i = id.size() -1; i >= 0; i--){
-                if (e.isMultipleDeclared(id.get(i).getId()) == EnvError.ALREADY_DECLARED) {
+                if (e.checkHeadEnv(id.get(i).getId()) == EnvError.ALREADY_DECLARED) {
                     res.add(new SemanticError(id.get(i).getId() + " : already declared [adec]"));
                 } else {
                     offset = e.setDecOffset(true);

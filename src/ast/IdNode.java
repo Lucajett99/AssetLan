@@ -33,7 +33,7 @@ public class IdNode implements Node{
 
     @Override
     public Node typeCheck() {
-        return this.type;
+        return this.type.typeCheck();
     }
 
     @Override

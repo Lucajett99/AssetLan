@@ -1,6 +1,5 @@
 package ast;
 
-import ast.Node;
 import ast.typeNode.AssetTypeNode;
 import utils.EnvError;
 import utils.Environment;
@@ -35,9 +34,9 @@ public class AssetNode implements Node {
     @Override
     public ArrayList<SemanticError> checkSemantics(Environment e) {
         ArrayList<SemanticError> res = new ArrayList<SemanticError>();
-        if(e.isMultipleDeclared(id.getId()) == EnvError.NO_DECLARE){
+        if(e.checkHeadEnv(id.getId()) == EnvError.NO_DECLARE){ //controlla nell'ambiente di testa se é presente la dichiarazione
             int offset = e.setDecOffset(false);
-            Environment.addDeclaration(e, offset, id.getId(), this);
+            Environment.addDeclaration(e, offset, id.getId(), new AssetTypeNode());
             this.offset = offset;
         }
         else

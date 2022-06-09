@@ -1,15 +1,11 @@
 package utils;
 
-import ast.AssetNode;
 import ast.function.FunctionNode;
 import ast.Node;
 import ast.typeNode.AssetTypeNode;
-import org.stringtemplate.v4.ST;
 
-import javax.swing.text.html.parser.Entity;
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.Objects;
 
 
 public class Environment extends LiquidityUtils{
@@ -102,7 +98,7 @@ public class Environment extends LiquidityUtils{
 
 /*Verify is possible generate a multiple declaration error
 * check only to head env contains the symbol */
-    public EnvError isMultipleDeclared(String key){
+    public EnvError checkHeadEnv(String key){
         if(getHead().get(key) == null){
             return EnvError.NO_DECLARE;
         }else{
@@ -127,7 +123,7 @@ public class Environment extends LiquidityUtils{
     public static Environment addFunctionDeclaration(Environment env, int offset, String key, Node type, FunctionNode funNode){
         STEntryFun entry = new STEntryFun(type, offset, env.nestingLevel,funNode );
         HashMap<String,STentry> recentST = env.getHead();
-        if(env.isMultipleDeclared(key) == EnvError.ALREADY_DECLARED){ return null; }    //MULTIPLE_DECLARATION
+        if(env.checkHeadEnv(key) == EnvError.ALREADY_DECLARED){ return null; }    //MULTIPLE_DECLARATION
         else {
             entry.setType(type);
             recentST.put(key, entry); //env.getHead().put(key, entry);
@@ -144,7 +140,7 @@ public class Environment extends LiquidityUtils{
             entry = new STEntryVar(type,offset,env.nestingLevel);
         }
         HashMap<String, STentry> recentST = env.getHead();
-        if (env.isMultipleDeclared(key) == EnvError.ALREADY_DECLARED) {
+        if (env.checkHeadEnv(key) == EnvError.ALREADY_DECLARED) {
             return null;
         }    //MULTIPLE_DECLARATION
         else {
@@ -159,7 +155,7 @@ public class Environment extends LiquidityUtils{
     public static Environment addDeclaration(Environment env, String key, int liquidity) {
         STEntryAsset entry = new STEntryAsset(new AssetTypeNode(), 0, env.nestingLevel,liquidity);
         HashMap<String, STentry> recentST = env.getHead();
-        if (env.isMultipleDeclared(key) == EnvError.ALREADY_DECLARED) {
+        if (env.checkHeadEnv(key) == EnvError.ALREADY_DECLARED) {
             return null;
         }    //MULTIPLE_DECLARATION
         else {
