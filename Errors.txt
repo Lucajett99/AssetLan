@@ -1,10 +1,5 @@
 --------LEXICAL ERRORS----------
 
 --------SYNTAX ERRORS----------
-<<<<<<< HEAD
-Error: no viable alternative at input 'retunr;' at line 4
-=======
-Error: mismatched input 'u' expecting {'asset', ']'} at line 2
-Error: mismatched input ',' expecting '(' at line 2
->>>>>>> f46536bdfad1331538c818898f6ceec2255e3b70
+Error: missing {'int', 'bool'} at 'b' at line 2
 

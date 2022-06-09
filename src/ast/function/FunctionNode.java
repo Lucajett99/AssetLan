@@ -109,11 +109,15 @@ public class FunctionNode implements Node {
         int adecSize = adec != null ? adec.getId().size() : 0;
         int decpSize = decp != null ? decp.getDecp().getListId().size() : 0;
         int paramSize = adecSize + decpSize;
-        int decSize = dec != null ? dec.size() : 0;
-        String funCode = funLabel + ": //Label of function " + this.id.getId() + "\n"  //label of the function
-                       + "mv $sp $fp\n"  // fp <- sp
-                       + "push $ra\n";
-        //TODO: void function
+        //int decSize = dec != null ? dec.size() : 0;
+        int decSize = 0;
+        for(DecNode decNode : dec)
+            decSize += decNode.getListId().size();
+        String funCode = funLabel + ": //Label of function " + this.id.getId() + "\n";  //label of the function
+        for(DecNode decNode : dec)
+            funCode += decNode.codGeneration();
+            funCode += "mv $sp $fp\n"  // fp <- sp
+                    + "push $ra\n";
         for (Node statement : this.statement)
             funCode += statement.codGeneration();
         funCode += endLabel + ": //End Label of function " + this.id.getId() +  "\n";

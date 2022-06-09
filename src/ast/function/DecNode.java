@@ -57,7 +57,10 @@ public class DecNode implements Node {
 
     @Override
     public String codGeneration() {
-        return null;
+        String decCode = "";
+        for(IdNode id : id)
+            decCode += "subi $sp $sp 1 \n";
+        return  decCode;
     }
 
     @Override
