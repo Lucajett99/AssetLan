@@ -1,10 +1,15 @@
-void main()[]{
-int a; int b; int c;
-a = 0;
-b = a + 5;
-c = b + 3;
-print a;
-print b;
-print c;
+int a ;
+asset x ;
+void f()[asset u, asset v, asset w]{
+int n;
+n = 0;
+if(n == 0 ){
+u -o x ;
+f()[v,w,u] ;}
+print 99;
 }
-main()[];
+void main()[asset a, asset b, asset c]{
+f()[a,b,c] ;
+transfer x ;
+}
+main()[1,2,3] ;	// il contratto e` liquido

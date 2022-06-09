@@ -99,7 +99,7 @@ public class CallNode implements Node {
     public String codGeneration() {
         String callCode = "push $fp \n";
         //I add the assets in inverse order
-       /* for(int i = listId.size(); i > 0 ; i--)
+        /* for(int i = listId.size(); i > 0 ; i--)
             callCode += listId.get(i - 1).accessCodGeneration() + listId.get(i - 1).emptyValueCodGeneration()
                     + "push $a0 \n";*/
         for(int i=0; i < listId.size(); i++)
@@ -113,7 +113,7 @@ public class CallNode implements Node {
         callCode += "mv $fp $al \n";
         for(int i = 0; i < nestingLevel - stEntry.getNestingLevel(); i++)
             callCode += "lw $al 0($al) \n";
-        callCode += "push $al\n";
+        //callCode += "push $al\n";
         String label = stEntry.getNode().getFunLabel();
         callCode += "jal " + label + "\n"; //jump at label and store the next instruction in ra
         return callCode + "\n";

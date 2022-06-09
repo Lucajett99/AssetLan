@@ -10,3 +10,5 @@ void main()[asset u, asset v]{
     f()[x,y] ;
  }
  main()[2,3]	// il contratto non e` liquido
+
+

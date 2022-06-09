@@ -98,7 +98,7 @@ public class InitCallNode implements Node{
         initCallCode += "mv $fp $al \n";
         for(int i = 0; i < nestingLevel - stEntry.getNestingLevel(); i++)
             initCallCode += "lw $al 0($al) \n";
-        initCallCode += "push $al\n";
+        //initCallCode += "push $al\n";
         String label = stEntry.getNode().getFunLabel();
         initCallCode += " jal " + label + "\n"; //jump at label and store the next instruction in ra
         return initCallCode +"\n";

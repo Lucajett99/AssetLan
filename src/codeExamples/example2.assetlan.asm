@@ -10,12 +10,13 @@ push $a0
 li $a0 1 
 push $a0 
 mv $fp $al 
-push $al
  jal label2
 
 print $b
 halt
 label0: //Label of function g
+
+push $al
 mv $sp $fp
 push $ra
 mv $fp $al 
@@ -35,6 +36,8 @@ pop
 jr $ra 
  //END OF FUNCTION g
 label2: //Label of function f
+
+push $al
 mv $sp $fp
 push $ra
 mv $fp $al 
@@ -73,7 +76,6 @@ sw $a0 -3($al)
 push $fp 
 mv $fp $al 
 lw $al 0($al) 
-push $al
 jal label0
 
 label3: //End Label of function f
