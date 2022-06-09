@@ -1,5 +1,6 @@
 --------LEXICAL ERRORS----------
 
 --------SYNTAX ERRORS----------
-Error: missing {'int', 'bool'} at 'b' at line 2
+Error: missing '{' at 'u' at line 3
+Error: extraneous input 'else' expecting {'}', 'print', 'transfer', 'return', 'if', ID} at line 4
 

@@ -33,11 +33,11 @@ public abstract class LiquidityUtils {
                 if(entry instanceof STEntryAsset){entry2 = (STEntryAsset) entry; }
                 entry = e1.getSymTable().get(i).get(id);
                 if(entry instanceof STEntryAsset){entry1 = (STEntryAsset) entry; }
-                if( entry2 != null && entry1== null){
+                if( entry2 != null && entry1 != null){
                     entry2.setLiquidity(Math.max(entry2.getLiquidity(),entry1.getLiquidity()));
                     newHM.put(id,entry2);
                 }else{
-                    newHM.put(id,entry1);
+                    newHM.put(id,entry);
                 }
             }
             stNew.add(newHM);
@@ -68,112 +68,50 @@ public abstract class LiquidityUtils {
     /* fixPointMethod : prende in input @e_start => ambiente iniziale
      *                                   @funNode => StEntry della funzione contenente gli statement e la lista dei parametri formali
      *                                   @callNode=> contiene l'ordine e il nome dei parametri attuali*/
-    public static Environment fixPointMethod(Environment e_start, FunctionNode funNode , CallNode callNode){
+    public static Environment fixPointMethod(Environment e_start, FunctionNode funNode , CallNode callNode, boolean branchElse) {
         ArrayList<StatementNode> stmList = funNode.getStatement(); //Corpo della funzione
-        String funName = funNode.getId().getId();
+        boolean fixPoint = true;
 
         Environment e_end;
         //prende la lista dei parametri attuali e formali
         ArrayList<IdNode> actualParameter = callNode.getListId() != null ? callNode.getListId() : new ArrayList<>();
         ArrayList<IdNode> formalParameter = funNode.getADec() != null ? funNode.getADec().getId() : new ArrayList<>();
 
-        int iteration = 0;
+        e_end = e_start.clone();
+        for (int i = 0; i < actualParameter.size(); i++) {
+            IdNode id = formalParameter.get(i);
+            //aggiorno l'attuale in base al formale
+            STEntryAsset entryA = (STEntryAsset) Environment.lookup(e_start, actualParameter.get(i).getId());
+            STEntryAsset entryF = (STEntryAsset) Environment.lookup(e_end, formalParameter.get(i).getId());
+            //STentry entryA2 = Environment.lookup(e_end, actualParameter.get(i).getId());
 
-        //actualParameter = funNode.getCallRecursive().get(0).getListId();
-        /*for(int i = 0; i< formalParameter.size();i++) {
-            //check that function has liquid
-            //=> all formal parameter are empty
-            STentry entryF = Environment.lookup(e_start, formalParameter.get(i).getId());
-            if (entryF.getLiquidity() > 0) {
-                System.out.println("funzione " + callNode.getId() + " non é liquida!");
-                //System.exit(0);
-            }
-        }*/
-
-        //setto la liquidity a 1 per l'inizio del punto fisso
-        for (int i = 0; i < formalParameter.size(); i++) {
-            STEntryAsset entryF = (STEntryAsset) Environment.lookup(e_start, formalParameter.get(i).getId());
-            entryF.setLiquidity(1);
+            if(entryA.getLiquidity() > 0) fixPoint = false;  //se i parametri che passo sono entrambi con liquidity 0, ho trovato il minimo punto fisso
+            entryF.setLiquidity(entryA.getLiquidity());
+            //entryA2.setLiquidity(0); //setto la liquidity a 0 dei parametri passati
         }
 
-        do{
-            e_end = e_start.clone();
-            iteration++;
-            for (int i = 0; i < actualParameter.size(); i++) {
-                String id = formalParameter.get(i).getId();
-                //aggiorno l'attuale in base al formale
-                STEntryAsset entryA = (STEntryAsset) Environment.lookup(e_end, actualParameter.get(i).getId());
-                //STentry entryF = Environment.lookup(e,formalParameter.get(i).getId());
-                STEntryAsset entryF = (STEntryAsset) Environment.lookup(e_start, formalParameter.get(i).getId());
-                entryF.setLiquidity(entryA.getLiquidity());
+        if(fixPoint) return e_start;
+
+        for (StatementNode stm: stmList) {
+            if (!(stm.getStatement() instanceof CallNode && ((CallNode) stm.getStatement()).getId() == callNode.getId()) && !(stm.getStatement() instanceof IteNode)) {
+                e_end = stm.checkEffects(e_end);
             }
-
-            for (StatementNode stm: stmList) {//esegue l'analisi sul corpo della funzione in maniera iterativa
-                //da porre particolare attenzione in caso sia contenuto uno stm ITE
-                if (!(stm.getStatement() instanceof CallNode) && !(stm.getStatement() instanceof IteNode)) {
-                    e_start = stm.checkEffects(e_start);
-                } else if (stm.getStatement() instanceof IteNode ite) {
-                    e_start = ite.getExp().checkEffects(e_start);
-
-                    Environment e1 = e_start.clone();
-                    Environment e2 = e_start.clone();
-
+            else if (stm.getStatement() instanceof IteNode ite) {
+                if(!branchElse) {
                     for (Node node : ite.getThenStatement()) {
-                        StatementNode stmNode = (StatementNode) node;
-                        if (!(stmNode.getStatement() instanceof CallNode) && !(stmNode.getStatement() instanceof IteNode))
-                            e1 = node.checkEffects(e1);
-                        else if( stmNode.getStatement() instanceof CallNode  && !(((CallNode) stmNode.getStatement()).getId().equals(funName))){
-                            STEntryFun stEntry = (STEntryFun) Environment.lookup(e_start,((CallNode) stmNode.getStatement()).getId());
-                            for(StatementNode st : stEntry.getNode().getStatement()){
-                                e1 = st.checkEffects(e1);
-                            }
-                        }
+                        if(!(((StatementNode) node).getStatement() instanceof  IteNode) && !(((StatementNode) node).getStatement() instanceof CallNode cnode && cnode.getId() == callNode.getId()))
+                            e_end = node.checkEffects(e_end);
                     }
-                    if (ite.getElseStatement() != null) {
+                }
+                else {
+                    if(ite.getElseStatement() != null)
                         for (Node node : ite.getElseStatement()) {
-                            StatementNode stmNode = (StatementNode) node;
-                            if (!(stmNode.getStatement() instanceof CallNode) && !(stmNode.getStatement() instanceof IteNode)) {
-                                e2 = stmNode.checkEffects(e2);
-                            }else if( stmNode.getStatement() instanceof CallNode  && !(((CallNode) stmNode.getStatement()).getId().equals(funName))){
-                                STEntryFun stEntry = (STEntryFun) Environment.lookup(e_start,((CallNode) stmNode.getStatement()).getId());
-                                for(StatementNode st : stEntry.getNode().getStatement()){
-                                    e2 = st.checkEffects(e2);
-                                }
-                            }
+                            if(!(((StatementNode) node).getStatement() instanceof  IteNode) && !(((StatementNode) node).getStatement() instanceof CallNode cnode && cnode.getId() == callNode.getId()))
+                                e_end = node.checkEffects(e_end);
                         }
-                    }
-                    e_start = Environment.max(e1, e2);
                 }
-            }
-
-            for(int i = 0; i< formalParameter.size();i++){
-                //check that function has liquid
-                //=> all formal parameter are empty
-                STEntryAsset entryF = (STEntryAsset) Environment.lookup(e_end,formalParameter.get(i).getId());
-                boolean PassedToActual = false;
-                for (IdNode id:actualParameter) {
-                    if(Objects.equals(id.getId(), formalParameter.get(i).getId())){
-                        PassedToActual = true;
-                    }
-                };
-                if(entryF.getLiquidity() != 0 && !PassedToActual){
-                    System.out.println("La funzione "+funNode.getId().getId()+" non e' liquida! [liquidity]");
-                    System.exit(0);
-                }
-            }
-        }while(!(e_start.equals(e_end)) && iteration <MAXITER );
-        System.out.println("Number of iterations: " + iteration);
-
-        for(int i = 0; i< formalParameter.size();i++){
-            //check that function has liquid
-            //=> all formal parameter are empty
-            STEntryAsset entryF =(STEntryAsset) Environment.lookup(e_end,formalParameter.get(i).getId());
-            if(entryF.getLiquidity() != 0 && !actualParameter.contains(formalParameter.get(i))){
-                System.out.println("La funzione "+funNode.getId().getId() +" non e' liquida! [liquidity 2]");
-                System.exit(0);
             }
         }
         return e_end;
-
     }
 }
