@@ -190,6 +190,7 @@ public class FunctionNode implements Node {
 
     @Override
     public Environment checkEffects(Environment e) {
+        Utilities.nCallRecursive(this.id.getId(), this.statement);
         e = Environment.addFunctionDeclaration(e, e.setDecOffset(false) ,id.getId(), this.type,this);
         for(StatementNode stm: statement){
             stm.setFunNode(this);
