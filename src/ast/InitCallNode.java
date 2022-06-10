@@ -127,6 +127,7 @@ public class InitCallNode implements Node{
         return res;
     }
 
+    //TODO: controllo se passo i parametri asset tutti a 0
     @Override
     public Environment checkEffects(Environment e) {
         //get Function ST Entry
@@ -157,7 +158,7 @@ public class InitCallNode implements Node{
             for( IdNode node : st.getNode().getADec().getId()){
                 if(((STEntryAsset)Environment.lookup(e,node.getId())).getLiquidity ()> 0){
                     System.out.println("La funzione "+id.getId()+ " non e' liquida! [initcall]");
-                    //System.exit(0)
+                    System.exit(0);
                 };
             }
         }

@@ -1,14 +1,11 @@
 int a ;
 asset x ;
-void f(int n)[asset u, asset v, asset w]{
-if(n != 0 ){
-u -o x ;
-f(n-1)[v,w,u] ;
-transfer v;}
+void f()[asset u, asset v, asset w]{
+    u -o x ;
+    f()[v,w,u] ;
 }
 void main()[asset a, asset b, asset c]{
-
-f(4)[a,b,c] ;
-transfer x ;
+    f()[a,b,c] ;
+    transfer x ;
 }
 main()[1,2,3] ;	// il contratto e` liquido

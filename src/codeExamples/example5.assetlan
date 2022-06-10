@@ -1,6 +1,24 @@
 asset x;
+
+bool g()[asset a] {
+    transfer a;
+    return true;
+}
+
 int f()[asset u, asset v, asset w]{
-    f()[u,v,w];
+    if(g()[v]) {
+        f()[x,w,u];
+        g()[u];
+        g()[v];
+        g()[w];
+    }
+    else {
+        f()[x,w,u];
+        g()[u];
+        g()[v];
+        g()[w];
+    }
+    return 1;
 }
 
 void main()[asset a, asset b, asset c]{

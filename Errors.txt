@@ -1,7 +1,5 @@
 --------LEXICAL ERRORS----------
 
 --------SYNTAX ERRORS----------
-Error: missing {'int', 'bool'} at 'n' at line 5
-Error: mismatched input '=' expecting {';', ','} at line 5
-Error: mismatched input '==' expecting {';', ','} at line 6
+Error: mismatched input '<' expecting {'asset', 'void', 'int', 'bool', ID} at line 1
 
