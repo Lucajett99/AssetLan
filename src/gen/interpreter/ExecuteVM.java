@@ -7,7 +7,7 @@ import interpreter.SVMParser;
 
 public class ExecuteVM {
     public static final int CODESIZE = 10000;
-    public static final int MEMSIZE = 100;
+    public static final int MEMSIZE = 100; //TODO: Move in other dir and set 10000
     private Instruction[] code;
     private int[] memory = new int[MEMSIZE]; //I just need an array of integer
 

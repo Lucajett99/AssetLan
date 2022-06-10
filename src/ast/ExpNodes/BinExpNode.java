@@ -40,7 +40,7 @@ public class BinExpNode implements Node {
             else
                 return new IntTypeNode();
         }
-        else if(op.equals("<") || op.equals("<=") || op.equals(">") || op.equals(">=") || op.equals("==") || op.equals("!=")) {
+        else if(op.equals("<") || op.equals("<=") || op.equals(">") || op.equals(">=")) {
             if(! (Utilities.isSubtype(left.typeCheck(), new IntTypeNode()) && Utilities.isSubtype(right.typeCheck()
                     , new IntTypeNode()))) {
                 System.out.println("Incompatible type error: Must Be IntTypeNode");
@@ -49,7 +49,7 @@ public class BinExpNode implements Node {
             else
                 return new BoolTypeNode();
         }
-        else if(op.equals("==") || op.equals("!=") || op.equals("&&") || op.equals("||")) {
+        else if( op.equals("&&") || op.equals("||")) {
             if(! (Utilities.isSubtype(left.typeCheck(), new BoolTypeNode()) && Utilities.isSubtype(right.typeCheck()
                     , new BoolTypeNode()))) {
                 System.out.println("Incompatible type error: Must Be BoolTypeNode");
@@ -58,6 +58,14 @@ public class BinExpNode implements Node {
             else
                 return new BoolTypeNode();
         }
+        else if( op.equals("==") || op.equals("!=")) {
+            if(! (Utilities.isSubtype(left.typeCheck(), right.typeCheck()))){
+                System.out.println("Incompatible type error: left and right exp must be same type");
+                System.exit(0);
+            }
+            else
+                return new BoolTypeNode();
+    }
         return null;
     }
 

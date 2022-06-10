@@ -1,11 +1,13 @@
 asset x;asset y ;
      void f()[asset u, asset v]{
-	u -o y ;
-	v -o x ;
+	 u -o y ;
+	 v -o x ;
      }
      void main()[asset u,asset v]{
-        u -o x ;
-	u -o y ;
+     u -o x ;
+	 u -o y ;
 	f()[x,y] ;
+	print u;
+	print v;
      }
      main()[2,3]

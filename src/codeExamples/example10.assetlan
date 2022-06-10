@@ -1,0 +1,10 @@
+bool f()[]{
+return  0 == false;
+}
+
+void main()[]{
+ bool x;
+ x = f()[];
+ print x;
+}
+main()[];

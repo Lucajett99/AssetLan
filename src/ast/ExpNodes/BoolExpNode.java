@@ -21,7 +21,6 @@ public class BoolExpNode implements Node {
 
     @Override
     public Node typeCheck() {
-
         return new BoolTypeNode();
     }
 

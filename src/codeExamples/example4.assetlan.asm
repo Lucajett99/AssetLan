@@ -2,12 +2,13 @@ li $b 0
 //Start codgen for  calling fun main
 push $fp 
 mv $fp $al 
-push $al
  jal label2
 
 print $b
 halt
 label0: //Label of function f
+
+push $al
 mv $sp $fp
 push $ra
 mv $fp $al 
@@ -53,16 +54,18 @@ pop
 jr $ra 
  //END OF FUNCTION f
 label2: //Label of function main
+subi $sp $sp 1 
+
+push $al
 mv $sp $fp
 push $ra
 push $fp 
 li $a0 1 
 push $a0 
-li $a0 5 
+li $a0 0 
 push $a0 
 mv $fp $al 
 lw $al 0($al) 
-push $al
 jal label0
 
 mv $fp $al 

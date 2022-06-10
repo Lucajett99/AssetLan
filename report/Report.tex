@@ -49,7 +49,7 @@ Simone  Boldrini 1038792}
     Uno statement può essere un assegnamento, una funzione move che permette di spostare il contenuto di un asset all'interno di un altro asset (svuotando il primo asset), una print, una transfer, una return, un \emph{if-then-else} oppure una chiamata a funzione. 
     Rispetto alla grammatica che ci è stata fornita inizialmente abbiamo apportato due piccole modifiche: 
     \begin{lstlisting}      
-function: (type | 'void') ID '('(decp)?')' '['(adec)?']' {' dec* statement* '}' ;
+function: (type | 'void') ID '('(decp)?')' '['(adec)?']' {' (dec';')* statement* '}' ;
 decp: dec;
     \end{lstlisting}  
     La prima è per separare la dichiarazione dei parametri formali di una funzione dalle dichiarazioni delle variabili nel corpo della funzione. Per fare ciò è stato inserito un nuovo simbolo non terminale \emph{decp} che richiama il non terminale \emph{dec}.
@@ -94,8 +94,8 @@ public void syntaxError(...){
     \begin{lstlisting}
         asset x;$
         void f(int n)[asset $u, asset v]{
-        if (n == 0) u -o x ;
-        else  u -o x ; v -o x ;
+        if (n == 0) {u -o x ;}
+        else { u -o x ; v -o x ;}
         }
         void main()[asset a]{
         f(0)[a,a] ;        // semantica di f()[a,a] ?
@@ -142,10 +142,10 @@ public void syntaxError(...){
         asset x ;
         void f(int n)[asset u, asset v, asset w]{
             u -o x ;
-            f(v,w,u)[] ;
+            f(n - 1)[v,w,u] ;
         }
         void main()[asset a, asset b, asset c]{
-            f()[a,b,c] ;
+            f(1)[a,b,c] ;
             transfer x ;
         }
     \end{lstlisting}
@@ -201,8 +201,8 @@ Mostriamo ora un esempio di codice in cui sono presenti questi due tipi di error
 int f;
 asset x ;
 void f(int n)[asset u, asset v]{
-    if (n == 0) u -o y ;
-    else  u -o x ; v -o x ;
+    if (n == 0) {u -o y ;}
+    else { u -o x ; v -o x ;
 }
 f(5)[2,3] ;
 \end{lstlisting}
@@ -277,9 +277,9 @@ Regola per la return senza exp:\\
 Tutte le espressioni ritorneranno un tipo. La prima regola è quella per la \emph{baseExp}.\\
 \[\infer{\Gamma \vdash (exp) \;\; : \;\; T}{\Gamma \vdash exp \;\;  : \;\; T }\]\\
 La regola di inferenza per la \emph{negExp} è:\\
-\[\infer{\Gamma \vdash -exp \;\; : \;\; T}{\Gamma \vdash exp \;\;  : \;\; T }\]\\
+\[\infer{\Gamma \vdash -exp \;\; : \;\;  \;\;\; int}{\Gamma \vdash exp \;\;  : T\;\;\; T=int }\]\\
 La regola di inferenza per la \emph{notExp} è:\\
-\[\infer{\Gamma \vdash !exp \;\; : \;\; T}{\Gamma \vdash exp \;\;  : \;\; T }\]\\
+\[\infer{\Gamma \vdash !exp \;\; : \;\;\; bool}{\Gamma \vdash exp \;\;  : T\;\;\;  T=bool }\]\\
 La regola di inferenza per la \emph{derExp} è:\\
 \[\infer{\Gamma \vdash x \;\; : \;\; T}{x \in dom(\Gamma) \;\;\; prog_1(\Gamma(x)) = T \;\; }\]\\
 La regola di inferenza per la \emph{binExp} cambia a seconda dell'operatore utilizzato. La regole per la somma, sottrazione, moltiplicazione e divisione sono:
@@ -326,18 +326,13 @@ I registri utilizzati sono:
 Per ogni istruzione letta viene creato un oggetto di tipo Instruction, definito dalla classe Instruction.java. La CPU esegue le istruzioni passate al costruttore dall’interprete. Dopodichè, ad ogni iterazione, si accede all’istruzione indicata dal registro \$ip che poi viene incrementato di uno per passare ad eseguire
 l’istruzione successiva. L’operazione da eseguire dipende dal campo code dell’oggetto Instruction.
 Per gestire i registri si utilizzano le funzioni regStore e regRead per aggiornare e leggere il valore contenuto nel registro opportuno. La memoria è stata semplicemente implementata come un array di interi poichè non c'è bisogno di memorizzare altre informazioni.\\
-Per le chiamate di funzione si verranno a creare dei record di attivazione. I nostri record di attivazione avranno una crescita dal basso verso l'alto, quindi guardando l'immagine possiamo dire che il vecchio frame pointer sarà ad un indirizzo di memoria maggiore rispetto al Return Address. Gli asset vengono caricati in ordine da 1 a n poichè durante il loro caricamento vengono svuotati. Per garantire una compatibilità con l'accesso all'offset durante la dichiarazione questi vengono dichiarati a partire dalla fine, quindi l'asset n avrà un offset più piccolo rispetto all'asset 1. I parametri invece vengono dichiarati in ordine e di conseguenza verranno caricati al contrario. Salveremo poi nel RdA il vecchio access link ed il return address.
+Durante l'esecuzione del programma a seguito delle chiamate a funzione si vengono a creare dei \emph{Record di attivazione}. La struttura del nostro record di attivazione sarà quella visibile in figura. I record di attivazione cresceranno dal basso verso l'altro, quindi il vecchio frame pointer si troverà ad indirizzi di memoria più alti del return address. Dopo aver caricato il vecchio frame pointer caricheremo prima tutti gli asset in ordine, da 1 a n. Il caricamento degli asset avviene in ordine poichè la loro dichiarazione (per mantenere coerenza con gli offset per l'accesso alle variabili nel record di attivazione) avviene al contrario. In questo modo possiamo caricare gli asset da 1 a n e conseguentemente svuotarli per mantenere la semantica di f()[a,a], in cui il primo parametro attuale sarà passato al primo formale e poi svuotato ed il secondo parametro formale riceverà un asset vuoto.  Successivamente carichiamo i parametri della funzione al contrario da m a 1 e le dichiarazioni interne alle variabili sempre in ordine inverso. Infine, ci sarà il vecchio access link ed il vecchio \emph{\$ra}.
 \section{Interprete}
-Il funzionamento del nostro interprete è governato dalla classe \emph{ExecuteSVM}. Questa classe conterrà la nostra memoria ed il nostro codice, come detto in precedenza rispettivamente un array di interi ed un array di Instruction ed i nostri registri. Lo \emph{stack pointed} ed il \emph{frame pointer} verranno inizializzati alla grandezza della memoria meno uno, il registro \emph{balance} ed il registro \emph{instruction pointer} verranno inizializzati a 0 mentre \emph{return address} e \emph{access link} non sono inizializzati. Ci sarà inoltre un array \emph{a} di dieci elementi che conterrà i registri temporanei e l'accumulatore. \\
+Il funzionamento del nostro interprete è governato dalla classe \emph{ExecuteSVM}. Questa classe conterrà la nostra memoria ed il nostro codice, come detto in precedenza rispettivamente un array di interi ed un array di Instruction ed i nostri registri. Lo \emph{stack pointer} ed il \emph{frame pointer} verranno inizializzati alla grandezza della memoria meno uno, il registro \emph{balance} ed il registro \emph{instruction pointer} verranno inizializzati a 0 mentre \emph{return address} e \emph{access link} non sono inizializzati. Ci sarà inoltre un array \emph{a} di dieci elementi che conterrà i registri temporanei e l'accumulatore. \\
 Al momento dell'esecuzione viene chiamato il metodo \emph{cpu()} della classe \emph{ExecuteSVM} che all'interno di un ciclo infinito scorre tutte le istruzioni caricate tramite uno switch. Le condizioni di terminazione sono due:
 \begin{itemize}
     \item \emph{Out of memory:} se il nostro stack pointer supera la memoria a disposizione (quindi se lo sp raggiunge il valore zero).
     \item \emph{Halt del programma:} se si raggiunge un'istruzione di halt che fa terminare il programma.
 \end{itemize}
 
-\begin{wrapfigure}{r}{0.3\textwidth}
-    \includegraphics[width=0.9\linewidth]{RdA.png}
-    \centering
-\end{wrapfigure}
-Durante l'esecuzione del programma a seguito delle chiamate a funzione si vengono a creare dei \emph{Record di attivazione}. La struttura del nostro record di attivazione sarà quella visibile in figura. I record di attivazione cresceranno dal basso verso l'altro, quindi il vecchio frame pointer si troverà ad indirizzi di memoria più alti del return address. Dopo aver caricato il vecchio frame pointer caricheremo prima tutti gli asset in ordine, da 1 a n. Il caricamento degli asset avviene in ordine poichè la loro dichiarazione (per mantenere coerenza con gli offset per l'accesso alle variabili nel record di attivazione) avviene al contrario. In questo modo possiamo caricare gli asset da 1 a n e conseguentemente svuotarli per mantenere la semantica di f()[a,a], in cui il primo parametro attuale sarà passato al primo formale e poi svuotato ed il secondo parametro formale riceverà un asset vuoto.  Successivamente carichiamo i parametri della funzione al contrario da m a 1 e poi il vecchio access link ed il vecchio \emph{\$ra}.
 \end{document}
