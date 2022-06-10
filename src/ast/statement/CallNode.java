@@ -80,11 +80,10 @@ public class CallNode implements Node {
                     }
                 }
             }
-            //Check if all bexp are Int or Asset
+            //Check if all id are Asset
             if(formalAdecParams != null) {
                 for (int i = 0; i <lengthFormalAdecPar; i++) {
-                    if (!Utilities.isSubtype(listId.get(i).typeCheck(), new AssetTypeNode()) &&
-                            !Utilities.isSubtype(listId.get(i).typeCheck(), new IntTypeNode())) {
+                    if (!Utilities.isSubtype(new AssetTypeNode(), listId.get(i).typeCheck())) {
                         System.out.println("Incompatible Asset Parameter for Function " + id.getId());
                         System.exit(0);
                     }

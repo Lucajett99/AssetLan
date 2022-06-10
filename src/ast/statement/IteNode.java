@@ -42,8 +42,8 @@ public class IteNode implements Node {
         }
         for(Node node : thenStatement){
             StatementNode stm = (StatementNode)  node;
-            if((isPresent || elseStatement == null )&& stm.getStatement() instanceof ReturnNode ) return true;
-            else if((isPresent || elseStatement == null )&& stm.getStatement() instanceof IteNode && ((IteNode)stm.getStatement()).containsReturn()) return true;
+            if(isPresent && stm.getStatement() instanceof ReturnNode ) return true;
+            else if(isPresent && stm.getStatement() instanceof IteNode && ((IteNode)stm.getStatement()).containsReturn()) return true;
         }
         return false;
     }
@@ -80,7 +80,7 @@ public class IteNode implements Node {
             }
         }
 
-        return new VoidTypeNode();
+        return null;
     }
 
     @Override

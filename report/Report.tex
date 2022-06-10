@@ -223,52 +223,52 @@ Il controllo dei tipi viene effettuato tramite la funzione \emph{Type Check.} I 
 \section{Regole di inferenza utilizzate}
 Il nostro ambiente, $\Gamma$, sarà una funzione così fatta:
 \begin{center}
-    $\Gamma : ID \rightarrow T \times L \times$ off
+    $\Gamma : ID \rightarrow T \times$ off
 \end{center}
-Associerà quindi un nome ad un tipo, ad un valore di una liquidity e ad un offset. Gli insiemi T ed L sono così definiti: 
+Associerà quindi un nome ad un tipo e ad un offset. Gli insiemi T ed L sono così definiti: 
 \begin{center}
     $T$ = \{void, asset, bool, int\}\\
-    $L$ = \{$\bot, \emptyset,  \mathds{1}$\}
+   
 \end{center}
-L'ordinamento parziale per i simboli dell'insieme $L$ per il controllo della liquidity è: 
-\begin{center}
-    $\bot \leq \emptyset \leq  \mathds{1}$
-\end{center} 
-Dove $\bot$ rappresenta le variabili non asset, $\emptyset$ rappresenta un asset vuoto e $ \mathds{1}$ rappresenta un asset pieno. 
 Definiamo inoltre una funzione \emph{proj$_i$} che ci permetterà di ritornare l' \emph{i-esimo} elemento di $\Gamma$(id).
 
 La prima regola che andremo ad analizzare è la regola del program. Questa regola verrà valutata nell'ambiente vuoto (poichè stiamo iniziando a controllare ora il programma) e avrà un offset pari a 0. L'offset è infatti una variabile globale all'interno della classe Environment che parte da zero e diminuirà ogni volta che viene effettuata una nuova dichiarazione. 
-    \[\infer{ \emptyset, 0 \vdash \mbox{field asset function initcall} : max(proj_2(\Gamma''))}
+%%%%PROGRAM
+    \[\infer{ \emptyset, 0 \vdash \mbox{field asset function initcall} : T}
     {\emptyset, 0 \vdash field: \Gamma \; \Gamma \vdash asset: \Gamma' \;\Gamma'\vdash function : \Gamma'' \; \Gamma'' \vdash initcall : T}\]
-Questa regola ritornerà il $max(proj_2(\Gamma''))$ cioè il massimo valore della liquidity che troverà in $\Gamma''$, l'ambiente finale. Quindi ritornerà se il programma è liquido (quindi tutti i valori sono a $\emptyset$) o non lo è (se almeno un asset globale è $\mathds{1}$).\\
+%%%%%% FIELD
 Successivamente, si va a valutare la regola field, che non è altro che una dichiarazione di variabili con o senza inizializzazione. Abbiamo così definito due regole di inferenza, una con ed una senza l'inizializzazione.
-    \[\infer{\Gamma, n \vdash \mbox{ T x;} : \Gamma[x \rightarrow T \times \bot \times \mbox{off} ], n = n-1}{ x \notin (top(\Gamma)) \;\mbox{ off = n - 1}} \]
+    \[\infer{\Gamma, n \vdash \mbox{ T x;} : \Gamma[x \rightarrow T \times \mbox{off} ], n = n-1}{ x \notin (top(\Gamma)) \;\mbox{ off = n - 1}} \]
 La regola con l'inizializzazione sarà:
-    \[ \infer{\Gamma, n \vdash \mbox{ T x = e;} : \Gamma[x \rightarrow T \times \bot \times \mbox{off} ], n = n-1}
+    \[ \infer{\Gamma, n \vdash \mbox{ T x = e;} : \Gamma[x \rightarrow T \times \mbox{off} ], n = n-1}
     { x \notin (top(\Gamma)) \;\;\; \Gamma \vdash \mbox{e = T'} \;\;\;\; \mbox{T = T'} \;\;\;\; \mbox{off = n - 1}}\]
+%%%%%% ASSET %%%%%%%%%%%
 Dopo field, ci sarà la possibilità di definire degli asset globali. Gli asset globali non potranno mai essere inizializzati, quindi avremo bisogno di una sola regola di inferenza. Quando dichiareremo un asset il suo valore liquidity sarà inizialmente settato a zero, poichè questi asset saranno vuoti.
-    \[\infer{\Gamma, n \vdash \mbox{asset x;} : \Gamma[x \rightarrow asset \times \emptyset \times off], \mbox{n=n-1}}
+    \[\infer{\Gamma, n \vdash \mbox{asset x;} : \Gamma[x \rightarrow asset \times off], \mbox{n=n-1}}
     {x \notin dom(top(\Gamma)) \;\;\;\; \mbox{ off = n -1}} \]
-
+%%%%% SEQ
 Entrambi i campi field e asset permettono di effettuare più dichiarazioni in sequenza. Bisogna, quindi, definire la regola per la valutazione di una sequenza di dichiarazioni field ed una sequenza di dichiarazioni asset. Mostriamo quindi la regola per la sequenza di dichiarazioni field.
 \[\infer{\Gamma, n \vdash \;\;\, \mbox{f; F;}\;\; :\;\; \Gamma'', n''}
 {\Gamma, n \vdash f: \Gamma',n' \;\;\;\; \Gamma', n' \vdash F; : \Gamma'', n'' }\]
 Una regola speculare viene usata per la sequenza di dichiarazioni asset.\\
 \[\infer{\Gamma, n \vdash \;\;\mbox{a; A;} \;\;:\;\; \Gamma'', n''}
 {\Gamma, n \vdash a: \Gamma',n' \;\;\;\;\;\; \Gamma', n' \vdash A; : \Gamma'', n'' }\]
+%%%%%%%%%% DEC
 Sia i parametri formali che le che dichiarazioni interne al corpo di una funzione vengono gestiti tramite regola dec (da noi rinominata in decp per i parametri formali).La regola per la dichiarazione sarà quindi:
-\[\infer{\Gamma, n \vdash \mbox{ T x;} : \Gamma[x \rightarrow T \times \bot \times \mbox{off} ], n = n + 1}{ x \notin (top(\Gamma)) \;\;\; \mbox{off = n + 1}}\]
+\[\infer{\Gamma, n \vdash \mbox{ T x;} : \Gamma[x \rightarrow T \times \mbox{off} ], n = n + 1}{ x \notin (top(\Gamma)) \;\;\; \mbox{off = n + 1}}\]
 Come si può notare in questo caso c'è un'importante differenza, l'offset invece che diminuire di uno aumenterà di uno. Questo è dettato dal fatto che all'interno del record di attivazione il \emph{frame pointer} si troverà in altro (ad indirizzi di memoria inferiori) rispetto ai parametri formali e alle dichiarazioni di variabili. Questo non creerà problemi con gli offset delle altre variabili (come le dichiarazioni globali) poichè le variabili dec e decp (come anche adec che mostreremo successivamente) si troveranno in un nuovo scope e come mostreremo più avanti dalla regola della funzione, nel nuovo scope l'offset verrà riazzerato.
 Anche in questo caso è necessario definire la regola per la sequenza di dichiarazioni dec e decp. 
 \[\infer{\Gamma, n \vdash \mbox{d, D; :} \;\;\; \Gamma'', n''}{\Gamma, n \vdash d: \Gamma',n' \;\;\;\;\;\; \Gamma', n' \vdash D; \; : \Gamma'', n'' }\]
+%%%%%%% ADEC
 La regola di inferenza per l'adec (quindi i parametri formali asset di una funzione) è praticamente speculare a quella della dichiarazione degli asset globali con la differenza che anche in questo caso l'offset sarà positivo e non negativo.
-\[\infer{\Gamma, n \vdash \mbox{asset x;} : \Gamma[x \rightarrow asset \times \emptyset \times off], \mbox{n=n + 1}}
+\[\infer{\Gamma, n \vdash \mbox{asset x;} : \Gamma[x \rightarrow asset \times off], \mbox{n=n + 1}}
 {x \notin dom(top(\Gamma)) \;\;\;\; \mbox{ off = n + 1}} \]
 Anche in questo caso la regola per la definizione della sequenza di definizioni di parametri asset formali sarà speculare a quella precedente.
 \[\infer{\Gamma, n \vdash \;\;\mbox{adec; Adec;} \;\;:\;\; \Gamma'', n''}
 {\Gamma, n \vdash adec: \Gamma',n' \;\;\;\;\;\; \Gamma', n' \vdash Adec; : \Gamma'', n'' }\]
 \newpage
 \section{Comandi}
+Tutti i comandi ritornano un tipo per mantenere coerenza con il comando return che ritornerà un tipo da utilizzare per controllare la coerenza con il tipo di ritorno della funzione. Il tipo di ritorno dei comandi è però inutile e potrebbe essere anche void.
 %%%% ASSEGNAMENTO
 Passando ora alla valutazione degli statement, la regola di inferenza per l'\emph{assegnamento} è: \\
 \[\infer{\Gamma \vdash \mbox{x = e :} \Gamma}{x \in dom(\Gamma) \;\;\; proj_1(\Gamma(x))=T \;\;\; \Gamma \vdash e= T' \;\;\;\; T'\leq T \;\;\; }\]
@@ -281,7 +281,6 @@ La regola per la \emph{move} va a valutare i due parametri, controllando che sia
 \[
 \infer{\Gamma \vdash a_1\;\; -o\;\;\; a_2\; : void}{a_1 \in dom(\Gamma) \;\;\; a_2 \in dom(\Gamma) \;\;\;proj_1(\Gamma(a_1)) = T \;\;\; proj_1(\Gamma(a_2)) = T' \;\;\; T=T'=asset}
     \]
-\infer{\Gamma \vdash a_1\mbox{ -o }a_2 \;: \;\;\; \Gamma[a_1 \rhd \emptyset,  a2 \rhd max(proj_2(\Gamma(a_1)), proj_2(\Gamma(a_1)))]}{a_1 \in dom(\Gamma) \;\;\; a_2 \in dom(\Gamma) \;\;\;proj_1(\Gamma(a_1)) = T \;\;\; proj_1(\Gamma(a_2)) = T' \;\;\; T=T'=asset}\\
 %%%%% TRANSFER
 Regola per la \emph{transfer}, va a valutare che il parametro asset in input sia definito all'interno del programma e che sia di tipo asset:\\
 \[\infer{\Gamma \vdash \mbox{transfer x :} void}{x \in dom(\Gamma) \;\;\; prog_1(\Gamma(x))=T \;\;\; T=asset}\]
@@ -291,7 +290,29 @@ La regola per la return senza espressione è un assioma:\\
 \[\infer{\Gamma \vdash \mbox{return e :} void}{}\]
 Regola per la return senza exp:\\
 \infer{\Gamma \vdash \mbox{return e :} void}{\Gamma \vdash e: T}\\
-
+%%%%% IF THEN ELSE
+La regola per il controllo dei tipi dell'\emph{if-then-else} sarà:
+\[
+    \infer{\Gamma \vdash if (cond)\;\; \{s_1\} \;\;else\;\; \{s_2\} \; : \; void}{\Gamma \vdash cond \;:\:T\;\;\; T=bool\;\;\;\; \Gamma\vdash s_1 \;:\;void\;\;\; \Gamma\vdash s_2\;: \;void}
+    \]
+Sia $s_1$ che $s_2$ verranno valutati in gamma, e quindi nello stesso ambiente, poichè l'esecuzione dei due rami è alternativa quindi l'esecuzione di uno non può interferire l'altro.\\
+%%%%%%%% DEFINIZIONE DI FUNZIONE
+La regola per la definizione di funzione è:
+\[
+    \infer{\Gamma \vdash T f(T_1\;x_1,...,T_n\;x_n)[asset\;a_1,...,asset\;a_m] = \{d\;s\}:\Gamma[f\rightarrow(T_1,...,T_n,asset_1,...,_m)\rightarrow T]}
+    {\Gamma\cdot[f\rightarrow\;(T_1\;x_1,...,T_n\;x_n,asset\;a_1,...,asset\;a_m)\rightarrow\;T] \vdash d\;:\;\Gamma' \;\;\; \Gamma'\vdash\;s\;:\; T'\;\;\; T=T' }
+    \]
+%%%%%%%%% INVOCAZIONE DI FUNZIONE
+La regola per l'invocazione di funzione e quindi per il nodo call è:
+\[
+\infer{\Gamma\vdash f(x_1,...,x_n)[a_1,...,a_m] \;\;:\;\; T}{\Gamma \vdash f\;:\;T_1,...,T_n,asset_1,...,asset_m \rightarrow T\;\;\;(\Gamma \vdash x_i\;:\; T_i')^{i\in 1..n} (T_i' = T_i)^{i\in 1..n}\;\; (\Gamma \vdash a_i\;:\;asset)^{i\in 1..m}}    
+\]
+%%%%% INITCALL
+La regola per l'invocazione della funzione in initcall è simile a quella della call. La differenza sta nel fatto che i parametri $a_1,...,a_m$ devono essere interi, poichè sono gli asset che vengono passati al contratto per funzionare.
+\[
+\infer{\Gamma\vdash f(x_1,...,x_n)[a_1,...,a_m] \;\;:\;\; T}{\Gamma \vdash f\;:\;T_1,...,T_n,asset_1,...,asset_m \rightarrow T\;\;\;(\Gamma \vdash x_i\;:\; T_i')^{i\in 1..n} (T_i' = T_i)^{i\in 1..n}\;\; (\Gamma \vdash a_i\;:\;int)^{i\in 1..m}}    
+\]
+%%%%
 \section{Espressioni}
 Tutte le espressioni ritorneranno un tipo. La prima regola è quella per la \emph{baseExp}.\\
 \[\infer{\Gamma \vdash (exp) \;\; : \;\; T}{\Gamma \vdash exp \;\;  : \;\; T }\]\\
@@ -321,7 +342,38 @@ Per quanto riguarda la regola per la \emph{CallExp}, rimandiamo alla regola dell
 Per quanto riguarda invece \emph{boolExp} e \emph{valExp} le due regole di inferenza sono degli assiomi e sono:
 \[ \infer{\Gamma \vdash boolean \;\; : \;\; bool}{} \]
 \[ \infer{\Gamma \vdash integer \;\; : \;\; int}{} \]
-
+\chapter{Analisi degli Effetti}
+Dopo aver effettuato la check semantics e la type check effettueremo un'altra visita dell'albero per effettuare un'analisi degli effetti. La nostra analisi degli effetti dovrà effettuare il controllo della liquidity di un contratto. Con più precisione dovrà controllare che:
+\begin{itemize}
+    \item a fine di una funzione i parametri formali asset devono essere svuotati
+    \item controllare il flusso degli asset (i valori degli asset non devono essere persi)
+    \item a fine del contratto tutti i parametri globali asset devono essere svuotati 
+\end{itemize}
+Per effettuare questo controllo definiamo un ambiente $\Sigma$, che sarà una funzione così definita:
+\begin{center}
+    $\Sigma$ = $ID \rightarrow L$
+\end{center}
+Dove l'insieme $L$ è così definito:
+\begin{center}
+    $L = \{\emptyset, \mathds{1}\}$
+\end{center}
+L'ordinamento parziale per i simboli dell'insieme $L$ per il controllo della liquidity è: 
+\begin{center}
+    $ \emptyset \leq  \mathds{1}$
+\end{center} 
+Dove $\emptyset$ rappresenta un asset vuoto e $ \mathds{1}$ rappresenta un asset pieno. 
+Definiamo ora una funzione $\oplus$ così fatta:\\
+\begin{center}
+    \begin{tabular}{|c| c| c|}
+        \hline
+        $\oplus$ & $\emptyset$ & $\mathds{1}$ \\
+        \hline
+        $\emptyset$ & $\emptyset$ &$\mathds{1}$\\
+        \hline
+        $\mathds{1}$ & $\mathds{1}$ &$\mathds{1}$\\
+        \hline
+    \end{tabular}
+\end{center}
 
 \chapter{Generazione di codice}
 L'ultima fase di questo progetto si occupava di andare a generare il codice bytecode per il codice assetlan preso in input e di costruire l'interprete per l'esecuzione del bytecode generato. Siamo così andati in ogni nodo dell'albero a scrivere la funzione \emph{codGeneration()}. Ogni nodo restituirà una stringa e l'insieme di tutte queste stringhe, sarà il nostro codice bytecode da eseguire tramite l'interprete. Abbiamo definito una classe \emph{Instruction} che conterrà un intero, il codice del token rappresentante l'istruzione da eseguire, e tre stringhe che rappresentano i tre possibili argomenti che quell'istruzione prende in input. Se un argomento non c'è (poichè esistono istruzioni che hanno meno di tre argomenti o addirittura nessuno come la \emph{pop}) questo verrà settato a \emph{null}.\\

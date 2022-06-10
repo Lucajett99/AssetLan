@@ -53,7 +53,9 @@ public class TransferNode implements Node {
         }
         type = Environment.lookup(e,id.getId()).getType();*/
         res.addAll(id.checkSemantics(e)); //Check if id is declared or not
-        type = Environment.lookup(e,id.getId()).getType();
+        STentry entry = Environment.lookup(e,id.getId());
+        if(entry != null)
+            type = entry.getType();
         return res;
     }
     @Override

@@ -84,7 +84,7 @@ public class FunctionNode implements Node {
          if(ns.getStatement() instanceof ReturnNode){
              rstm = true;
              ReturnNode rn = (ReturnNode) ns.getStatement();
-            if(!Utilities.isSubtype(rn.typeCheck(),type.typeCheck())){  //Errore quando viene fatta la "return;"
+            if(!Utilities.isSubtype(rn.typeCheck(), type.typeCheck())){  //Errore quando viene fatta la "return;"
                 System.out.println("Incompatible type of declaration method: must be a return "+ type.getStringType());
                 System.exit(0);
             }
@@ -216,14 +216,6 @@ public class FunctionNode implements Node {
                     iter.addAll(((IteNode)stmNode.getStatement()).getThenStatement());
                     if(((IteNode) stmNode.getStatement()).getElseStatement()!= null)
                         iter.addAll(((IteNode)stmNode.getStatement()).getElseStatement());
-                }
-            }
-            if (itenode.getElseStatement() != null) {
-                for (Node stm : itenode.getElseStatement()) {
-                    StatementNode stmNode = (StatementNode) stm;
-                    if (stmNode.getStatement() instanceof ReturnNode rn) {
-                        rn.setEntry((STEntryFun)Environment.lookup(e, id.getId()));
-                    }
                 }
             }
         }
