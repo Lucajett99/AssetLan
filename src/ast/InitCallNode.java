@@ -147,7 +147,7 @@ public class InitCallNode implements Node{
                     index++;
                 }
                 if(isLiquid) {
-                    System.out.println("\nIl programma e' liquido!\n");
+                    System.out.println("\nThe program doesn't respects the Liquidity property\n");//TODO: @lucajett nella precedente versione la stampa era "il programma era liquido" e dopo faceva la system exit
                     System.exit(0);
                 }
             }
@@ -162,7 +162,7 @@ public class InitCallNode implements Node{
         if(st.getNode().getADec() != null){//check liquidity in initcall Function
             for( IdNode node : st.getNode().getADec().getId()){
                 if(((STEntryAsset)Environment.lookup(e,node.getId())).getLiquidity ()> 0){
-                    System.out.println("La funzione "+id.getId()+ " non e' liquida! [initcall]");
+                    System.out.println("The function "+id.getId()+ " doesn't respect the Liquidity property");
                     System.exit(0);
                 };
             }

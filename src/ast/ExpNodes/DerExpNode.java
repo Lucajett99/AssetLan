@@ -42,7 +42,7 @@ public class DerExpNode implements Node {
     public ArrayList<SemanticError> checkSemantics(Environment e) {
         ArrayList<SemanticError> res = new ArrayList<SemanticError>();
         if(e.isDeclared(id)== EnvError.NO_DECLARE){
-            res.add(new SemanticError(id+": variable is not declared [DerExp]"));
+            res.add(new SemanticError(id+": variable is not declared "));
         }
         else {
             this.sTentry = Environment.lookup(e, id);

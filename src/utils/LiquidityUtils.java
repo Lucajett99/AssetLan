@@ -140,7 +140,7 @@ public abstract class LiquidityUtils {
                     }
                 };
                 if(entryF.getLiquidity() != 0 && !PassedToActual){
-                    System.out.println("La funzione "+ funNode.getId().getId()+" non e' liquida! [liquidity]");
+                    System.out.println("The function "+ funNode.getId().getId()+" doesn't respect the liquidity property!");
                     System.exit(0);
                 }
             }

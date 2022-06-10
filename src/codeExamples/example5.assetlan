@@ -35,5 +35,7 @@ int f()[asset a, asset b]{
 void main()[asset a, asset b]{
     int g;
     g = f()[a,b] ;
+    transfer x;
+    transfer y;
  }
  main()[1,1]// il contratto non e` liquido

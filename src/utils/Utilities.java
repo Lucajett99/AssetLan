@@ -44,7 +44,7 @@ public class Utilities {
         }
 
         if(nCall > 1) {
-            System.out.println("Il programma non e' liquido!");
+            System.out.println("The program doesn't respect the liquidity property!");
             System.exit(0);
         }
     }

@@ -58,7 +58,7 @@ public class MoveNode implements Node {
         id1.checkSemantics(e);
         id2.checkSemantics(e);
         if(e.isDeclared(id1.getId()) == EnvError.NO_DECLARE){
-            res.add(new SemanticError((id1.getId())+": is not declared [Move]"));
+            res.add(new SemanticError((id1.getId())+": is not declared "));
         }
         else {
             STentry first = Environment.lookup(e,id1.getId());
@@ -66,7 +66,7 @@ public class MoveNode implements Node {
         }
 
         if(e.isDeclared(id2.getId())== EnvError.NO_DECLARE){
-            res.add(new SemanticError((id2.getId())+": is not declared [Move]"));
+            res.add(new SemanticError((id2.getId())+": is not declared "));
         }
         else {
             STentry second = Environment.lookup(e,id2.getId());

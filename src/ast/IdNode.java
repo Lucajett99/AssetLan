@@ -67,7 +67,7 @@ public class IdNode implements Node{
     public ArrayList<SemanticError> checkSemantics(Environment e) {
         ArrayList<SemanticError> res = new ArrayList<>();
         if(e.isDeclared(this.id)== EnvError.NO_DECLARE) {
-            res.add(new SemanticError((this.id) + ": is not declared [idNode]"));
+            res.add(new SemanticError((this.id) + ": is not declared "));
         }else {
             this.type = Environment.lookup(e, id).getType().typeCheck();
             this.sTentry = Environment.lookup(e, id);

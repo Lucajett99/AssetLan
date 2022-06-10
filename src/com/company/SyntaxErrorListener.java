@@ -36,6 +36,7 @@ public class SyntaxErrorListener extends BaseErrorListener {
                     syntaxErrors += "Error: " + i.getMsg() + " at line " + i.getLine() + "\n";
             }
             out.println(lexicalErrors + "\n" + syntaxErrors);
+            System.out.println(lexicalErrors + "\n" + syntaxErrors);
             out.close();
 
         } catch (FileNotFoundException var10) {

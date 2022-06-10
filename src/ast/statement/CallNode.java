@@ -123,7 +123,7 @@ public class CallNode implements Node {
         ArrayList<SemanticError> res = new ArrayList<SemanticError>();
 
         if(e.isDeclared(id.getId())== EnvError.NO_DECLARE){
-            res.add(new SemanticError(id.getId()+": function is not declared [Call]"));
+            res.add(new SemanticError(id.getId()+": function is not declared "));
         }else{
             STentry entry = Environment.lookup(e,id.getId());
             if(entry instanceof STEntryFun){stEntry = (STEntryFun) entry;}
@@ -132,7 +132,7 @@ public class CallNode implements Node {
         if(listId!= null) {
             for (IdNode id : listId) {
                 if (e.isDeclared(id.getId()) == EnvError.NO_DECLARE)
-                    res.add(new SemanticError(id.getId() + " : assetID no declared [Call]"));
+                    res.add(new SemanticError(id.getId() + " : assetID no declared "));
                 else
                     res.addAll(id.checkSemantics(e));
             }
@@ -188,7 +188,7 @@ public class CallNode implements Node {
             //=> all formal parameter are empty
             STEntryAsset entryF = (STEntryAsset) Environment.lookup(e,formalParameter.get(i).getId());
             if(entryF.getLiquidity() != 0){
-                System.out.println("La funzione "+id.getId()+" non e' liquida!");
+                System.out.println("The function "+id.getId()+" doesn't respect the liquidity property!");
                 System.exit(0);
             }
         }

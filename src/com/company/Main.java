@@ -13,7 +13,9 @@ import utils.Environment;
 import utils.SemanticError;
 
 import java.io.BufferedWriter;
+import java.io.FileNotFoundException;
 import java.io.FileWriter;
+import java.nio.file.Paths;
 import java.util.ArrayList;
 
 public class Main {
@@ -23,21 +25,22 @@ public class Main {
             System.out.println("===== AssetLan Compiler&Interpreter ======");
             if (args.length == 0) {
                 System.err.println("No file to compile & run provided.");
-                //   System.exit(0);
+                System.exit(0);
             }
-            String file = args[0];
-            if (!Paths.get(file).toFile().exists()) {
-                throw new FileNotFoundException("File: " + file + " not found.");
+            String fileName = args[0];
+            if (!Paths.get(fileName).toFile().exists()) {
+                throw new FileNotFoundException("File: " + fileName + " not found.");
             }*/
-            //   String fileName = "src/codeExamples/example8.assetlan";
             String fileName = "src/codeExamples/example5.assetlan";
             CharStream charStreams = CharStreams.fromFileName(fileName);
             AssetLanLexer lexer = new AssetLanLexer(charStreams);
             CommonTokenStream tokens = new CommonTokenStream(lexer);
             AssetLanParser parser = new AssetLanParser(tokens);
-
+            System.out.println("Check for Lexical and Syntax Errors : ");
             SyntaxErrorListener errorListener = new SyntaxErrorListener();
+            lexer.removeErrorListeners();
             lexer.addErrorListener(errorListener);
+            parser.removeErrorListeners();
             parser.addErrorListener(errorListener);
 
             AssetLanVisitorImpl visitor = new AssetLanVisitorImpl();
@@ -46,17 +49,22 @@ public class Main {
             if (errorListener.getSyntaxErrors().size() == 0) {
                 /*System.out.println("Visualizing AST...");
                 System.out.println(ast.toPrint(""));*/
-
+                System.out.println("OK");
                 Environment env = new Environment();
+                System.out.print("Check for Semantic Error : ");
                 ArrayList<SemanticError> err = ast.checkSemantics(env);
                 if (!err.isEmpty()) {
                     for (SemanticError e : err) {
                         System.out.println(e.msg);
                     }
                 } else {
+                    System.out.println("OK");
+                    System.out.print("Type Checking : ");
                     Node type = ast.typeCheck();
+                    System.out.println("OK");
+                    System.out.print("Check for Liquidity Property : ");
                     Environment envEffects = ast.checkEffects(new Environment());
-
+                    System.out.println("OK");
                     String code = ast.codGeneration();
                     BufferedWriter out = new BufferedWriter(new FileWriter(fileName + ".asm"));
                     out.write(code);
@@ -83,10 +91,9 @@ public class Main {
                     }
                 }
             }
-    /*} catch (Exception exc) {
-        System.err.println(exc.getMessage());
-        System.exit(2);
-
-    }*/
-    }
+      /*      } catch (Exception exc) {
+                System.err.println(exc.getMessage());
+                System.exit(2);
+            }*/
+        }
 }

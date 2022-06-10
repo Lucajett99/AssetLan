@@ -70,7 +70,7 @@ public class DecNode implements Node {
             String id_tmp = id.get(j).getId();
             if (e.checkHeadEnv(id_tmp) == EnvError.ALREADY_DECLARED)//verifica se l'identificatore id.get(i) é gia presente
                 //in caso é presente un errore dichiarazione multipla
-                res.add(new SemanticError(id_tmp + " already declared [DecNode]"));
+                res.add(new SemanticError(id_tmp + " already declared "));
             else
                 e = Environment.addDeclaration(e, e.setDecOffset(false), id_tmp, new TypeNode(type.get(j).getStringType()).typeCheck());
         }

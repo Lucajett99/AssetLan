@@ -1,5 +1,5 @@
 --------LEXICAL ERRORS----------
 
 --------SYNTAX ERRORS----------
-Error: mismatched input '<' expecting {'asset', 'void', 'int', 'bool', ID} at line 1
+Error: missing ID at ',' at line 3
 

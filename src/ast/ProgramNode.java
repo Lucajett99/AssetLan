@@ -105,11 +105,11 @@ public class ProgramNode implements Node {
         e = initcall.checkEffects(e);
 
         if(Environment.checkGlobalLiquidity(e) > 0) {
-            System.out.println("\nIl programma non e' liquido: " + Environment.checkGlobalLiquidity(e) + " asset globali non sono stati svuotati\n");
+            System.out.println("The program doesn't respect the liquidity property: " + Environment.checkGlobalLiquidity(e) + " global asset are not empty");
             System.exit(0);
         }
         else {
-            System.out.println("\nIl programma e' liquido!\n");
+            System.out.println("The program respect the liquidity property!");
         }
 
         Environment.exitScope(e);

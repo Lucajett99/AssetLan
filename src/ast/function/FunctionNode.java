@@ -139,7 +139,7 @@ public class FunctionNode implements Node {
         //We store for the asset only the number of the assets because we already know the type
         env = Environment.addFunctionDeclaration(env, env.setDecOffset(false), id.getId(), this.type, this); //Declaration of the function
         if(env == null) //if function is already declared
-            res.add(new SemanticError(this.id.getId()+": id already declared [function]"));
+            res.add(new SemanticError(this.id.getId()+": id already declared "));
         else {
             env = Environment.newScope(env);
             //to allow recursion
@@ -151,7 +151,7 @@ public class FunctionNode implements Node {
                         String id_tmp = decNode.getListId().get(j).getId();
                         if (env.checkHeadEnv(id_tmp) == EnvError.ALREADY_DECLARED)//verifica se l'identificatore id.get(i) é gia presente
                             //in caso é presente un errore dichiarazione multipla
-                            res.add(new SemanticError(id_tmp + " already declared [DecNode]"));
+                            res.add(new SemanticError(id_tmp + " already declared"));
                         else
                             env = Environment.addDeclaration(env, env.setDecOffset(true), id_tmp, new TypeNode(decNode.getListType().get(j).getStringType()));
                     }
@@ -163,7 +163,7 @@ public class FunctionNode implements Node {
                     String id_tmp = decp.getDecp().getListId().get(j).getId();
                     if (env.checkHeadEnv(id_tmp) == EnvError.ALREADY_DECLARED)//verifica se l'identificatore id.get(i) é gia presente
                         //in caso é presente un errore dichiarazione multipla
-                        res.add(new SemanticError(id_tmp + " already declared [DecNode]"));
+                        res.add(new SemanticError(id_tmp + " already declared "));
                     else
                         env = Environment.addDeclaration(env, env.setDecOffset(true), id_tmp, new TypeNode(decp.getDecp().getListType().get(j).getStringType()));
                 }
