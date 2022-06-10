@@ -237,42 +237,61 @@ L'ordinamento parziale per i simboli dell'insieme $L$ per il controllo della liq
 Dove $\bot$ rappresenta le variabili non asset, $\emptyset$ rappresenta un asset vuoto e $ \mathds{1}$ rappresenta un asset pieno. 
 Definiamo inoltre una funzione \emph{proj$_i$} che ci permetterà di ritornare l' \emph{i-esimo} elemento di $\Gamma$(id).
 
-La prima regola che andremo ad analizzare è la regola del program. Questa regola verrà valutata nell'ambiente vuoto (poichè stiamo iniziando a controllare ora il programma) e avrà un offset pari a 0. L'offset è infatti una variabile globale all'interno della classe Environment che parte da zero e diminuirà ogni volta che viene effettuata una nuova dichiarazione. \\
-    
-    \infer{ \emptyset, 0 \vdash \mbox{field asset function initcall} : max(proj_2(\Gamma''))}
-    {\emptyset, 0 \vdash field: \Gamma \; \Gamma \vdash asset: \Gamma' \;\Gamma'\vdash function : \Gamma'' \; \Gamma'' \vdash initcall : T}
+La prima regola che andremo ad analizzare è la regola del program. Questa regola verrà valutata nell'ambiente vuoto (poichè stiamo iniziando a controllare ora il programma) e avrà un offset pari a 0. L'offset è infatti una variabile globale all'interno della classe Environment che parte da zero e diminuirà ogni volta che viene effettuata una nuova dichiarazione. 
+    \[\infer{ \emptyset, 0 \vdash \mbox{field asset function initcall} : max(proj_2(\Gamma''))}
+    {\emptyset, 0 \vdash field: \Gamma \; \Gamma \vdash asset: \Gamma' \;\Gamma'\vdash function : \Gamma'' \; \Gamma'' \vdash initcall : T}\]
+Questa regola ritornerà il $max(proj_2(\Gamma''))$ cioè il massimo valore della liquidity che troverà in $\Gamma''$, l'ambiente finale. Quindi ritornerà se il programma è liquido (quindi tutti i valori sono a $\emptyset$) o non lo è (se almeno un asset globale è $\mathds{1}$).\\
+Successivamente, si va a valutare la regola field, che non è altro che una dichiarazione di variabili con o senza inizializzazione. Abbiamo così definito due regole di inferenza, una con ed una senza l'inizializzazione.
+    \[\infer{\Gamma, n \vdash \mbox{ T x;} : \Gamma[x \rightarrow T \times \bot \times \mbox{off} ], n = n-1}{ x \notin (top(\Gamma)) \;\mbox{ off = n - 1}} \]
+La regola con l'inizializzazione sarà:
+    \[ \infer{\Gamma, n \vdash \mbox{ T x = e;} : \Gamma[x \rightarrow T \times \bot \times \mbox{off} ], n = n-1}
+    { x \notin (top(\Gamma)) \;\;\; \Gamma \vdash \mbox{e = T'} \;\;\;\; \mbox{T = T'} \;\;\;\; \mbox{off = n - 1}}\]
+Dopo field, ci sarà la possibilità di definire degli asset globali. Gli asset globali non potranno mai essere inizializzati, quindi avremo bisogno di una sola regola di inferenza. Quando dichiareremo un asset il suo valore liquidity sarà inizialmente settato a zero, poichè questi asset saranno vuoti.
+    \[\infer{\Gamma, n \vdash \mbox{asset x;} : \Gamma[x \rightarrow asset \times \emptyset \times off], \mbox{n=n-1}}
+    {x \notin dom(top(\Gamma)) \;\;\;\; \mbox{ off = n -1}} \]
 
-Successivamente, si va a valutare la regola field, che non è altro che una dichiarazione di variabili con o senza dichiarazione. Abbiamo così definito due regole di inferenza, una con ed una senza la dichiarazione.
-\\
-    \infer{\Gamma, n \vdash \mbox{ T x;} : \Gamma[x \rightarrow T \times \bot \times \mbox{off} ], n = n-1}{ x \notin (top(\Gamma)) \;\mbox{ off = n}} 
-\\
-    \infer{\Gamma, n \vdash \mbox{ T x = e;} : \Gamma[x \rightarrow T \times \bot \times \mbox{off} ], n = n-1}{ x \notin (top(\Gamma)) \; \Gamma \vdash \mbox{e = T'} \; \mbox{T = T'} \; \mbox{off = n}}
-\\
-    \infer{\Gamma, n \vdash \mbox{asset x;} : \Gamma[x \rightarrow T \times \bot \times off], \mbox{n-1}}{x \notin dom(top(\Gamma)) \;\mbox{ off = n}}
-\\
-Bisogna poi definire la regola per la valutazione di una sequenza di dichiarazioni field ed una sequenza di dichiarazioni asset.\\ 
-\infer{\Gamma, n \vdash \mbox{f; F;} : \Gamma'', n''}
-{\Gamma, n \vdash f: \Gamma',n' \; \Gamma', n' \vdash F; : \Gamma'', n'' }\\
+Entrambi i campi field e asset permettono di effettuare più dichiarazioni in sequenza. Bisogna, quindi, definire la regola per la valutazione di una sequenza di dichiarazioni field ed una sequenza di dichiarazioni asset. Mostriamo quindi la regola per la sequenza di dichiarazioni field.
+\[\infer{\Gamma, n \vdash \;\;\, \mbox{f; F;}\;\; :\;\; \Gamma'', n''}
+{\Gamma, n \vdash f: \Gamma',n' \;\;\;\; \Gamma', n' \vdash F; : \Gamma'', n'' }\]
 Una regola speculare viene usata per la sequenza di dichiarazioni asset.\\
-\infer{\Gamma, n \vdash \mbox{a; A;} : \Gamma'', n''}
-{\Gamma, n \vdash a: \Gamma',n' \;\;\;\;\;\; \Gamma', n' \vdash A; : \Gamma'', n'' }\\
-La regola per la dichiarazione (valida sia per dec che per decp). \\
-\infer{\Gamma, n \vdash \mbox{ T x;} : \Gamma[x \rightarrow T \times \bot \times \mbox{off} ], n = n +1}{ x \notin (top(\Gamma)) \;\;\; \mbox{off = n}}
-\\
-Serve ora una regola per la sequenda di dichiarazioni.\\ 
-\infer{\Gamma, n \vdash \mbox{d, D; :} \;\;\; \Gamma'', n''}{\Gamma, n \vdash d: \Gamma',n' \;\;\;\;\;\; \Gamma', n' \vdash D; \; : \Gamma'', n'' }\\
-La regola di inferenza per l'assegnamento è: \\
-\infer{\Gamma \vdash \mbox{x = e :} void}{x \in dom(\Gamma) \;\;\; proj_1(\Gamma(x))=T \;\;\; \Gamma \vdash e= T' \;\;\;\; T'\leq T \;\;\; T,T' \neq void }\\
-La regola per la print è:\\
-\infer{\Gamma \vdash \mbox{print e :} void}{\Gamma \vdash e: T}\\
-La regola per la move è:\\
+\[\infer{\Gamma, n \vdash \;\;\mbox{a; A;} \;\;:\;\; \Gamma'', n''}
+{\Gamma, n \vdash a: \Gamma',n' \;\;\;\;\;\; \Gamma', n' \vdash A; : \Gamma'', n'' }\]
+Sia i parametri formali che le che dichiarazioni interne al corpo di una funzione vengono gestiti tramite regola dec (da noi rinominata in decp per i parametri formali).La regola per la dichiarazione sarà quindi:
+\[\infer{\Gamma, n \vdash \mbox{ T x;} : \Gamma[x \rightarrow T \times \bot \times \mbox{off} ], n = n + 1}{ x \notin (top(\Gamma)) \;\;\; \mbox{off = n + 1}}\]
+Come si può notare in questo caso c'è un'importante differenza, l'offset invece che diminuire di uno aumenterà di uno. Questo è dettato dal fatto che all'interno del record di attivazione il \emph{frame pointer} si troverà in altro (ad indirizzi di memoria inferiori) rispetto ai parametri formali e alle dichiarazioni di variabili. Questo non creerà problemi con gli offset delle altre variabili (come le dichiarazioni globali) poichè le variabili dec e decp (come anche adec che mostreremo successivamente) si troveranno in un nuovo scope e come mostreremo più avanti dalla regola della funzione, nel nuovo scope l'offset verrà riazzerato.
+Anche in questo caso è necessario definire la regola per la sequenza di dichiarazioni dec e decp. 
+\[\infer{\Gamma, n \vdash \mbox{d, D; :} \;\;\; \Gamma'', n''}{\Gamma, n \vdash d: \Gamma',n' \;\;\;\;\;\; \Gamma', n' \vdash D; \; : \Gamma'', n'' }\]
+La regola di inferenza per l'adec (quindi i parametri formali asset di una funzione) è praticamente speculare a quella della dichiarazione degli asset globali con la differenza che anche in questo caso l'offset sarà positivo e non negativo.
+\[\infer{\Gamma, n \vdash \mbox{asset x;} : \Gamma[x \rightarrow asset \times \emptyset \times off], \mbox{n=n + 1}}
+{x \notin dom(top(\Gamma)) \;\;\;\; \mbox{ off = n + 1}} \]
+Anche in questo caso la regola per la definizione della sequenza di definizioni di parametri asset formali sarà speculare a quella precedente.
+\[\infer{\Gamma, n \vdash \;\;\mbox{adec; Adec;} \;\;:\;\; \Gamma'', n''}
+{\Gamma, n \vdash adec: \Gamma',n' \;\;\;\;\;\; \Gamma', n' \vdash Adec; : \Gamma'', n'' }\]
+\newpage
+\section{Comandi}
+%%%% ASSEGNAMENTO
+Passando ora alla valutazione degli statement, la regola di inferenza per l'\emph{assegnamento} è: \\
+\[\infer{\Gamma \vdash \mbox{x = e :} \Gamma}{x \in dom(\Gamma) \;\;\; proj_1(\Gamma(x))=T \;\;\; \Gamma \vdash e= T' \;\;\;\; T'\leq T \;\;\; }\]
+Non c'è bisogno di controllare che T e/o T' siano diversi da void poichè è vietato dalla grammatica dichiarare un identificatore che non sia una funzione di tipo void. Questo vincola T ad essere di tipo \emph{int o bool} e di conseguenza vincola T' ad essere di tipo \emph{bool} se T è anch'esso bool o ad essere \emph{int o asset} (poichè asset è un sottotipo di int) se T è di tipo intero. \\
+%%%%%%%%% PRINT
+La regola per la \emph{print} è:
+\[\infer{\Gamma \vdash \mbox{print e :} \Gamma}{\Gamma \vdash e: T}\]\\
+%%%%%% MOVE
+La regola per la \emph{move} va a valutare i due parametri, controllando che siano dichiarati (non all'interno del dominio di testa ma all'interno di tutto il programma) e controlla che entrambi i parametri siano di tipo asset. La regola quindi è:\\
+\[
+\infer{\Gamma \vdash a_1\;\; -o\;\;\; a_2\; : void}{a_1 \in dom(\Gamma) \;\;\; a_2 \in dom(\Gamma) \;\;\;proj_1(\Gamma(a_1)) = T \;\;\; proj_1(\Gamma(a_2)) = T' \;\;\; T=T'=asset}
+    \]
 \infer{\Gamma \vdash a_1\mbox{ -o }a_2 \;: \;\;\; \Gamma[a_1 \rhd \emptyset,  a2 \rhd max(proj_2(\Gamma(a_1)), proj_2(\Gamma(a_1)))]}{a_1 \in dom(\Gamma) \;\;\; a_2 \in dom(\Gamma) \;\;\;proj_1(\Gamma(a_1)) = T \;\;\; proj_1(\Gamma(a_2)) = T' \;\;\; T=T'=asset}\\
-Regola per la transfer:\\
-\infer{\Gamma \vdash \mbox{transfer x :} \Gamma[x \rhd \emptyset]}{x \in dom(\Gamma) \;\;\; prog_1(\Gamma(x))=T \;\;\; T=asset}\\
-Regola per la return:\\
-\infer{\Gamma \vdash \mbox{return e :} void}{\Gamma \vdash e: T}\\
+%%%%% TRANSFER
+Regola per la \emph{transfer}, va a valutare che il parametro asset in input sia definito all'interno del programma e che sia di tipo asset:\\
+\[\infer{\Gamma \vdash \mbox{transfer x :} void}{x \in dom(\Gamma) \;\;\; prog_1(\Gamma(x))=T \;\;\; T=asset}\]
+%%%% RETURN
+Per la return avremo bisogno di più regole di inferenza a seconda che ci sia un'espressione di ritorno o la funzione sia di tipo void e quindi la return non abbia un'espressione.
+La regola per la return senza espressione è un assioma:\\
+\[\infer{\Gamma \vdash \mbox{return e :} void}{}\]
 Regola per la return senza exp:\\
 \infer{\Gamma \vdash \mbox{return e :} void}{\Gamma \vdash e: T}\\
+
 \section{Espressioni}
 Tutte le espressioni ritorneranno un tipo. La prima regola è quella per la \emph{baseExp}.\\
 \[\infer{\Gamma \vdash (exp) \;\; : \;\; T}{\Gamma \vdash exp \;\;  : \;\; T }\]\\
@@ -281,7 +300,7 @@ La regola di inferenza per la \emph{negExp} è:\\
 La regola di inferenza per la \emph{notExp} è:\\
 \[\infer{\Gamma \vdash !exp \;\; : \;\;\; bool}{\Gamma \vdash exp \;\;  : T\;\;\;  T=bool }\]\\
 La regola di inferenza per la \emph{derExp} è:\\
-\[\infer{\Gamma \vdash x \;\; : \;\; T}{x \in dom(\Gamma) \;\;\; prog_1(\Gamma(x)) = T \;\; }\]\\
+\[\infer{\Gamma \vdash x \;\; : \;\; T}{x \in dom(\Gamma) \;\;\; proj_1(\Gamma(x)) = T \;\; }\]\\
 La regola di inferenza per la \emph{binExp} cambia a seconda dell'operatore utilizzato. La regole per la somma, sottrazione, moltiplicazione e divisione sono:
 \[ \infer{\Gamma \vdash e_1 + e2 \;\; : int}{\Gamma \vdash e_1 :T \;\;\; \Gamma \vdash e_2 \; : T' \;\;\; T=T'=int} \]
 \[ \infer{\Gamma \vdash e_1 - e2 \;\; : int}{\Gamma \vdash e_1 :T \;\;\; \Gamma \vdash e_2 \; : T' \;\;\; T=T'=int} \]

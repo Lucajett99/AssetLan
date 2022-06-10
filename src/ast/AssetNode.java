@@ -46,6 +46,7 @@ public class AssetNode implements Node {
 
     @Override
     public Environment checkEffects(Environment e) {
+        // The second parameter will be the liquidity value and not the offset, but we use the same STentry
         return Environment.addDeclaration(e,0,id.getId(),new AssetTypeNode());
     }
 

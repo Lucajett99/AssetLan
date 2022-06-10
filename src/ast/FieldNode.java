@@ -37,15 +37,13 @@ public class FieldNode implements Node {
         }
         return type.typeCheck();
     }
-    // We only generate the code if the expNode exist
+
     @Override
     public String codGeneration() {
         String fieldCode = "";
-        // I will only use the STentry  because I declare and inizialize variable at same time
         if (exp != null) {
-            fieldCode += exp.codGeneration() +
-                         //"sw $a0 " + sTentry.getOffset()+"($fp) \n";
-                        "push $a0 \n"; //TODO: remember to change
+            fieldCode += exp.codGeneration()
+                      + "push $a0 \n";
         } else {
             fieldCode += "subi $sp $sp 1 \n";
         }
@@ -62,7 +60,6 @@ public class FieldNode implements Node {
         } else {
             res.add(new SemanticError(id.getId()+": already declared [field]"));
         }
-
         if(exp != null){
             res.addAll(this.exp.checkSemantics(e));
         }

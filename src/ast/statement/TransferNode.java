@@ -31,7 +31,7 @@ public class TransferNode implements Node {
                 System.out.println("Incompatible Type System : Transfer must be Asset");
             }
         }
-        return new VoidTypeNode();
+        return null;
     }
 
     @Override
@@ -47,12 +47,12 @@ public class TransferNode implements Node {
     @Override
     public ArrayList<SemanticError> checkSemantics(Environment e) {
         ArrayList<SemanticError> res = new ArrayList<SemanticError>();
+
         /*if(e.isDeclared(id.getId())== EnvError.NO_DECLARE){
                 res.add(new SemanticError((id.getId())+": is not declared [transfer]"));
         }
         type = Environment.lookup(e,id.getId()).getType();*/
-        res = id.checkSemantics(e);
-
+        res.addAll(id.checkSemantics(e)); //Check if id is declared or not
         type = Environment.lookup(e,id.getId()).getType();
         return res;
     }

@@ -31,7 +31,7 @@ public class AssignmentNode implements Node {
             System.out.println("Incompatible type expression : required "+type.typeCheck().toPrint(""));
             System.exit(0);
         }
-        return type.typeCheck();
+        return null;
     }
 
     @Override
