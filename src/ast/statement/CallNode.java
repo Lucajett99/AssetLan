@@ -146,48 +146,16 @@ public class CallNode implements Node {
         return res;
     }
 
-    //TODO: controllo se ci sono più chiamate ricorsive
     @Override
     public Environment checkEffects(Environment e) {
         STEntryFun st = (STEntryFun) Environment.lookup(e, id.getId());
         ArrayList<StatementNode> stmList= st.getNode().getStatement();
-        boolean isRecursive = false;
 
         if(stmList != null){
             for(StatementNode stm : stmList){
+                //se lo statement è una chiamata ricorsiva
                 if((stm.getStatement() instanceof CallNode && ((CallNode) stm.getStatement()).id == this.id)) {
-                    Environment e_start;
-                    Environment e_end = e.clone();
-                    int count = 0;
-                    for (int i = 0; i < this.listId.size(); i++) {
-                        //aggiorno l'attuale in base al formale
-                        STEntryAsset entryA = (STEntryAsset) Environment.lookup(e_end, this.listId.get(i).getId());
-                        entryA.setLiquidity(1);
-                    }
-                    do {
-                        e_start = e_end.clone();
-                        e_end = LiquidityUtils.fixPointMethod(e_start.clone(), st.getNode(), this, true);
-                        count++;
-                        ArrayList<IdNode> formalParameter = st.getNode().getADec() != null ? st.getNode().getADec().getId() : new ArrayList<>();
-                        for(int i = 0; i< formalParameter.size();i++){
-                            //check that function has liquid
-                            //=> all formal parameter are empty
-                            STEntryAsset entryF = (STEntryAsset) Environment.lookup(e_end,formalParameter.get(i).getId());
-                            boolean PassedToActual = false;
-                            for (IdNode id: listId) {
-                                if(Objects.equals(id.getId(), formalParameter.get(i).getId())){
-                                    PassedToActual = true;
-                                }
-                            };
-                            if(entryF.getLiquidity() != 0 && !PassedToActual){
-                                System.out.println("La funzione "+ st.getNode().getId().getId()+" non e' liquida! [liquidity]");
-                                System.exit(0);
-                            }
-                        }
-                    } while(!(e_end.equals(e_start)) && count < 50);
-
-                    System.out.println("iterator: "+count);
-                    return e_end;
+                    return LiquidityUtils.fixPointMethod(e,this.listId, st.getNode(), this);
                 }
             }
         }
@@ -205,7 +173,7 @@ public class CallNode implements Node {
             STEntryAsset entryA = (STEntryAsset) Environment.lookup(e, actualParameter.get(i).getId());
             //STentry entryF = Environment.lookup(e,formalParameter.get(i).getId());
             Environment.addDeclaration(e, formalParameter.get(i).getId(), entryA.getLiquidity());
-            if(entryA.getLiquidity() > 0 && !isRecursive)
+            if(entryA.getLiquidity() > 0)
                 entryA.setLiquidity(0); //gli asset passati per parametro vengono azzerati
         }
 
@@ -220,12 +188,11 @@ public class CallNode implements Node {
             //=> all formal parameter are empty
             STEntryAsset entryF = (STEntryAsset) Environment.lookup(e,formalParameter.get(i).getId());
             if(entryF.getLiquidity() != 0){
-                System.out.println("funzione "+id.getId()+" non é liquida!");
+                System.out.println("La funzione "+id.getId()+" non e' liquida!");
                 System.exit(0);
             }
         }
         e = Environment.exitScope(e);
-
         return e;
     }
 }

@@ -126,27 +126,33 @@ public class InitCallNode implements Node{
         return res;
     }
 
-    //TODO: controllo se passo i parametri asset tutti a 0
     @Override
     public Environment checkEffects(Environment e) {
         //get Function ST Entry
         STEntryFun st = (STEntryFun) Environment.lookup(e,id.getId());
         e = Environment.newScope(e);
+        boolean isLiquid = true;
         if(st.getNode().getADec() != null){
             int index = 0;
             int number = 0;
             if(bexp.size() > 0){
-                for( IdNode node : st.getNode().getADec().getId()) { //evaluate valExp in initCall
+                for(IdNode node : st.getNode().getADec().getId()) { //evaluate valExp in initCall
                     number = bexp.get(index).evaluateExp();
                     if (number != 0) {
+                        isLiquid = false;
                         e = Environment.addDeclaration(e, node.getId(), 1);
                     } else {
                         e = Environment.addDeclaration(e, node.getId(), 0);
                     }
                     index++;
                 }
+                if(isLiquid) {
+                    System.out.println("\nIl programma e' liquido!\n");
+                    System.exit(0);
+                }
             }
         }
+
         if(st.getNode().getStatement() != null){
         ArrayList<StatementNode> stmList= st.getNode().getStatement();
             for(StatementNode stm : stmList){

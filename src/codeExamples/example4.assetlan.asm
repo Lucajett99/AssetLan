@@ -5,12 +5,13 @@ push $fp
 li $a0 1 
 push $a0 
 mv $fp $al 
-push $al
- jal label10
+ jal label2
 
 print $b
 halt
-label8: //Label of function f
+label0: //Label of function f
+
+push $al
 mv $sp $fp
 push $ra
 mv $fp $al 
@@ -23,7 +24,7 @@ lw $a1 0($sp)
 eq $a0 $a1 $a0 
 pop 
 li $a1 0
-beq $a0 $a1 label12
+beq $a0 $a1 label4
  // START THEN BRANCH IF STATEMENT 
 mv $fp $al 
 lw $a0 3($al) 
@@ -39,8 +40,8 @@ add $a0 $a0 $a1
 mv $fp $al 
 lw $al 0($al) 
 sw $a0 -1($al) 
-b label13 
-label12: 
+b label5 
+label4: 
   // START ELSE BRANCH IF STATEMENT 
 mv $fp $al 
 lw $a0 3($al) 
@@ -70,8 +71,8 @@ add $a0 $a0 $a1
 mv $fp $al 
 lw $al 0($al) 
 sw $a0 -1($al) 
-label13: //END IF 
-label9: //End Label of function f
+label5: //END IF 
+label1: //End Label of function f
 lw $ra 0($sp)
 pop 
 addi $sp $sp 3 //pop decp & pop adec
@@ -81,7 +82,9 @@ lw $fp 0($sp)
 pop 
 jr $ra 
  //END OF FUNCTION f
-label10: //Label of function main
+label2: //Label of function main
+
+push $al
 mv $sp $fp
 push $ra
 push $fp 
@@ -99,8 +102,7 @@ li $a0 0
 push $a0 
 mv $fp $al 
 lw $al 0($al) 
-push $al
-jal label8
+jal label0
 
 mv $fp $al 
 lw $al 0($al) 
@@ -108,7 +110,7 @@ lw $a0 -1($al)
 li $a1 0
 sw $a1 -1($al)
 add $b $b $a0
-label11: //End Label of function main
+label3: //End Label of function main
 lw $ra 0($sp)
 pop 
 addi $sp $sp 1 //pop decp & pop adec

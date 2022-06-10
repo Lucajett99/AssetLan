@@ -29,12 +29,23 @@ public class Utilities {
         labelCounter++;
     }
 
-
-
     public static String freshLabel(){
         String label = "label" + getLabelCounter();
         updateLabelCounter();
         return label;
     }
 
+    public static void nCallRecursive(String idFun, ArrayList<StatementNode> stmList) {
+        int nCall = 0;
+
+        for(StatementNode stm : stmList) {
+            if(stm.getStatement() instanceof CallNode callNode && callNode.getId().equals(idFun))
+                nCall++;
+        }
+
+        if(nCall > 1) {
+            System.out.println("Il programma non e' liquido!");
+            System.exit(0);
+        }
+    }
 }

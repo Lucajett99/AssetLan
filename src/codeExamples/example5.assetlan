@@ -1,28 +1,41 @@
 asset x;
+asset y ;
+int f()[asset a, asset b]{
+    f()[a,b];
+    if(false){
+        if(true){
+            a -o x;
+            b -o y;
+            return 7;
+        }
+        else{
+            a -o x;
+            b -o y;
+            return 7;
+        }
+    }else{
+        if(true){
+            a -o x;
+            b -o y;
+            if(true){
+                f()[a,b];
+                return 4;
+            }else{
+                return 5;
+            }
+        }
+        else {
+            a -o x;
+            b -o y;
+            return 6;
+        }
 
-bool g()[asset a] {
-    transfer a;
-    return true;
-}
-
-int f()[asset u, asset v, asset w]{
-    if(g()[v]) {
-        f()[x,w,u];
-        g()[u];
-        g()[v];
-        g()[w];
     }
-    else {
-        f()[x,w,u];
-        g()[u];
-        g()[v];
-        g()[w];
-    }
-    return 1;
 }
-
-void main()[asset a, asset b, asset c]{
-   f()[a,b,c] ;
-   transfer x ;
-}
-main()[1,2,3] ;
+void main()[asset a, asset b]{
+    int g;
+    g = f()[a,b] ;
+    transfer x;
+    transfer y;
+ }
+ main()[1,1]// il contratto non e` liquido
