@@ -9,6 +9,6 @@ void main()[asset u, asset v]{
     u -o y ;
     f()[x,y] ;
 }
-main()[0,0]	// il contratto non e` liquido
+main()[1,1]	// il contratto non e` liquido
 
 
