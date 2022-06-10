@@ -19,7 +19,8 @@ public class PrintNode implements Node {
     }
 
     public Node typeCheck() {
-        return exp.typeCheck();
+        exp.typeCheck();
+        return null;
     }
 
     public String codGeneration() {

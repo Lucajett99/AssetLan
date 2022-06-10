@@ -199,6 +199,7 @@ public class FunctionNode implements Node {
 
 
     private void setReturnNode(Environment e,StatementNode st) {
+        //For all returnNode
         if (st.getStatement() instanceof ReturnNode) {
             ((ReturnNode) st.getStatement()).setEntry((STEntryFun)Environment.lookup(e, id.getId()));
         } else if (st.getStatement() instanceof IteNode itenode) {

@@ -1,10 +1,14 @@
-bool f()[]{
-return  0 == false;
+bool f(int n)[]{
+if(n == 0 )
+{return 5;}
+else {
+return 12;}
+return false;
 }
 
 void main()[]{
  bool x;
- x = f()[];
+ x = f(0)[];
  print x;
 }
 main()[];
