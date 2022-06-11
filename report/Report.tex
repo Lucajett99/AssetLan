@@ -158,10 +158,23 @@ public void syntaxError(...){
        \end{lstlisting}    
  \chapter{Analisi Semantica}
  \section{Environment}
- In questo progetto l’ambiente viene definito come un insieme di scope, gestiti dalla classe \emph{Environment}, che contiene la symbolTable implementata come una lista di HashMap di stringhe e STentry. La classe Environment inoltre contiene un campo \emph{nestingLevel}. I metodi della classe Environment si occupano della gestione della symbolTable. Ogni volta che si entra in un nuovo ambiente viene creata una nuova symbolTable che viene aggiunta in testa alla lista e viene aumentato il nestingLevel. Allo stesso modo quando si esce da un ambiente viene eliminata la symbolTable che si trova in testa e diminuito il nestingLevel. In questa classe sono anche presenti alcune funzioni per effettuare una lookup all'interno della symbolTable e per aggiungere delle dichiarazioni all'interno della tabella dei simboli. 
+ In questo progetto l’ambiente viene definito come un insieme di scope, gestiti dalla classe \emph{Environment}, che contiene la symbolTable implementata come una lista di HashMap di stringhe e STentry. La classe Environment inoltre contiene un campo \emph{nestingLevel} ed un campo \emph{offset} che servirà come ``contatore" per la gestione dell'offset delle varie variabili. I metodi della classe Environment si occupano della gestione della symbolTable. Ogni volta che si entra in un nuovo ambiente viene creata una nuova symbolTable che viene aggiunta in testa alla lista e viene aumentato il nestingLevel. Allo stesso modo quando si esce da un ambiente viene eliminata la hash map che si trova in testa e diminuito il nestingLevel e ristabilito l'offset. In questa classe sono anche presenti alcune funzioni per lavorare con gli environment:
+ \begin{itemize}
+    \item \emph{lookup()}: restituisce la entry di un id all'interno della symbolTable
+    \item \emph{addDeclaration()}: aggiunge una dichiarazione per un certo id
+    \item \emph{exitScope()}: performa l'uscita da uno scope
+    \item \emph{newScope()}: performa la creazione di un nuovo scope
+    \item \emph{clone()}: crea una nuova instanza di un ambiente a partire da un altro  
+    \item \emph{equals()}: restituisce true o false a seconda che due ambienti siano uguali o meno 
+ \end{itemize}
 
  \section{STentry}
- Questa classe viene utilizzata dall’Environment per costruire una entry di una variabile all’occorrenza ed aggiungerla al proprio scope. Contiene il tipo ed il numero di argomenti.
+ STEntry è un'interfaccia che viene implementata da tre possibili classi che sono:
+ \begin{itemize}
+    \item \emph{STentryFun}: crea l'istanza dell'STentry di una funzione. Contiene un nodo funzione, il nestingLevel e l'offset.
+    \item \emph{STentryVar}: crea l'istanza dell'STentry di una variabile booleana o intera. Contiene il tipo, il nestingLevel e l'offset.
+    \item \emph{STentryAsset}: è un'estensione di STentryVar, alla quale aggiunge il campo \emph{liquidity}.
+ \end{itemize}
 
  \section{Check Semantics}
  Le funzioni \emph{checkSemantics} di ogni nodo si occupano di andare a effettuare dei controlli semantici. Molte di loro sono implementate chiamando ricorsivamente i controlli semantici sui nodi dai quali sono composti. 
@@ -225,7 +238,7 @@ Il nostro ambiente, $\Gamma$, sarà una funzione così fatta:
 \begin{center}
     $\Gamma : ID \rightarrow T \times$ off
 \end{center}
-Associerà quindi un nome ad un tipo e ad un offset. Gli insiemi T ed L sono così definiti: 
+Associerà quindi un nome ad un tipo e ad un offset. L'insieme T è così definito: 
 \begin{center}
     $T$ = \{void, asset, bool, int\}\\
    
@@ -404,7 +417,11 @@ La regola per la funzione sarà invece:
 \infer{\Sigma\vdash T f(T_1x_1,\dots, T_n x_n)[asset\;a_1,\dots,asset\;a_m]\{D\;S\} \;:\; \Sigma[f \rightarrow \Sigma_0 \rightarrow \Sigma_1] }
 {\Sigma_0 = [(a_i \rightarrow \sigma_i)^{i \in 1\dots m},\;(w_j \rightarrow \sigma_m+zj)^{j \in 1 \dots k }]}
 \]
-
+La regola per la call sarà:
+\[
+\infer{\Sigma \vdash f(x_1,..,x_n)[u_1,...,u_m] : \Sigma'}
+{\Sigma \vdash f \;:\: \Sigma_0 \rightarrow\Sigma' \;\;\;  \Sigma'=\Sigma[a_i \rightarrow \Sigma(u_i)\oplus\Sigma(a_i)]^{i\in 1..m}\;\;\; \Sigma'[a_i \rightarrow \emptyset]^{i\in 1...m}}    
+\]
 \chapter{Generazione di codice}
 L'ultima fase di questo progetto si occupava di andare a generare il codice bytecode per il codice assetlan preso in input e di costruire l'interprete per l'esecuzione del bytecode generato. Siamo così andati in ogni nodo dell'albero a scrivere la funzione \emph{codGeneration()}. Ogni nodo restituirà una stringa e l'insieme di tutte queste stringhe, sarà il nostro codice bytecode da eseguire tramite l'interprete. Abbiamo definito una classe \emph{Instruction} che conterrà un intero, il codice del token rappresentante l'istruzione da eseguire, e tre stringhe che rappresentano i tre possibili argomenti che quell'istruzione prende in input. Se un argomento non c'è (poichè esistono istruzioni che hanno meno di tre argomenti o addirittura nessuno come la \emph{pop}) questo verrà settato a \emph{null}.\\
 I registri utilizzati sono:
