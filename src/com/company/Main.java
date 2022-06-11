@@ -31,12 +31,12 @@ public class Main {
             if (!Paths.get(fileName).toFile().exists()) {
                 throw new FileNotFoundException("File: " + fileName + " not found.");
             }*/
-            String fileName = "src/codeExamples/example5.assetlan";
+            String fileName = "src/codeExamples/example1.assetlan";
             CharStream charStreams = CharStreams.fromFileName(fileName);
             AssetLanLexer lexer = new AssetLanLexer(charStreams);
             CommonTokenStream tokens = new CommonTokenStream(lexer);
             AssetLanParser parser = new AssetLanParser(tokens);
-            System.out.println("Check for Lexical and Syntax Errors : ");
+            System.out.print("Check for Lexical and Syntax Errors : ");
             SyntaxErrorListener errorListener = new SyntaxErrorListener();
             lexer.removeErrorListeners();
             lexer.addErrorListener(errorListener);

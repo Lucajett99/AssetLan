@@ -148,7 +148,7 @@ public class IteNode implements Node {
         if(elseStatement != null) {
             for (Node node : elseStatement) {
                 StatementNode stmNode = (StatementNode) node;
-                //controllo se c'è una chiamata ricorsiva ed è ricorsiva
+                //controllo se c'è una chiamata ed è ricorsiva
                 if (stmNode.getStatement() instanceof CallNode callNode && stmNode.getFunNode().getId().getId().equals(callNode.getId())) {
                     ArrayList<StatementNode> stmList = new ArrayList<StatementNode>();
                     for(Node stm : elseStatement) {

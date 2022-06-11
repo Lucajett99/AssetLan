@@ -37,12 +37,10 @@ public class Utilities {
 
     public static void nCallRecursive(String idFun, ArrayList<StatementNode> stmList) {
         int nCall = 0;
-
         for(StatementNode stm : stmList) {
             if(stm.getStatement() instanceof CallNode callNode && callNode.getId().equals(idFun))
                 nCall++;
         }
-
         if(nCall > 1) {
             System.out.println("The program doesn't respect the liquidity property!");
             System.exit(0);

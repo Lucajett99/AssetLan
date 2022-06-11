@@ -388,7 +388,7 @@ Definiamo ora una funzione $\oplus$ così fatta:\\
     \end{tabular}
 \end{center}
 Definiamo ora le regole di inferenza per il controllo degli effetti.
-La prima regola è \emph{l`assegnamento}:
+La prima regola è la \emph{dichiarazione dei parametri globali asset}:
 \[
 \infer{\Sigma \vdash asset \;\; x\;\;:\;\Sigma[x\rightarrow \emptyset]}{}    
 \]
@@ -411,17 +411,43 @@ Si andrà a valutare la condizione che restituirà un nuovo ambiente (nel caso i
 \[
 \infer{\Sigma \vdash if(cond)\{S_1\} \;:\;max(\Sigma_1,\Sigma')}{\Sigma \vdash Cond :\Sigma'\;\;\Sigma' \vdash S_1\;:\;\Sigma_1 \;\;\;}
 \]
-Sarà necessaria una seconda regola di inferenza per il caso in cui il nostro if non avrà il ramo else. In questo caso particolare restituiremo il massimo tra l'ambiente ottenuto dopo la valutazione del ramo then e quello senza la valutazione del ramo stesso. 
-La regola per la funzione sarà invece:
+Sarà necessaria una seconda regola di inferenza per il caso in cui il nostro if non avrà il ramo else. In questo caso particolare restituiremo il massimo tra l'ambiente ottenuto dopo la valutazione del ramo then e quello senza la valutazione del ramo stesso.\\
+%%%CALL
+Per il nodo call la regola di inferenza sarà:
 \[
-\infer{\Sigma\vdash T f(T_1x_1,\dots, T_n x_n)[asset\;a_1,\dots,asset\;a_m]\{D\;S\} \;:\; \Sigma[f \rightarrow \Sigma_0 \rightarrow \Sigma_1] }
-{\Sigma_0 = [(a_i \rightarrow \sigma_i)^{i \in 1\dots m},\;(w_j \rightarrow \sigma_m+zj)^{j \in 1 \dots k }]}
+\infer{\Sigma \vdash f(x_1,..,x_n)[u_1,...,u_m] : \Sigma''}
+{\Sigma'=\Sigma \cdot [a_i \rightarrow \Sigma(u_i)]^{i\in 1..m}\;\;\; \Sigma'[u_i \rightarrow \emptyset]^{i\in 1...m}\;\;\; \Sigma' \vdash \{D\;\; S\} : \Sigma''}    
 \]
-La regola per la call sarà:
+In questa regola avremo che $u_1,...,u_m$ saranno i parametri attuali della chiamata. Si creerà un nuovo scope in cui verranno definiti i parametri $a_1, ..., a_m$ che saranno i parametri formali della funzione, ai quali verrà assegnato il valore della Liquidity dei parametri attuali $u_i$. Successivamente i parametri attuali $u_i$ verranno svuotati, quindi il valore della loro Liquidity sarà pari a $\emptyset$. In questo nuovo ambiente si andrà a valutare il corpo della funzione tramite una lookup per id nella STentry che conterrà il nodo FunctioNode da cui ricaveremo gli statement del corpo.\\
+%%%INIT-CALL
+Per il nodo initcall la regola di inferenza sarà:
 \[
-\infer{\Sigma \vdash f(x_1,..,x_n)[u_1,...,u_m] : \Sigma'}
-{\Sigma \vdash f \;:\: \Sigma_0 \rightarrow\Sigma' \;\;\;  \Sigma'=\Sigma[a_i \rightarrow \Sigma(u_i)\oplus\Sigma(a_i)]^{i\in 1..m}\;\;\; \Sigma'[a_i \rightarrow \emptyset]^{i\in 1...m}}    
+\infer{\Sigma \vdash f(x_1,..,x_n)[e_1,...,e_m] : \Sigma''}
+{\Sigma \vdash (e_i = \sigma_i)^{i\in 1..m}\;\;\; \Sigma'=\Sigma \cdot [a_i \rightarrow \sigma_i]^{i\in 1..m}\;\;\; \Sigma' \vdash \{D\;\; S\} : \Sigma''}    
 \]
+Come si può notare, questa regola è simile a quella per la call. La differenza principale sta nel fatto che i parametri attuali asset sono delle espressioni. Si andranno, prima di tutto, a valutare queste espressioni e otterremo un valore di Liquidity che assegneremo ai parametri formali. Non sarà poi necessario svuotare i parametri attuali asset in quanto non sono variabili asset ma espressioni.\\
+%%%%FUNCTION-BODY
+La regola per la valutazione del corpo della funzione sarà invece:
+\[
+\infer{\Sigma \vdash \{D\;S\} \;:\; \Sigma'_0 }
+{\begin{gathered}
+    \Sigma = [(w_j \rightarrow \sigma_{j})^{j \in 1 \dots k }] \cdot [(a_i \rightarrow \sigma_{k+i})^{i \in 1\dots m}]\\
+    \Sigma \vdash D \;:\; \Sigma \;\;\;\;\; \Sigma \vdash S \;:\; \Sigma'\\
+    \Sigma' = \Sigma'_0 \cdot \Sigma'_1 \;\;\; (\Sigma'_1(a_i) = \emptyset)^{i \in 1 \dots m}
+\end{gathered}}
+\]
+In questa regola definiamo inanzitutto com'è fatto l'ambiente $\Sigma$, che sarà una concatenazione di due ambienti: quello di testa che conterrà i parametri formali $a_i$ asset e quello più interno che conterrà i parametri globali $w_j$ asset. Come si può notare, valuteremo le dichiarazioni nel corpo della funzione, ma dal momento in cui non si tratta di variabili asset, restituiremo l'ambiente così com'è. Questo varrà anche per tutti gli altri nodi dell'albero per i quali non abbiamo definito una regola. Dopo la valutazione degli statement, controlleremo che tutti i parametri formali siano svuotati e torneremo un ambiente aggiornato escludendo l'ambiente di testa in $\Sigma'$, che è quello che conteneva i parametri formali asset.\\
+Questa regola non vale però nel caso in cui ci sia una chiamata ricorsiva. In questo caso avremo bisogno di utilizzare il metodo del punto fisso. Per mantenere la monotonia all'interno del metodo del punto fisso faremo partire i parametri formali asset a $\mathds{1}$ per assicurarsi la discesa:
+\[
+\infer{\Sigma \vdash \{D\;S\} \;:\; \Sigma'_0 }
+{\begin{gathered}
+    \Sigma = [(w_j \rightarrow \sigma_{j})^{j \in 1 \dots k }] \cdot [(a_i \rightarrow \mathds{1})^{i \in 1\dots m}]\\
+    \Sigma \vdash D \;:\; \Sigma \;\;\;\;\; \Sigma \vdash S \;:\; \Sigma'\\
+    \Sigma' = \Sigma'_0 \cdot \Sigma'_1 \;\;\; (\Sigma'_1(a_i) = \emptyset)^{i \in 1 \dots m}
+\end{gathered}}
+\]
+
+
 \chapter{Generazione di codice}
 L'ultima fase di questo progetto si occupava di andare a generare il codice bytecode per il codice assetlan preso in input e di costruire l'interprete per l'esecuzione del bytecode generato. Siamo così andati in ogni nodo dell'albero a scrivere la funzione \emph{codGeneration()}. Ogni nodo restituirà una stringa e l'insieme di tutte queste stringhe, sarà il nostro codice bytecode da eseguire tramite l'interprete. Abbiamo definito una classe \emph{Instruction} che conterrà un intero, il codice del token rappresentante l'istruzione da eseguire, e tre stringhe che rappresentano i tre possibili argomenti che quell'istruzione prende in input. Se un argomento non c'è (poichè esistono istruzioni che hanno meno di tre argomenti o addirittura nessuno come la \emph{pop}) questo verrà settato a \emph{null}.\\
 I registri utilizzati sono:

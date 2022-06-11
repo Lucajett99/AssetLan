@@ -1,14 +1,15 @@
 asset x;
 asset y ;
-void f()[asset , asset v]{
+/*void f()[asset u, asset v]{
     u -o y ;
-    v -o x ;
-}
+    u -o x ;
+    f()[x,v];
+}*/
 void main()[asset u, asset v]{
     u -o x ;
-    u -o y ;
-    f()[x,y] ;
+    v -o y ;
+    main()[x,y] ;
 }
-main()[1,1]	// il contratto non e` liquido
+main()[0,1]	// il contratto non e` liquido
 
 

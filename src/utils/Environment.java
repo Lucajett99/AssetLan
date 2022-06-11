@@ -67,7 +67,7 @@ public class Environment extends LiquidityUtils{
             for(String id : symTable.get(i).keySet()){
                 STentry entry1 = that.symTable.get(i).get(id);
                 STentry entry2 = symTable.get(i).get(id);
-                if(!entry1.equals(entry2))return false;
+                if(!entry1.equals(entry2)) return false;
             }
         }
         return nestingLevel == that.nestingLevel && offset == that.offset;

@@ -149,7 +149,8 @@ public class CallNode implements Node {
     @Override
     public Environment checkEffects(Environment e) {
         STEntryFun st = (STEntryFun) Environment.lookup(e, id.getId());
-        ArrayList<StatementNode> stmList= st.getNode().getStatement();
+        ArrayList<StatementNode> stmList = st.getNode().getStatement();
+        Utilities.nCallRecursive(this.id.getId(), st.getNode().getStatement());
 
         if(stmList != null){
             for(StatementNode stm : stmList){

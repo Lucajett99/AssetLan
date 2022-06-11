@@ -32,9 +32,9 @@ mv $fp $al
 lw $al 0($al) 
 sw $a0 -2($al) 
 mv $fp $al 
-lw $a0 1($al) 
+lw $a0 2($al) 
 li $a1 0
-sw $a1 1($al)
+sw $a1 2($al)
 push $a0 
 mv $fp $al 
 lw $al 0($al) 
