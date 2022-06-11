@@ -35,8 +35,8 @@ public class ReturnNode implements Node {
     @Override
     public Node typeCheck() {
         if(entry != null){
-            if((exp == null && !Utilities.isSubtype(new VoidTypeNode(),getEntry().getType().typeCheck())) ||
-                    (exp != null && !Utilities.isSubtype(exp.typeCheck(),entry.getType().typeCheck()))){
+            if((exp == null && !Utilities.isSubtype(new VoidTypeNode(), entry.getType().typeCheck())) ||
+                    (exp != null && !Utilities.isSubtype(exp.typeCheck(), entry.getType().typeCheck()))){
                 System.out.println("Incompatible type of declaration method: must be a return "+ entry.getType().toPrint(""));
                 System.exit(0);
             }

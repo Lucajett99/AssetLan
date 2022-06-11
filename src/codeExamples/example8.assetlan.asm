@@ -2,7 +2,6 @@ li $b 0
 //Start codgen for  calling fun main
 push $fp 
 mv $fp $al 
-push $al
  jal label0
 
 print $b
@@ -15,6 +14,8 @@ subi $sp $sp 1
 subi $sp $sp 1 
 subi $sp $sp 1 
 subi $sp $sp 1 
+
+push $al
 mv $sp $fp
 push $ra
 li $a0 0 
@@ -79,6 +80,9 @@ print $a0
 mv $fp $al 
 lw $a0 2($al) 
 print $a0 
+lw $fp 0($fp)
+lw $fp 0($fp) //Load old $fp pushed 
+b label1 
 mv $fp $al 
 lw $a0 3($al) 
 print $a0 

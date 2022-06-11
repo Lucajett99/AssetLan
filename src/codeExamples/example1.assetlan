@@ -1,10 +1,10 @@
 asset x;
 asset y ;
-/*void f()[asset u, asset v]{
+void f()[asset u, asset v]{
     u -o y ;
     u -o x ;
     f()[x,v];
-}*/
+}
 void main()[asset u, asset v]{
     u -o x ;
     v -o y ;

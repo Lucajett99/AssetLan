@@ -31,7 +31,7 @@ public class Main {
             if (!Paths.get(fileName).toFile().exists()) {
                 throw new FileNotFoundException("File: " + fileName + " not found.");
             }*/
-            String fileName = "src/codeExamples/example1.assetlan";
+            String fileName = "src/codeExamples/example8.assetlan";
             CharStream charStreams = CharStreams.fromFileName(fileName);
             AssetLanLexer lexer = new AssetLanLexer(charStreams);
             CommonTokenStream tokens = new CommonTokenStream(lexer);

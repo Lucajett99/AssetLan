@@ -300,9 +300,12 @@ Regola per la \emph{transfer}, va a valutare che il parametro asset in input sia
 %%%% RETURN
 Per la return avremo bisogno di più regole di inferenza a seconda che ci sia un'espressione di ritorno o la funzione sia di tipo void e quindi la return non abbia un'espressione.
 La regola per la return senza espressione è un assioma:\\
-\[\infer{\Gamma \vdash \mbox{return e :} void}{}\]
-Regola per la return senza exp:\\
-\infer{\Gamma \vdash \mbox{return e :} void}{\Gamma \vdash e: T}\\
+\[\infer{\Gamma \vdash \mbox{return; :\;} void}{}\]
+Regola per la return con exp:\\
+\[\infer{\Gamma \vdash \mbox{return e :\;} T}{\Gamma \vdash e: T}\]
+Serviranno ora due regole per vincolare la valutazione della return, il cui tipo di ritorno verrà utilizzato nella regola della funzione per tiparla correttamente.
+\[\infer{\Gamma \vdash S\mbox{; return e; :\;} T}{\Gamma \vdash S: void \;\;\;\; \Gamma \vdash return \; e; : T}\]
+\[\infer{\Gamma \vdash S\mbox{; return; :\;} void}{\Gamma \vdash S: void \;\;\;\; \Gamma \vdash return; \; : void}\]
 %%%%% IF THEN ELSE
 La regola per il controllo dei tipi dell'\emph{if-then-else} sarà:
 \[
@@ -478,5 +481,12 @@ Al momento dell'esecuzione viene chiamato il metodo \emph{cpu()} della classe \e
     \item \emph{Out of memory:} se il nostro stack pointer supera la memoria a disposizione (quindi se lo sp raggiunge il valore zero).
     \item \emph{Halt del programma:} se si raggiunge un'istruzione di halt che fa terminare il programma.
 \end{itemize}
+
+\chapter{Compilatore AssetLan}
+Il compilatore può essere eseguito da terminale tramite il comando \textit{java -jar AssetLanCompiler.jar [*.assetlan]}.
+\begin{figure}[H]
+    \includegraphics[width=.9\textwidth]{jarGeneration.png}
+\end{figure}
+Il compilatore si occupa del controllo degli errori lessicali e semantici, controllo di tipo, e se il programma rispetta la proprietà di Liquidity. Una volta eseguiti questi controlli, verrà generato un file \textit{*.asm} contenete le istruzioni che verranno prese in input dall'interprete, il quale eseguirà le istruzioni generate.
 
 \end{document}
