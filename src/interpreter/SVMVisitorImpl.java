@@ -1,12 +1,9 @@
-package gen.interpreter;
-
-import gen.interpreter.ExecuteVM;
-import interpreter.Instruction;
-import interpreter.SVMBaseVisitor;
-import interpreter.SVMLexer;
-import interpreter.SVMParser;
+package interpreter;
 
 import java.util.HashMap;
+import interpreter.SVMBaseVisitor;
+import interpreter.SVMParser;
+import interpreter.SVMLexer;
 
 public class SVMVisitorImpl extends SVMBaseVisitor {
 

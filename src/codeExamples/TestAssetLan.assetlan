@@ -1,0 +1,70 @@
+/*void initcall()[]{
+x=2;
+}
+initcall()[]  // x is not declared*/
+/*-----------------------------------------*/
+/*asset a;
+void initcall()[asset a]{
+print a;
+}
+initcall()[a]*/ //Error because must be int
+/*-----------------------------------------*/
+/*asset a;
+void call()[asset u]{
+print u;
+}
+void initcall()[asset v]{
+int m; m = v; //LEGALE
+call()[m];  //Error because must be asset
+}
+initcall()[5] */
+/*-----------------------------------------*/
+/*asset a;
+void call(int i)[]{
+print i;
+}
+void initcall()[asset v]{
+call(v)[];  //Error because must be int
+}
+initcall()[5]*/
+/*-----------------------------------------*/
+/*asset a;
+void call()[asset u]{
+print u;
+}
+void initcall()[asset v]{
+int m; m = v; //LEGALE
+boh()[m];  //boh is not declared
+}
+initcall()[5]*/
+/*-----------------------------------------*/
+/*asset a;
+int call()[asset u]{
+return u;   //must return an int
+}
+void initcall()[asset v]{
+int m; m = v;
+call()[v];
+}
+initcall()[5]*/
+/*-----------------------------------------*/
+/*asset a;
+int call()[asset u]{
+print u; //must be a return int
+}
+void initcall()[asset v]{
+call()[v];
+}
+initcall()[5]*/
+/*-----------------------------------------*/
+asset a;
+int call()[asset u]{
+transfer u;
+return 5;
+}
+void initcall()[asset v]{
+ call()[v];
+ return; //must return void
+}
+initcall()[5]
+

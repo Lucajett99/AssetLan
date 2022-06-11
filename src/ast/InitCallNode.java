@@ -147,7 +147,7 @@ public class InitCallNode implements Node{
                     index++;
                 }
                 if(isLiquid) {
-                    System.out.print("\nThe program respects the Liquidity property\n");//TODO: @lucajett nella precedente versione la stampa era "il programma era liquido" e dopo faceva la system exit
+                    System.out.print("\nThe program respects the Liquidity property\n");
                     return e;
                 }
             }

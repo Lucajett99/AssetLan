@@ -19,7 +19,6 @@ public class FunctionNode implements Node {
     private String funLabel;
     private String endLabel;
 
-    //TODO: function with return && CHECK SEMANTICS
     public FunctionNode(TypeNode type, IdNode id, DecpNode decp, ArrayList<DecNode> dec, AdecNode adec, ArrayList<StatementNode> statement) {
         this.type = type;
         this.decp = (decp);
@@ -101,7 +100,7 @@ public class FunctionNode implements Node {
          System.out.println("Incompatible type of declaration method: must be a return "+ type.getStringType());
          System.exit(0);
      }
-        return null; //TODO: controllare che effettivamente torni null
+        return null;
     }
 
     @Override

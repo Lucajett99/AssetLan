@@ -147,6 +147,21 @@ li $a0 1
 li $a1 0
 beq $a0 $a1 label10
  // START THEN BRANCH IF STATEMENT 
+push $fp 
+mv $fp $al 
+lw $a0 2($al) 
+li $a1 0
+sw $a1 2($al)
+push $a0 
+mv $fp $al 
+lw $a0 1($al) 
+li $a1 0
+sw $a1 1($al)
+push $a0 
+mv $fp $al 
+lw $al 0($al) 
+jal label0
+
 li $a0 4 
 lw $fp 0($fp)
 lw $fp 0($fp) //Load old $fp pushed 
