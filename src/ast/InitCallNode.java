@@ -69,7 +69,7 @@ public class InitCallNode implements Node{
             //Check if all bexp are Int or Asset
             if(formalAdecParams != null && bexp.size() > 0) {
                 for (int i = 0; i <lengthFormalAdecPar; i++) {
-                    if (!Utilities.isSubtype(new IntTypeNode(), bexp.get(i).typeCheck())) {
+                    if (!Utilities.isSubtype( bexp.get(i).typeCheck(), new IntTypeNode())) {
                         System.out.println("Incompatible Asset Parameter for Function " + id.getId());
                         System.exit(0);
                     }

@@ -72,6 +72,9 @@ public class ReturnNode implements Node {
 
     @Override
     public Environment checkEffects(Environment e) {
-        return e;
+        if(exp!= null)
+            return exp.checkEffects(e);
+        else
+            return e;
     }
 }

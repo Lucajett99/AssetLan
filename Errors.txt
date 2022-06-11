@@ -1,5 +1,6 @@
 --------LEXICAL ERRORS----------
 
 --------SYNTAX ERRORS----------
-Error: missing ID at ',' at line 3
+Error: mismatched input '=' expecting {';', ','} at line 17
+Error: mismatched input ';' expecting {';', ','} at line 17
 
