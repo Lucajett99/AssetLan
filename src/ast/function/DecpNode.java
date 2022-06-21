@@ -33,7 +33,7 @@ public class DecpNode implements Node {
 
     @Override
     public String codGeneration() {
-        return decp.codGeneration();
+        return null;
     }
 
     @Override

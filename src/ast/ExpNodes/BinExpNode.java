@@ -32,8 +32,8 @@ public class BinExpNode implements Node {
     @Override
     public Node typeCheck() {
         if(op.equals("*") || op.equals("/") || op.equals("+") || op.equals("-")) {
-            if(! (Utilities.isSubtype(left.typeCheck(), new IntTypeNode()) && Utilities.isSubtype(right.typeCheck()
-            , new IntTypeNode()))) {
+            if(! ((new IntTypeNode().getClass().equals(left.typeCheck()))) &&
+                    (new IntTypeNode().getClass().equals(right.typeCheck()))){
                 System.out.println("Incompatible type error: Must Be IntTypeNode");
                 System.exit(0);
             }
@@ -41,8 +41,8 @@ public class BinExpNode implements Node {
                 return new IntTypeNode();
         }
         else if(op.equals("<") || op.equals("<=") || op.equals(">") || op.equals(">=")) {
-            if(! (Utilities.isSubtype(left.typeCheck(), new IntTypeNode()) && Utilities.isSubtype(right.typeCheck()
-                    , new IntTypeNode()))) {
+            if(! ((new IntTypeNode().getClass().equals(left.typeCheck()))) &&
+                    (new IntTypeNode().getClass().equals(right.typeCheck()))){
                 System.out.println("Incompatible type error: Must Be IntTypeNode");
                 System.exit(0);
             }
@@ -50,8 +50,8 @@ public class BinExpNode implements Node {
                 return new BoolTypeNode();
         }
         else if( op.equals("&&") || op.equals("||")) {
-            if(! (Utilities.isSubtype(left.typeCheck(), new BoolTypeNode()) && Utilities.isSubtype(right.typeCheck()
-                    , new BoolTypeNode()))) {
+            if(! ((new BoolTypeNode().getClass().equals(left.typeCheck()))) &&
+                    (new BoolTypeNode().getClass().equals(right.typeCheck()))){
                 System.out.println("Incompatible type error: Must Be BoolTypeNode");
                 System.exit(0);
             }
@@ -59,7 +59,7 @@ public class BinExpNode implements Node {
                 return new BoolTypeNode();
         }
         else if( op.equals("==") || op.equals("!=")) {
-            if(! (Utilities.isSubtype(left.typeCheck(), right.typeCheck()))){
+            if(! (left.typeCheck().getClass().equals(right.typeCheck()))){
                 System.out.println("Incompatible type error: left and right exp must be same type");
                 System.exit(0);
             }

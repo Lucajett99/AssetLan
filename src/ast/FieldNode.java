@@ -23,7 +23,7 @@ public class FieldNode implements Node {
     public String toPrint(String indent) {
         String str="";
         str += type.toPrint(indent+"  ");
-        str += id.toPrint(indent+"  ");;
+        str += id.toPrint(indent+"  ");
         str += exp != null ? exp.toPrint(indent+"  ") : "";
         return indent+"Field\n" + str;
     }
@@ -31,8 +31,9 @@ public class FieldNode implements Node {
     @Override
     public Node typeCheck() {
         if(exp != null){
-            if(!Utilities.isSubtype(exp.typeCheck(), type.typeCheck())){
-                System.out.println("Incompatible type error: field must be "+ type.getStringType() +" [Field]");
+            if(! exp.typeCheck().getClass().equals(type.typeCheck().getClass())){
+                System.out.println("Incompatible type error: field must be "+ type.getStringType());
+                System.exit(0);
             }
         }
         return type.typeCheck();

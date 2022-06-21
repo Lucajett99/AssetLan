@@ -15,7 +15,7 @@ public class NotExpNode extends BaseExpNode {
 
     @Override
     public Node typeCheck() {
-        if(!(Utilities.isSubtype(exp.typeCheck(), new BoolTypeNode()))) {
+        if(!(exp.typeCheck().getClass().equals(new BoolTypeNode()))) {
             System.out.println("Incompatible type error: Must Be BoolTypeNode");
             System.exit(0);
         }

@@ -21,7 +21,7 @@ import java.util.ArrayList;
 public class Main {
 
     public static void main(String[] args) throws Exception {
-        try {
+       /* try {
             System.out.println("===== AssetLan Compiler&Interpreter ======");
             if (args.length == 0) {
                 System.err.println("No file to compile & run provided.");
@@ -30,8 +30,8 @@ public class Main {
             String fileName = args[0];
             if (!Paths.get(fileName).toFile().exists()) {
                 throw new FileNotFoundException("File: " + fileName + " not found.");
-            }
-            //String fileName = "src/codeExamples/example5.assetlan";
+            }*/
+            String fileName = "src/codeExamples/example2.assetlan";
             CharStream charStreams = CharStreams.fromFileName(fileName);
             AssetLanLexer lexer = new AssetLanLexer(charStreams);
             CommonTokenStream tokens = new CommonTokenStream(lexer);
@@ -91,9 +91,9 @@ public class Main {
                     }
                 }
             }
-            } catch (Exception exc) {
+           /* } catch (Exception exc) {
                 System.err.println(exc.getMessage());
                 System.exit(2);
-            }
+            }*/
         }
 }

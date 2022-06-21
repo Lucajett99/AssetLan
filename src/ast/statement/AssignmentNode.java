@@ -28,7 +28,7 @@ public class AssignmentNode implements Node {
     @Override
     public Node typeCheck() {
         if(!Utilities.isSubtype(type.typeCheck(), exp.typeCheck())){
-            System.out.println("Incompatible type expression : required "+type.typeCheck().toPrint(""));
+            System.out.println("Incompatible type expression : required " + type.typeCheck().toPrint(""));
             System.exit(0);
         }
         return null;
