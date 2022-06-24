@@ -32,7 +32,8 @@ public class MoveNode implements Node {
 
     @Override
     public Node typeCheck() {
-        if(!(type1.typeCheck().getClass().equals(new AssetTypeNode()) && type2.typeCheck().getClass().equals(new AssetTypeNode()))){
+        if(!(type1.typeCheck().getClass().equals(new AssetTypeNode().getClass()) &&
+                type2.typeCheck().getClass().equals(new AssetTypeNode().getClass()))){
            System.out.println("Incompatible type error: Must Be AssetNode");
            System.exit(0);
         }

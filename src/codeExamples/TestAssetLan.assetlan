@@ -57,7 +57,7 @@ call()[v];
 }
 initcall()[5]*/
 /*-----------------------------------------*/
-asset a;
+/*asset a;
 int call()[asset u]{
 transfer u;
 return 5;
@@ -66,5 +66,12 @@ void initcall()[asset v]{
  call()[v];
  return; //must return void
 }
-initcall()[5]
+initcall()[5]*/
+/*__________________________*/
+ int b; asset a;
+void initcall()[]{
+transfer b;
+}
+
+initcall()[]
 

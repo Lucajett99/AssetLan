@@ -1,6 +1,6 @@
 --------LEXICAL ERRORS----------
 
 --------SYNTAX ERRORS----------
-Error: mismatched input '=' expecting {';', ','} at line 17
-Error: mismatched input ';' expecting {';', ','} at line 17
+Error: mismatched input '=' expecting {';', ','} at line 75
+Error: mismatched input '+' expecting {';', ','} at line 75
 

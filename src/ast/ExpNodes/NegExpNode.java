@@ -18,7 +18,7 @@ public class NegExpNode extends BaseExpNode {
 
     @Override
     public Node typeCheck() {
-        if(!(exp.typeCheck().equals(new IntTypeNode()))) {
+        if(!(exp.typeCheck().getClass().equals(new IntTypeNode().getClass()))) {
             System.out.println("Incompatible type error: Must Be IntTypeNode");
             System.exit(0);
         }
