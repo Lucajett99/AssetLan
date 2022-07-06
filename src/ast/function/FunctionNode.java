@@ -83,7 +83,7 @@ public class FunctionNode implements Node {
          if(ns.getStatement() instanceof ReturnNode){
              rstm = true;
              ReturnNode rn = (ReturnNode) ns.getStatement();
-            if(!Utilities.isSubtype(rn.typeCheck(), type.typeCheck())){  //Errore quando viene fatta la "return;"
+            if(!rn.typeCheck().getClass().equals(type.typeCheck().getClass())){  //Errore quando viene fatta la "return;"
                 System.out.println("Incompatible type of declaration method: must be a return "+ type.getStringType());
                 System.exit(0);
             }
@@ -96,7 +96,7 @@ public class FunctionNode implements Node {
              rstm = true;
          }
      }
-     if(!rstm && !Utilities.isSubtype(new VoidTypeNode(),type.typeCheck())){
+     if(!rstm && !new VoidTypeNode().getClass().equals( type.typeCheck().getClass())){
          System.out.println("Incompatible type of declaration method: must be a return "+ type.getStringType());
          System.exit(0);
      }
@@ -112,7 +112,7 @@ public class FunctionNode implements Node {
         int decSize = 0;
         for(DecNode decNode : dec)
             decSize += decNode.getListId().size();
-        String funCode = funLabel + ": //Label of function " + this.id.getId() + "\n";  //label of the function
+        String funCode =  funLabel +": //Label of function " + this.id.getId() + "\n";  //label of the function
         for(DecNode decNode : dec)
             funCode += decNode.codGeneration();
 

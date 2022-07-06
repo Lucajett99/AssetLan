@@ -97,10 +97,6 @@ public class CallNode implements Node {
     @Override
     public String codGeneration() {
         String callCode = "push $fp \n";
-        //I add the assets in inverse order
-        /* for(int i = listId.size(); i > 0 ; i--)
-            callCode += listId.get(i - 1).accessCodGeneration() + listId.get(i - 1).emptyValueCodGeneration()
-                    + "push $a0 \n";*/
         for(int i=0; i < listId.size(); i++)
             callCode += listId.get(i).accessCodGeneration() + listId.get(i).emptyValueCodGeneration()
                     + "push $a0 \n";

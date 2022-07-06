@@ -27,7 +27,7 @@ public class AssignmentNode implements Node {
 
     @Override
     public Node typeCheck() {
-        if(!Utilities.isSubtype(type.typeCheck(), exp.typeCheck())){
+        if(!Utilities.isSubtype(type.typeCheck(), exp.typeCheck())){ //because you can assign an asset to an int
             System.out.println("Incompatible type expression : required " + type.typeCheck().toPrint(""));
             System.exit(0);
         }

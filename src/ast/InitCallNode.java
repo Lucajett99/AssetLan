@@ -83,7 +83,6 @@ public class InitCallNode implements Node{
     public String codGeneration() {
         String initCallCode = "//Start codgen for  calling fun "+id.getId()
                             +"\npush $fp \n";
-        //I add the assets in inverse order
         int bexpSize = bexp != null ? bexp.size() : 0;
         int paramsSize = params != null ? params.size() : 0;
         for(int i = 0; i < bexpSize ; i ++)
@@ -161,7 +160,7 @@ public class InitCallNode implements Node{
         }
         if(st.getNode().getADec() != null){//check liquidity in initcall Function
             for( IdNode node : st.getNode().getADec().getId()){
-                if(((STEntryAsset)Environment.lookup(e,node.getId())).getLiquidity ()> 0){
+                if(((STEntryAsset)Environment.lookup(e,node.getId())).getLiquidity () > 0){
                     System.out.println("The function "+id.getId()+ " doesn't respect the Liquidity property");
                     System.exit(0);
                 };

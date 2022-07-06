@@ -35,11 +35,11 @@ public class IteNode implements Node {
     public boolean containsReturn(){
         boolean isPresent = false ;
         if(elseStatement != null)
-        for(Node node : elseStatement){
-            StatementNode stm = (StatementNode)  node;
-            if(stm.getStatement() instanceof ReturnNode){isPresent = true;}
-            else if(stm.getStatement() instanceof IteNode && ((IteNode)stm.getStatement()).containsReturn() ){isPresent=true;}
-        }
+            for(Node node : elseStatement){
+                StatementNode stm = (StatementNode)  node;
+                if(stm.getStatement() instanceof ReturnNode){isPresent = true;}
+                else if(stm.getStatement() instanceof IteNode && ((IteNode)stm.getStatement()).containsReturn() ){isPresent=true;}
+            }
         for(Node node : thenStatement){
             StatementNode stm = (StatementNode)  node;
             if(isPresent && stm.getStatement() instanceof ReturnNode ) return true;
@@ -67,7 +67,7 @@ public class IteNode implements Node {
 
     @Override
     public Node typeCheck() {
-        if(!Utilities.isSubtype(exp.typeCheck(),new BoolTypeNode())){
+        if(!exp.typeCheck().getClass().equals(new BoolTypeNode().getClass())){
                System.out.println("Incompatible Type Error : If condition must be boolean");
                System.exit(0);
         }

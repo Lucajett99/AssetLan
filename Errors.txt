@@ -1,6 +1,6 @@
 --------LEXICAL ERRORS----------
 
 --------SYNTAX ERRORS----------
-Error: mismatched input '=' expecting {';', ','} at line 75
-Error: mismatched input '+' expecting {';', ','} at line 75
+Error: extraneous input 'asset' expecting {'}', 'int', 'bool', 'print', 'transfer', 'return', 'if', ID} at line 79
+Error: no viable alternative at input 'y;' at line 79
 

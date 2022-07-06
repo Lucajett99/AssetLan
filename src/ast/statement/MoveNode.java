@@ -56,23 +56,16 @@ public class MoveNode implements Node {
     @Override
     public ArrayList<SemanticError> checkSemantics(Environment e) {
         ArrayList<SemanticError> res = new ArrayList<SemanticError>();
-        id1.checkSemantics(e);
-        id2.checkSemantics(e);
-        if(e.isDeclared(id1.getId()) == EnvError.NO_DECLARE){
-            res.add(new SemanticError((id1.getId())+": is not declared "));
-        }
-        else {
-            STentry first = Environment.lookup(e,id1.getId());
-            type1 = first.getType();
-        }
+        res.addAll(id1.checkSemantics(e));
+        res.addAll(id2.checkSemantics(e));
 
-        if(e.isDeclared(id2.getId())== EnvError.NO_DECLARE){
-            res.add(new SemanticError((id2.getId())+": is not declared "));
-        }
-        else {
-            STentry second = Environment.lookup(e,id2.getId());
+        STentry first = Environment.lookup(e,id1.getId());
+        if(first != null)
+            type1 = first.getType();
+
+        STentry second = Environment.lookup(e,id2.getId());
+        if(second != null)
             type2 = second.getType();
-        }
 
         return res;
     }

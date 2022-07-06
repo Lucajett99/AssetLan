@@ -68,10 +68,23 @@ void initcall()[asset v]{
 }
 initcall()[5]*/
 /*__________________________*/
- int b; asset a;
+ /*int b; asset a;
 void initcall()[]{
 transfer b;
 }
 
-initcall()[]
+initcall()[]*/
+
+int initcall(int n)[]{
+int x;
+  if (n > 0){
+        n = n+1;
+        return 6;
+  }
+return 5;
+
+}
+
+initcall(5)[]
+
 
