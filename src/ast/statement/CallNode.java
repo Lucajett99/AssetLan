@@ -165,14 +165,20 @@ public class CallNode implements Node {
         ArrayList<IdNode> actualParameter = listId != null ? listId : new ArrayList<>();
         ArrayList<IdNode> formalParameter = st.getNode().getADec() != null ? st.getNode().getADec().getId() : new ArrayList<>();
 
+        ArrayList<Integer> liquidityArray = new ArrayList<Integer>();
         for (int i = 0; i < actualParameter.size(); i++) {
             //aggiorno l'attuale in base al formale
             STEntryAsset entryA = (STEntryAsset) Environment.lookup(e, actualParameter.get(i).getId());
-            //STentry entryF = Environment.lookup(e,formalParameter.get(i).getId());
-            Environment.addDeclaration(e, formalParameter.get(i).getId(), entryA.getLiquidity());
+            liquidityArray.add(entryA.getLiquidity());
+            //Environment.addDeclaration(e, formalParameter.get(i).getId(), entryA.getLiquidity());
             if(entryA.getLiquidity() > 0)
                 entryA.setLiquidity(0); //gli asset passati per parametro vengono azzerati
         }
+        for (int i = 0; i < formalParameter.size(); i++) {
+            //aggiorno l'attuale in base al formale
+            Environment.addDeclaration(e, formalParameter.get(i).getId(), liquidityArray.get(i));
+        }
+
 
         if(stmList != null){
             for(StatementNode stm : stmList)

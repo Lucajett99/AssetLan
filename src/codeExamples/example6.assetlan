@@ -9,5 +9,5 @@ asset x;asset y ;
 	f()[x,y] ;
 	print u;
 	print v;
-     }
+ }
      main()[2,3]

@@ -9,12 +9,13 @@ mv $fp $al
 print $b
 halt
 label0: //Label of function initcall
+subi $sp $sp 1 
 
 push $al
 mv $sp $fp
 push $ra
 mv $fp $al 
-lw $a0 1($al) 
+lw $a0 2($al) 
 
 push $a0 
 li $a0 0 
@@ -26,7 +27,7 @@ li $a1 0
 beq $a0 $a1 label2
  // START THEN BRANCH IF STATEMENT 
 mv $fp $al 
-lw $a0 1($al) 
+lw $a0 2($al) 
 
 push $a0 
 li $a0 1 
@@ -35,7 +36,7 @@ lw $a1 0($sp)
 add $a0 $a1 $a0 
 pop 
 mv $fp $al 
-sw $a0 1($al) 
+sw $a0 2($al) 
 li $a0 6 
 lw $fp 0($fp)
 lw $fp 0($fp) //Load old $fp pushed 
@@ -52,7 +53,7 @@ label1: //End Label of function initcall
 lw $ra 0($sp)
 pop 
 addi $sp $sp 1 //pop decp & pop adec
-addi $sp $sp 0 //pop dec 
+addi $sp $sp 1 //pop dec 
 pop //pop the old fp 
 lw $fp 0($sp)
 pop 

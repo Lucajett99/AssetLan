@@ -1,6 +1,6 @@
 --------LEXICAL ERRORS----------
+Error: token recognition error at: ':' at line 5
 
 --------SYNTAX ERRORS----------
-Error: extraneous input 'asset' expecting {'}', 'int', 'bool', 'print', 'transfer', 'return', 'if', ID} at line 79
-Error: no viable alternative at input 'y;' at line 79
+Error: missing ';' at 'u' at line 6
 

@@ -1,13 +1,12 @@
-int a;
-int b = 0 ;
+int a; int b = 0 ;
 asset z ;
- void g()[]{
+void g()[]{
     transfer z ;
- }
- void f(int x, int k, int z)[asset y]{
-    a = y ;    // non e` errore
-    b = b + x ;
+}
+void f(int x)[asset y]{
+    a = y ;		// non e` errore
+    b = b+x ;
     y -o z ;
     g()[] ;
- }
- f(1,2,3)[2]// il contratto e` liquido
+}
+f(1)[2] //il contratto è liquido
